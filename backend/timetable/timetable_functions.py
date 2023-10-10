@@ -359,3 +359,151 @@ def update_old_flow_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_i
         "color": "green"
     }
     return message
+
+
+def lesson_table_list():
+    lesson_list = []
+    days = TimeTableDay.query.all()
+    rooms = Room.query.all()
+    times = TimeList.query.all()
+    for day in days:
+        day_info = {
+            "day_name": day.name,
+            "rooms": []
+        }
+        for room in rooms:
+            room_info = {
+                "room_name": room.name,
+                "lessons": []
+            }
+            for time in times:
+                les = {
+                    "status": False,
+                    "time_id": time.id,
+                    "time_count": time.lesson_count,
+                    "start": time.start,
+                    "end": time.end
+                }
+                room_info["lessons"].append(les)
+                for item in room.daily_table:
+                    if item.day_id == day.id:
+                        for lesson in room_info["lessons"]:
+                            if lesson["time_id"] == item.lesson_time:
+                                if item.lesson_time == les["time_id"]:
+                                    if item.flow_lesson == True:
+                                        subject = Subject.query.filter(Subject.id == item.flow.subject_id).first()
+                                        teacher = Teacher.query.filter(Teacher.id == item.flow.teacher_id).first()
+                                        les.update({
+                                            "lesson_type": "flow",
+                                            "status": True,
+                                            "teacher_id": teacher.id,
+                                            "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                            "subject_id": subject.id,
+                                            "subject_name": subject.name,
+                                            "lesson_id": item.id,
+                                            "flow_name": item.flow.name,
+                                            "flow_id": item.flow.id,
+                                        })
+                                    else:
+                                        room = Room.query.filter(Room.id == item.room_id).first()
+                                        teacher = Teacher.query.filter(Teacher.id == item.teacher_id).first()
+                                        subject = Subject.query.filter(Subject.id == item.subject_id).first()
+                                        if not room and subject and item.teacher_id:
+                                            les.update({
+                                                "lesson_type": "simple",
+                                                "status": True,
+                                                "teacher_id": item.teacher_id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": item.subject_id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id,
+                                                "flow_name": None,
+                                                "flow_id": None,
+                                            })
+                                        if not item.teacher_id and subject and room:
+                                            les.update({
+                                                "lesson_type": "simple",
+                                                "status": True,
+                                                "room_id": item.room_id,
+                                                "room_name": room.name,
+                                                "teacher_id": None,
+                                                "teacher_name": None,
+                                                "subject_id": item.subject_id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id,
+                                                "flow_name": None,
+                                                "flow_id": None,
+                                            })
+                                        if not subject and room and item.teacher_id:
+                                            les.update({
+                                                "lesson_type": "simple",
+                                                "status": True,
+                                                "room_id": item.room_id,
+                                                "room_name": room.name,
+                                                "teacher_id": item.teacher_id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": None,
+                                                "subject_name": None,
+                                                "lesson_id": item.id,
+                                                "flow_name": None,
+                                                "flow_id": None,
+                                            })
+                                        if not room and not item.teacher_id:
+                                            les.update({
+                                                "lesson_type": "simple",
+                                                "status": True,
+                                                "room_id": None,
+                                                "room_name": None,
+                                                "teacher_id": None,
+                                                "teacher_name": None,
+                                                "subject_id": item.subject_id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id,
+                                                "flow_name": None,
+                                                "flow_id": None,
+                                            })
+                                        if not room and not subject:
+                                            les.update({
+                                                "lesson_type": "simple",
+                                                "status": True,
+                                                "room_id": None,
+                                                "room_name": None,
+                                                "teacher_id": item.teacher_id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": None,
+                                                "subject_name": None,
+                                                "lesson_id": item.id,
+                                                "flow_name": None,
+                                                "flow_id": None,
+                                            })
+                                        if not item.teacher_id and not subject:
+                                            les.update({
+                                                "lesson_type": "simple",
+                                                "status": True,
+                                                "room_id": item.room_id,
+                                                "room_name": room.name,
+                                                "teacher_id": None,
+                                                "teacher_name": None,
+                                                "subject_id": None,
+                                                "subject_name": None,
+                                                "lesson_id": item.id,
+                                                "flow_name": None,
+                                                "flow_id": None,
+                                            })
+                                        if item.teacher_id and subject and room:
+                                            les.update({
+                                                "lesson_type": "simple",
+                                                "status": True,
+                                                "room_id": item.room_id,
+                                                "room_name": room.name,
+                                                "teacher_id": item.teacher_id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": item.subject_id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id,
+                                                "flow_name": None,
+                                                "flow_id": None,
+                                            })
+            day_info["rooms"].append(room_info)
+        lesson_list.append(day_info)
+    return lesson_list

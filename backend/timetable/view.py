@@ -337,8 +337,8 @@ def creat_flow_timetable():
     info = request.get_json()["info"]
     return jsonify({
         "status": check_teacher_for_flow_timetable(day_id=info["day_id"],
-                                     lesson_time_id=info["lesson_time"], room_id=info["room_id"],
-                                     lesson_id=info["lesson_id"], flow_id=info["flow_id"])
+                                                   lesson_time_id=info["lesson_time"], room_id=info["room_id"],
+                                                   lesson_id=info["lesson_id"], flow_id=info["flow_id"])
     })
 
 
@@ -387,5 +387,8 @@ def lesson_table():
     about_id = 0
     if about:
         about_id = about.id
+    times = TimeList.query.all()
+    lesson_list = lesson_table_list()
+    pprint(lesson_list)
     return render_template('lesson_table/table.html', about_us=about_us, news=news, jobs=jobs, about_id=about_id,
-                           user=user)
+                           user=user, times=times, lesson_list=lesson_list)

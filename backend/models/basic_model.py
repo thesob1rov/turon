@@ -354,6 +354,8 @@ class Flow(db.Model):
     teacher_id = Column(Integer, ForeignKey("teacher.id"))
     students = relationship("Student", secondary="flow_students", backref="room",
                             order_by="Student.id")
+    daily_table = relationship("DailyTable", backref="flow",
+                               order_by="DailyTable.id", uselist=True)
 
 
 db.Table("flow_students",

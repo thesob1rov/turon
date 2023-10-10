@@ -19,17 +19,9 @@
                 <thead>
                 <tr>
                     <th rowspan="2">Xonalar nomi</th>
-                    <th>8:00 - 8:45</th>
-                    <th>10:00 - 10:45</th>
-                    <th>10:00 - 10:45</th>
-                    <th>10:00 - 10:45</th>
-                    <th>10:00 - 10:45</th>
-                    <th>10:00 - 10:45</th>
-                    <th>10:00 - 10:45</th>
-                    <th>10:00 - 10:45</th>
-                    <th>10:00 - 10:45</th>
-                    <th>10:00 - 10:45</th>
-
+                    {% for time in times %}
+                        <th>{{ time.start }} : {{ time.end }}</th>
+                    {% endfor %}
                 </tr>
                 </thead>
                 <tbody>
@@ -44,24 +36,9 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>Lorem</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Lorem</td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -83,24 +60,9 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>Lorem</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Lorem</td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -122,10 +84,31 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                </tr>
+                <tr>
+                    <td>Lorem</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                 </tr>
-
-
+                <tr>
+                    <td>Lorem</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
                 </tbody>
             </table>
         </div>

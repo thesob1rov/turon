@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald&family=Roboto:wght@500&display=swap')
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+
+
+
+.murojat
+  height: calc(100vh - 5rem)
+  padding: 10px 80px
+  width: 100%
+
+  h1
+    font-size: 40px
+    color: #001B61
+    font-family: 'Oswald', sans-serif
+    letter-spacing: 1px
+  &_table
+
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+    height: 80%
+    overflow: auto
+    &::-webkit-scrollbar
+      width: 1rem
+
+    &::-webkit-scrollbar-track
+      background-color: #ffffff
+
+    &::-webkit-scrollbar-thumb
+      cursor: pointer
+      background-color: #001B61
+  &_delete
+    position: absolute
+    top: 10px
+    right: 10px
+    cursor: pointer
+    i
+      font-size: 20px
+  &_text
+    padding: 25px 30px
+    width: 100%
+    border-bottom: 1px solid #001B61
+    display: flex
+    justify-content: space-around
+    align-items: center
+    position: relative
+
+    p
+      font-size: 20px
+      font-family: "Kanit", sans-serif
+      white-space: pre-wrap
+      width: 100%
+
+    h3
+      color: #001B61
+      font-family: "Kanit", sans-serif
+
+    &:hover
+      background-color: rgba(#001B61,.1)

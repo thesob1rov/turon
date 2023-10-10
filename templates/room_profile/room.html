@@ -1,0 +1,92 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/static/css/room_profile/room_style.min.css">
+{% endblock %}
+
+{% block section %}
+    <section class="room">
+        <div class="room_box">
+            <div class="room_profile">
+                <div class="room_img">
+                    <div class="room_picture">
+                        <img src="{{ room.image }}" alt="">
+                        <div class="top"><i class="fa-solid fa-image"></i></div>
+                    </div>
+                    <h1>{{ room.name }}</h1>
+                </div>
+                <div class="box">
+                    <div class="box_change">
+                        <div class="box_item" id="change">
+                            <i class="fa-solid fa-pen"></i>
+                            <div>Change</div>
+                        </div>
+                        <div class="box_item" id="trash">
+                            <i class="fa-solid fa-trash"></i>
+                            <div>Delete</div>
+                        </div>
+                    </div>
+                    <div class="room_icon"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+                </div>
+            </div>
+            <div class="room_table">
+                <div class="room_informations">
+                    <div class="room_information">
+                        Teacher: {{ room.teacher.user.name }} {{ room.teacher.user.surname }}</div>
+                    <div class="room_information">Chair count: {{ room.chair_count }}</div>
+                    <div class="room_information">Lorem:</div>
+                    <div class="room_information">Lorem:</div>
+                    <div class="room_information">Lorem:</div>
+                    <div class="room_information">Lorem:</div>
+                </div>
+                <div class="room_informations">
+                    <div class="room_information">Lorem:</div>
+                    <div class="room_information">Lorem:</div>
+                    <div class="room_information">Lorem:</div>
+                    <div class="room_information">Lorem:</div>
+                    <div class="room_information">Lorem:</div>
+                    <div class="room_information">Lorem:</div>
+                </div>
+            </div>
+        </div>
+        <div class="overlay_room">
+            <form action="{{ url_for("edit_room", room_id=room.id) }}" method="post" enctype="multipart/form-data">
+                <div class="overlay_room_box">
+                    <i class="fa-solid fa-xmark x_mark" id="x"></i>
+                    <input type="text" placeholder="Nomi" name="name" value="{{ room.name }}">
+                    <input type="text" placeholder="Soni" name="count" value="{{ room.chair_count }}">
+                    <input type="file" placeholder="Soni" name="photo">
+                    <select name="teacher_id" id="">
+                        <option value="{{ room.teacher.id }}">{{ room.teacher.user.name }} {{ room.teacher.user.surname }}</option>
+                        {% for teacher in teachers %}
+                            <option value="{{ teacher.id }}">{{ teacher.user.name }} {{ teacher.user.surname }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="overlay_room_add">Add</button>
+                </div>
+            </form>
+
+        </div>
+
+
+        <div class="delete">
+            <div class="delete_box">
+                <div class="title">Rostan o'chirmoqchimisiz</div>
+                <div class="delete_buttons">
+                    <a href="{{ url_for("delete_room", room_id=room.id) }}">
+                        <button id="yes">Ha</button>
+                    </a>
+                    <button id="no">Yo'q</button>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+
+{% block js %}
+    <script src="/static/js/room_profile/room_js.js"></script>
+{% endblock %}

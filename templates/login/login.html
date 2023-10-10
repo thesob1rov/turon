@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="icon" href="/static/img/home/img/logo.jpg">
+    <link rel="stylesheet" href="/static/css/login/login.min.css">
+    <title>Login</title>
+
+</head>
+<body>
+<div class="login">
+    <form class="login__form" method="post" action="{{ url_for('login') }}">
+        <h1>Login</h1>
+        <div class="login__form_block">
+            <div class="login__form_input">
+                <input required type="text" name="username" placeholder="Username">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="login__form_input">
+                <input required type="password" class="password" name="password" placeholder="password">
+                <i class="fa-solid fa-eye password_icon"></i>
+            </div>
+            <button>Login</button>
+        </div>
+    </form>
+    <div class="login__logo">
+        <img src="/static/img/school_logo.png" alt="">
+    </div>
+
+</div>
+<script src="/static/js/login/script.js"></script>
+</body>
+</html>

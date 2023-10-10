@@ -1,0 +1,29 @@
+.menu_inside {
+  width: 80%;
+  height: 10rem;
+  background-color: #111F4C;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: white;
+  font-size: 2rem;
+  font-family: "Oswald", sans-serif;
+}
+.menu_inside img {
+  width: 12rem;
+  height: 12rem;
+}
+.menu_inside ul {
+  width: 80%;
+  display: flex;
+  justify-content: space-around;
+}
+.menu_inside ul li {
+  list-style: none;
+}
+
+a {
+  color: white;
+}
+
+/*# sourceMappingURL=info.css.map */

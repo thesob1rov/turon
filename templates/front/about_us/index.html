@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Biz haqimizda</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="/static/img/home/img/logo.jpg">
+    <link rel="stylesheet" href="/static/css/front/about_us/style.min.css">
+    <link rel="stylesheet" href="/static/css/modal/index.min.css">
+    <link rel="stylesheet" href="/static/css/home/include/menu.min.css">
+</head>
+<body>
+<div class="introduction">
+    {% include 'home/menu.html' %}
+</div>
+<div class="big">
+
+    {% if current_info %}
+
+    {% endif %}
+    <div class="big_mini">
+
+
+        <ul class="big_mini_li">
+            {% for info in infos %}
+
+                {% if info.id == current_info.id %}
+                    <li data-info_id="{{ info.id }}" class="li_active"><a
+                            href="{{ url_for('about_front',type_id=1,info_id=info.id) }}">{{ info.title }}</a>
+                    </li>
+                {% else %}
+                    <li data-info_id="{{ info.id }}"><a
+                            href="{{ url_for('about_front',type_id=1,info_id=info.id) }}">{{ info.title }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+    </div>
+    {% if current_info %}
+        <div class="big_mini1">
+
+
+            <div class="big_mini1_box">
+                <p>{{ current_info.text }}</p>
+                <img class="big_mini1_box_img" src="{{ current_info.img }}" alt="">
+            </div>
+        </div>
+    {% endif %}
+
+
+</div>
+
+<section class="registratsiya">
+    <div class="registratsiya_header">
+        <h1 CLASS="registratsiya_title">MA'LUMOT QO'SHISH</h1>
+        <div class="registratsiya_close">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+    </div>
+    <form class="registratsiya_block" enctype="multipart/form-data" method="post">
+        <div class="registratsiya_front">
+            <div class="registratsiya_left">
+
+                <div class="registratsiya_left_box"></div>
+                <div class="registratsiya_left_img" style="background-image: url('{{ current_info.img }}')">
+
+                </div>
+
+            </div>
+
+            <input type="file" hidden class="registratsiya_file" name="img">
+            <div class="registratsiya_right">
+
+                <div class="registratsiya_top info">
+
+                    <input name="title" type="text" placeholder="title">
+                </div>
+
+                <div class="registratsiya_top">
+
+                    <textarea name="text" placeholder="Text"></textarea>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="registratsiya_button">
+            {% if current_info %}
+                <a href="{{ url_for('delete_info', info_id=current_info.id) }}" class="registratsiya_delete non_active">Delete</a>
+            {% endif %}
+            {% if not current_info %}
+                <div></div>
+            {% endif %}
+            <button>Add</button>
+        </div>
+
+
+    </form>
+
+
+</section>
+<section class="main">
+
+    <div class="main_boxes">
+        <div class="title"><h1>School Uniform</h1></div>
+        <div class="main_box">
+            <div class="main_box_img">
+                <img src="/static/img/Снимок%20экрана%20(72).png" alt="">
+            </div>
+            <div class="main_box_info">
+                <div>Offered at more than 3,000 locations and 40 countries, our early childhood music classes give
+                    families with children from birth through age 8 the chance to get in touch with their inner musician
+                    and connect with other families.
+                </div>
+            </div>
+        </div>
+
+
+        <div class="main_box2">
+            <img src="/static/img/Rectangle%20680.png" alt="">
+
+        </div>
+        <div class="main_box3"></div>
+        <div class="main_box4">
+            <div class="main_box4_img">
+                <img src="/static/img/Rectangle%20679.png" alt="">
+            </div>
+            <div class="main_box4_info">
+                <h1>Our story</h1>
+                <div>Our teachers come from a variety of backgrounds—they’re actors, professional musicians,
+                    stay-at-home
+                    parents, preschool teachers, and more—but what they all share is the desire to help.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<script src="/static/js/include/menu/menu.js"></script>
+<script src="/static/js/about_us/script.js"></script>
+</body>
+</html>

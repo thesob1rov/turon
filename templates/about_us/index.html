@@ -1,0 +1,109 @@
+{% extends 'admin/index.html' %}
+{% block title %}Biz haqimizda{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="/static/css/about_us/style.min.css">
+    <link rel="stylesheet" href="/static/css/info/info.min.css">
+
+{% endblock %}
+{% block section %}
+    <div class=""
+         style="display: flex; flex-direction: column;align-items: center; width: 100%">
+        {% include 'info/info.html' %}
+        <div class="big">
+            {% if current_info %}
+                <div class="big_edit">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </div>
+            {% endif %}
+            <div class="big_mini">
+                <h1>Biz haqimizda</h1>
+
+                <ul class="big_mini_li">
+                    {% for info in infos %}
+                        {% if info.id == current_info.id %}
+                            <li data-info_id="{{ info.id }}" class="li_active"><a
+                                    href="{{ url_for('get_about_profile',type_id=type_id,info_id=info.id) }}">{{ info.title }}</a>
+                            </li>
+                        {% else %}
+                            <li data-info_id="{{ info.id }}"><a
+                                    href="{{ url_for('get_about_profile',type_id=type_id,info_id=info.id) }}">{{ info.title }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+
+            </div>
+            {% if current_info %}
+                <div class="big_mini1">
+                    <div class="big_mini1_text">
+                        <p>{{ current_info.text }}</p>
+                    </div>
+                    <div class="big_mini1_box">
+                        <img class="big_mini1_box_img" src="{{ current_info.img }}" alt="">
+                    </div>
+                </div>
+            {% endif %}
+            <div class="circle" data-type_id="{{ type_id }}">
+                <div class="radius"></div>
+                <div class="plus">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <section class="registratsiya">
+            <div class="registratsiya_header">
+                <h1 CLASS="registratsiya_title">MA'LUMOT QO'SHISH</h1>
+                <div class="registratsiya_close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            </div>
+            <form class="registratsiya_block" enctype="multipart/form-data" method="post">
+                <div class="registratsiya_front">
+                    <div class="registratsiya_left">
+
+                        <div class="registratsiya_left_box"></div>
+                        <div class="registratsiya_left_img" style="background-image: url('{{ current_info.img }}')">
+
+                        </div>
+
+                    </div>
+
+                    <input type="file" hidden class="registratsiya_file" name="img">
+                    <div class="registratsiya_right">
+
+                        <div class="registratsiya_top info">
+
+                            <input name="title" type="text" placeholder="title">
+                        </div>
+
+                        <div class="registratsiya_top">
+
+                            <textarea name="text" placeholder="Text"></textarea>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="registratsiya_button">
+                    {% if current_info %}
+                        <a href="{{ url_for('delete_info', info_id=current_info.id) }}"
+                           class="registratsiya_delete non_active">Delete</a>
+                    {% endif %}
+                    {% if not current_info %}
+                        <div></div>
+                    {% endif %}
+                    <button>Add</button>
+                </div>
+
+
+            </form>
+        </section>
+    </div>
+
+{% endblock %}
+{% block js %}
+    <script src="/static/js/about_us/script.js"></script>
+{% endblock %}

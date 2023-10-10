@@ -1,0 +1,192 @@
+html {
+  font-size: 10px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.time {
+  min-height: 100vh;
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.time_btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.time_btns button {
+  width: 15rem;
+  height: 3.5rem;
+  background: #111f4c;
+  outline: none;
+  border: none;
+  color: white;
+}
+.time_subjects {
+  display: none;
+  justify-content: space-around;
+  width: 30rem;
+  height: 100%;
+}
+.time_subject {
+  width: 10rem;
+  height: 4rem;
+  background-color: #111f4c;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+}
+.time_first {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 100px;
+  width: 100%;
+}
+.time_table {
+  height: 100%;
+  font-size: 1.6rem;
+}
+.time_table table {
+  width: 100rem;
+}
+.time_table table th {
+  border: 1px solid black;
+  width: 15rem;
+  height: 4rem;
+}
+.time_table table tbody td {
+  border: 1px solid;
+  height: 4rem;
+}
+.time_two {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+.time_teacher {
+  display: none;
+  justify-content: space-around;
+  width: 30rem;
+  position: absolute;
+}
+
+.active_color {
+  background-color: #111f4c;
+}
+
+.active {
+  display: flex;
+}
+
+.active_remove {
+  display: none;
+}
+
+.time_btns button:nth-child(2) {
+  background: #adadad;
+}
+
+.time_btns button:nth-child(3) {
+  background: #adadad;
+}
+
+.message {
+  width: 500px;
+  height: 50px;
+  box-shadow: 0 0 10px 3px #34d534;
+  border-radius: 10px;
+  top: -200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message h4 {
+  font-size: 30px !important;
+  font-family: Bahnschrift;
+  color: #34d534;
+}
+
+.message.active_message {
+  animation-name: animation;
+  animation-duration: 5s;
+}
+
+@keyframes animation {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(200px);
+  }
+  50% {
+    transform: translateY(200px);
+  }
+  100% {
+    transform: translateY(-500px);
+  }
+}
+#class {
+  width: 15rem;
+  height: 3.5rem;
+  background: #111f4c;
+  outline: 0;
+  border: 0;
+  color: #fff;
+}
+
+#patok {
+  width: 15rem;
+  height: 3.5rem;
+  background: #adadad;
+  outline: 0;
+  border: 0;
+  color: #111f4c;
+}
+
+.fanlar {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.fanlar .fan {
+  background-color: #adadad;
+  width: 10rem;
+  height: 4rem;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.main_container {
+  display: flex;
+  max-width: 1800px;
+}
+
+.container_direction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 30px;
+}
+
+.variant_and_table {
+  display: flex;
+}
+
+/*# sourceMappingURL=flow_student%5D.css.map */

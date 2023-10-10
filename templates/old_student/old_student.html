@@ -1,0 +1,104 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="icon" href="/static/img/logo.jpg">
+    <link rel="stylesheet" href="../../static/css/student/main.min.css">
+    <link rel="stylesheet" href="../../static/css/student/index.min.css">
+{% endblock %}
+
+
+{% block section %}
+    <div class="index">
+        <div class="names">
+            <div class="names_buttons">
+
+                <button class="filter_btn">Filter</button>
+                <div class="double">
+                    <div class="names_search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Qidiruv" class="search">
+                    </div>
+                    <div class="div">
+                        <button class="btn">Student</button>
+                        <a href="{{ url_for("teacher") }}">
+                            <button class="add_btn">Teacher</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="filter">
+                    <select name="language_type" id="" class="language_type">
+                        <option value="all">ALL</option>
+                        {% for language in languages %}
+                            <option value="{{ language.id }}">{{ language.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="class_number" class="class_number">
+                        <option value="sinflar">sinflar</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                    </select>
+                    <input type="text" name="from" class="from">
+                    <input type="text" name="to" class="to">
+                    <button class="form_filter">Search</button>
+                </div>
+            </div>
+            <div class="names_list">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th></th>
+                        <th>Ismi</th>
+                        <th>Familya</th>
+                        <th>Yosh</th>
+                        <th>Telefon raqam</th>
+                        <th>Til</th>
+                    </tr>
+                    </thead>
+
+                    <tbody class="tbody">
+
+                    {% for page in pages.items %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="{{ url_for("student_profile", student_id=page.user.id) }}"><img
+                                    src="{{ page.user.image }}" alt=""></a></td>
+                            <td>{{ page.user.name }}</td>
+                            <td>{{ page.user.surname }}</td>
+                            <td>{{ page.user.age }}</td>
+                            <td>{{ page.user.number }}</td>
+                            <td>{{ page.language.name }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if student_count >= 50 %}
+                <div class="next">
+                    <button {% if not pages.has_prev %}class="disabled" {% endif %}><a
+                            {% if not pages.has_prev %}class="disabled" {% endif %}
+                            href="student?page={{ pages.prev_num }}"><i
+                            class="fa-solid fa-chevron-left"></i></a></button>
+                    {% for page in pages.iter_pages() %}
+                        <button><a href="student?page={{ page }}">{{ page }}</a></button>
+                    {% endfor %}
+                    <button {% if not pages.has_prev %}class="disabled" {% endif %}><a
+                            {% if not pages.has_prev %}class="disabled" {% endif %}
+                            href="student?page={{ pages.next_num }}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="../../static/js/old_student/old_student.js"></script>
+{% endblock %}

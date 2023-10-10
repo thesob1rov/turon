@@ -1,0 +1,182 @@
+{% extends 'admin/index.html' %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../../static/css/student_payed_list/to'lov.min.css">
+{% endblock %}
+
+{% block section %}
+
+    <section class="pay" data-type="{{ type_request }}">
+        <div class="pay_block">
+            <div class="pay_container">
+                <div class="pay_double">
+                    <button class="pay_filter_btn">Filter</button>
+                    <div class="pay_search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Qidiruv">
+                    </div>
+                    <select id="select" class="select" name="">
+                        {% if type_request == 'pay' %}
+                            <option value="payOption">To'lov</option>
+                            <option value="costOption">Harajat</option>
+                        {% elif type_request == 'cost' %}
+                            <option value="costOption">Harajat</option>
+                            <option value="payOption">To'lov</option>
+                        {% endif %}
+                    </select>
+                </div>
+
+                <div class="filter">
+                    <select name="language_type" id="" class="account_type">
+                        <option value="all">all</option>
+                        {% for account_type in account_types %}
+                            <option value="{{ account_type.id }}">{{ account_type.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="class_number" class="year">
+                        <option value="all">all</option>
+                        {% for year in years %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="class_number" class="month">
+                        <option value="all">all</option>
+                        {% for month in months %}
+                            <option value="{{ month }}">{{ month }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="class_number" class="day">
+                        <option value="all">all</option>
+                        {% for day in days %}
+                            <option value="{{ day }}">{{ day }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="form_filter">Search</button>
+                </div>
+            </div>
+
+            <div class="account_types" style="display: flex; width: 50%; justify-content: space-around">
+                <h1 style="margin-top: 30px; font-size: 30px">Cash: {{ cash }}</h1>
+                <h1 style="margin-top: 30px; font-size: 30px">Bank: {{ bank }}</h1>
+                <h1 style="margin-top: 30px; font-size: 30px">Click: {{ click }}</h1>
+            </div>
+
+            <div class="pay_list">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>
+                            {% if type_request == 'pay' %}
+                                Ismi
+                            {% elif type_request == 'cost' %}
+                                Harajat nomi
+                            {% endif %}
+
+                        </th>
+                        {% if type_request == 'pay' %}
+                            <th>Familya</th>
+                        {% endif %}
+                        <th>
+                            {% if type_request == 'pay' %}
+                                To'lov
+                            {% elif type_request == 'cost' %}
+                                Harajat
+                            {% endif %}
+                        </th>
+                        <th>To'lov turi</th>
+                        <th>Sana</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for page in payments %}
+                        {% if type_request == 'pay' %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ page.student_month_payments.student.user.name }}</td>
+                                <td>{{ page.student_month_payments.student.user.surname }}</td>
+                                <td>{{ page.payed }}</td>
+                                <td>{{ page.student_month_payments.account_type.name }}</td>
+                                <td>{{ page.date.strftime("%Y-%m-%d") }}</td>
+                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                       data-id="{{ page.id }}"></i></td>
+                            </tr>
+                        {% elif type_request == 'cost' %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ page.name }}</td>
+                                <td>{{ page.payed }}</td>
+                                <td>{{ page.account_type.name }}</td>
+                                <td>{{ page.date.strftime("%Y-%m-%d") }}</td>
+                                <td><i class="fa-solid fa-trash delButtonCost" style="color: red"
+                                       data-id="{{ page.id }}"></i></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="pay_next">
+                {% if page_prev %}
+                    <button><a href="{{ url_for("all_payments",type_request=type_request, page_num=page_prev) }}"><i
+                            class="fa-solid fa-chevron-left"></i></a></button>
+                {% else %}
+                    <button><i class="fa-solid fa-chevron-left"></i></button>
+                {% endif %}
+                {% for paginte in payments.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
+                    {% if paginte %}
+                        <button><a
+                                href="{{ url_for("all_payments",type_request=type_request, page_num=paginte) }}">{{ paginte }}</a>
+                        </button>
+                    {% else %}
+                        <button>
+                            <span>...</span>
+                        </button>
+                    {% endif %}
+                {% endfor %}
+                {% if page_nex <= page_last %}
+                    <button><a href="{{ url_for("all_payments",type_request=type_request, page_num=page_nex) }}"><i
+                            class="fa-solid fa-chevron-right"></i></a></button>
+                {% else %}
+                    <button><i class="fa-solid fa-chevron-right"></i></button>
+                {% endif %}
+            </div>
+        </div>
+        {% if type_request == 'cost' %}
+            <div class="harajat_plus_circle">
+                <div class="harajat_plus_radius"></div>
+                <div class="harajat_plus_plus">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+            </div>
+        {% endif %}
+
+        <form action="{{ url_for("add_cost") }}" method="post" class="payment">
+            <div class="payment_box">
+                <input name="name" class="nameInput" type="text" placeholder="Harajat nomi">
+                <input name="payed" class="payedInput" type="text" placeholder="Harajat summasi">
+                <select name="">
+                    <option value="">Kunlar</option>
+                </select>
+                <div class="payment_type">
+                    {% for account_type in account_types %}
+                        <div class="type">
+                            <input data-id="{{ account_type.id }}" type="radio" class="radio">
+                            <div>{{ account_type.name }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <input type="text" class="input_type_id" name="account_type_id" value="">
+                <button id="add">Add</button>
+            </div>
+        </form>
+    </section>
+{% endblock %}
+{% block js %}
+    <script src="../../static/js/all_payments/all_payments.js"></script>
+    <script src="/static/js/student_payments_in_month/payments_in_monyh.js"></script>
+{% endblock %}

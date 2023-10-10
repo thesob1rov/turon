@@ -1,0 +1,61 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="stylesheet" href="../../static/css/subjects_list/book_list.min.css">
+{% endblock %}
+
+{% block section %}
+    <section class="book">
+        <div class="book_buttons">
+            <button class="subject_add">Add</button>
+            <h1>List of subjects</h1>
+        </div>
+        <div class="book_block">
+
+
+            <div class="book_block_boxes">
+                {% for subject in subjects %}
+                    <div class="book_block_box">
+                        <div class="book_block_box_icons">
+                            <i class="fa-solid fa-pen subject_edit" data-id="{{ subject.id }}"></i>
+                            <i class="fa-solid fa-trash subject_change" data-id="{{ subject.id }}"></i>
+                        </div>
+                        <div class="subject_title">{{ subject.name }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+        </div>
+        <div class="subject_overlay">
+            <div class="subject_overlay_index">
+                <i class="fa-solid fa-xmark subject_overlay_x"></i>
+                <div class="subject_overlay_box">
+                    <form action="#">
+                        <div>Name</div>
+                        <input type="text" placeholder="English" class="change_subject">
+                        <button class="get">Change</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class=" subject_overlay_add">
+            <div class="subject_overlay_add_index">
+                <i class="fa-solid fa-xmark subject_overlay_add_x"></i>
+                <div class="subject_overlay_add_box ">
+                    <form action="{{ url_for("add_subject") }}" method="post">
+                        <div>Name</div>
+                        <input type="text" placeholder="English" class="change_subject" name="name">
+                        <button>Change</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+
+{% block js %}
+    <script src="../../static/js/subjects_list/book_list.js"></script>
+{% endblock %}
+

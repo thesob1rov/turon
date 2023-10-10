@@ -1,0 +1,122 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="stylesheet" href="../../static/css/profile/profile.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+{% endblock %}
+{% block section %}
+    <div class="main" style="display: flex;align-items: center;justify-content: center; width: 100%;">
+        <div class="main_box">
+            <div class="main_block">
+                <div class="main_profile">
+                    <div class="main_img">
+                        <div class="icon_img">
+                            <img src="{{ user.image }}" alt="">
+                            <a href="{{ url_for("edit_profile", user_id=user.id) }}">
+                                <div class="icon_img_i"><i class="fa-solid fa-pen i"></i></div>
+                            </a>
+                        </div>
+                        <h1>{{ user.name }} <br>{{ user.surname }}</h1>
+                    </div>
+                    <div class="change">
+                        <i class="fa-solid fa-ellipsis ellipsis"></i>
+                        <div class="change_all">
+                            <div class="change_edit">
+                                <i class="fa-solid fa-pen"></i>
+                                <div>Ma'lumotlarni o'zgartirish</div>
+                            </div>
+                            <a href="{{ url_for("logout") }}">
+                                <div class="change_exit">
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                    <div>Chiqish</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="main_about">
+                <div class="div">
+                    <div class="main_about_information">Ismi: <span>{{ user.name }}</span></div>
+                    <div class="main_about_information">Ismi: <span>{{ user.username }}</span></div>
+                    <div class="main_about_information">Familyasi: <span>{{ user.surname }}</span></div>
+                    <div class="main_about_information">Otasining ismi: <span>{% if user.parent_name %}
+                        {{ user.parent_name }}
+                    {% else %}
+                        Kiritilmagan
+                    {% endif %} </span></div>
+                    <div class="main_about_information">Tug'ilgan kuni: <span>{% if user.birth_date %}
+                        {{ user.birth_date }}
+                    {% else %}
+                        Kiritilmagan
+                    {% endif %} </span></div>
+                </div>
+                <div class="div">
+                    <div class="main_about_information">Telefon raqami: <span>{% if user.number %}
+                        {{ user.number }}{% else %}Kiritilmagan{% endif %} </span></div>
+                    <div class="main_about_information">Yashash joyi: <span>{% if user.address %}
+                        {{ user.address }}{% else %}Kiritilmagan
+                    {% endif %} </span></div>
+                    <div class="main_about_information">Elektron pochta: <span>{% if user.email %}{{ user.email }}
+                    {% else %}
+                        Kiritilmagan
+                    {% endif %} </span></div>
+                    <div class="main_about_information">Yosh: <span>{% if user.age %}
+                        {{ user.age }}
+                    {% else %}
+                        Kiritilmagan
+                    {% endif %} </span></div>
+                </div>
+            </div>
+        </div>
+        <div class="edit">
+            <div class="edit_box">
+                <div class="edit_block">
+                    <div class="edit_profile">
+                        <div class="edit_img">
+                            <div class="icon_img">
+                                <a href="{{ url_for("profile", user_id=user.id) }}"> <img src="{{ user.image }}" alt=""></a>
+
+                                <div class="icon_img_i"><i class="fa-solid fa-pen i"></i></div>
+                            </div>
+                            <h1>{{ user.name }} <br>{{ user.surname }}</h1>
+                        </div>
+
+                        <div class="change">
+                            <i class="fa-solid fa-ellipsis ellipsis"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="edit_form">
+                    <div class="edit_buttons">
+                        <div class="edit_lock_btn active_color"><i class="fa-solid fa-lock"></i></div>
+                        <div class="edit_user_btn"><i class="fa-solid fa-user"></i></div>
+                    </div>
+                    <div class="lock_form">
+                        <div class="edit_inputs">
+                            <input type="password" class="password" id="password1" placeholder="password">
+                            <label class="error_length">Password must be at least 8 characters</label>
+                            <input type="password" class="password post_password" id="password2" placeholder="12345678">
+                            <label class="error_match">Password's do not match</label>
+                        </div>
+                        <div class="show">
+                            <input class="checkbox" type="checkbox">
+                            <div>Show password</div>
+
+                        </div>
+                        <button class="change_btn edit_password_btn">Change</button>
+                    </div>
+
+                    <div class="user_form">
+                        <input type="text" placeholder="username" class="post_username">
+                        <button class="change_btn edit_username_btn">Change</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="../../static/js/profile/profile.js"></script>
+{% endblock %}

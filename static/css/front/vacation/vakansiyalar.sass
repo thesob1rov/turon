@@ -1,0 +1,316 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald&family=Roboto:wght@500&display=swap')
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+body
+  &::-webkit-scrollbar
+      width: 1rem
+
+  &::-webkit-scrollbar-track
+    background-color: #ffffff
+
+  &::-webkit-scrollbar-thumb
+    cursor: pointer
+    background-color: black
+.vakansiya
+
+  background-color: #001B61
+  padding: 70px
+  display: flex
+  flex-direction: column
+  gap: 20px
+
+  h1
+    font-family: 'Oswald', sans-serif
+    color: white
+    font-size: 35px
+
+
+  &_block
+    display: flex
+    justify-content: space-between
+    flex-wrap: wrap
+    gap: 10px
+
+
+  &_information
+    width: 320px
+    height: 450px
+    background-color: #FFFFFF
+    display: flex
+    flex-direction: column
+    gap: 10px
+    padding: 20px
+
+  &_text
+    width: 100%
+    height: 350px
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: space-around
+
+    img
+      width: 150px
+      height: 100px
+
+    i
+      font-size: 60px
+
+    h2
+      font-family: 'Oswald', sans-serif
+
+    p
+      font-family: "Kanit", sans-serif
+      text-align: center
+      white-space: pre-wrap
+      font-size: 1.7rem
+
+  button
+    width: 140px
+    height: 40px
+    color: white
+    background-color: #001B61
+    border: #001B61 2px solid
+    font-size: 17px
+    align-self: center
+    transition: 0.5s
+    cursor: pointer
+
+    &:hover
+      background-color: transparent
+      border: #001B61 2px solid
+      color: #001B61
+
+.ariza
+  width: 100vw
+  height: 100vh
+  display: none
+  position: fixed
+  top: 0
+  left: 0
+  align-items: center
+  justify-content: center
+  background-color: rgb(40 40 40 / 81%)
+
+  .request_pdf
+    display: flex
+    align-items: center
+    cursor: pointer
+    i
+      font-size: 20px
+    .ariza_top
+      position: initial !important
+    .fa-check
+      color: green
+    .fa-x
+      color: red
+
+  &_backround
+    width: 100%
+    height: 100vh
+    position: absolute
+    top: 0
+    left: 0
+
+    display: none
+
+  &_text
+    width: 550px
+    height: 480px
+    background-color: #FFFFFF
+    position: relative
+    display: flex
+    align-items: center
+    justify-content: space-around
+    flex-direction: column
+    padding: 20px
+
+    &_title
+      width: 100%
+      display: flex
+      justify-content: space-between
+
+      i
+        font-size: 30px
+        color: #3f3f3f
+        cursor: pointer
+
+
+    h1
+      font-size: 30px
+      font-family: 'Oswald', sans-serif
+      color: #001B61
+      align-self: flex-start
+
+  &_index
+    display: flex
+    flex-direction: column
+    gap: 40px
+
+    input
+      border: #001B61 1px solid
+      width: 300px
+      height: 40px
+      padding: 10px
+
+  &_all
+
+    position: relative
+
+    &:last-child
+      display: flex
+      align-items: center
+
+      i
+        font-size: 20px
+
+
+  &_top
+    width: 110px
+    height: 25px
+    background-color: white
+    position: absolute
+    left: 20px
+    top: -12px
+
+
+    //&:nth-child(2)
+    //  width: 100px
+
+    p
+      font-size: 17px
+      text-align: center
+
+
+  button
+    width: 140px
+    height: 40px
+    color: white
+    background-color: #001B61
+    border: #001B61 2px solid
+    font-size: 17px
+    transition: 0.5s
+    cursor: pointer
+
+    &:hover
+      background-color: transparent
+      border: #001B61 2px solid
+      color: #001B61
+
+.splide
+  display: none
+  justify-content: space-around
+  height: 100vh
+
+.active
+  display: flex
+
+@media (max-width: 1024px)
+  .vakansiya
+    padding: 20px
+
+@media (max-width: 768px)
+  .splide
+    display: flex
+  .vakansiya
+    padding: 20px
+
+
+  .none
+    display: none
+  .ariza
+    width: 100vw
+    height: 100vh
+    display: none
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    align-items: center
+    justify-content: center
+
+    &_backround
+      width: 100vw
+      height: 100vh
+      position: absolute
+      top: 0
+      left: 0
+      background-color: rgb(40 40 40 / 81%)
+      display: none
+
+    &_text
+      width: 370px
+      height: 370px
+      background-color: #FFFFFF
+      position: relative
+      display: flex
+      align-items: center
+      justify-content: space-around
+      flex-direction: column
+      padding: 20px
+
+      &_title
+        width: 100%
+        display: flex
+        justify-content: space-between
+
+        i
+          font-size: 30px
+          color: #3f3f3f
+
+
+      h1
+        font-size: 30px
+        font-family: 'Oswald', sans-serif
+        color: #001B61
+        align-self: flex-start
+
+    &_index
+      display: flex
+      flex-direction: column
+      gap: 40px
+
+      input
+        border: #001B61 1px solid
+        width: 300px
+        height: 40px
+
+    &_all
+
+      position: relative
+
+    &_top
+      width: 110px
+      height: 25px
+      background-color: white
+      position: absolute
+      left: 20px
+      top: -12px
+
+      //&:nth-child(2)
+      //  width: 100px
+
+      p
+        font-size: 17px
+        text-align: center
+
+    .active
+      display: flex
+
+@media (max-width: 630px)
+  .vakansiya
+    &_block
+      justify-content: center
+
+    &_information
+      width: 350px
+
+@media (max-width: 425px)
+  .vakansiya
+
+    &_information
+      width: 400px
+
+

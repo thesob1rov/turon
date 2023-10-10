@@ -1,0 +1,319 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="stylesheet" href="../../static/css/student/student.min.css">
+{% endblock %}
+{% block section %}
+    <section class="index">
+        <div class="names">
+            <div class="names_buttons">
+                <button class="filter_btn">Filter</button>
+                <div class="double">
+                    <div class="names_search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Qidiruv">
+                    </div>
+
+                </div>
+                <div class="filter">
+                    <select name="">
+                        <option value=""></option>
+                        <option value="">2323</option>
+                        <option value="">2323</option>
+                    </select>
+
+                    <select name="">
+                        <option value=""></option>
+                        <option value="">2323</option>
+                        <option value="">2323</option>
+                    </select>
+
+                    <select name="">
+                        <option value=""></option>
+                        <option value="">2323</option>
+                        <option value="">2323</option>
+                    </select>
+
+
+                    <select name="">
+                        <option value=""></option>
+                        <option value="">2323</option>
+                        <option value="">2323</option>
+                    </select>
+
+                </div>
+
+            </div>
+            <div class="names_list">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th></th>
+                        <th>Ismi</th>
+                        <th>Familya</th>
+                        <th>Yosh</th>
+                        <th>Izoh</th>
+                        <th>Telefon raqam</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for student in student_list %}
+                        <tr>
+                            <td></td>
+                            <td><a href="{{ url_for('student_profile', student_id=student.id) }}"><img
+                                    src="{{ student.user.image }}" alt=""></a></td>
+                            <td>{{ student.user.name }}</td>
+                            <td>{{ student.user.surname }}</td>
+                            <td>16</td>
+                            <td>class</td>
+                            <td>{{ student.user.number }}</td>
+                            <td><input class="checkbox" type="checkbox" data-id="{{ student.id }}"></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <button class="class create_bnt">Creat</button>
+            </div>
+            <div class="next">
+                <i class="fa-solid fa-chevron-left"></i>
+                <button><a href="">1</a></button>
+                <button><a href="">2</a></button>
+                <button><a href="">3</a></button>
+                <button><a href="">4</a></button>
+                <button><a href="">5</a></button>
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </div>
+
+        <div class="create">
+            <div class="create_name">
+                <h1>Create class</h1>
+                <div class="create_info">
+                    <div class="create_info_item">Ism</div>
+                    <input type="text" class="input name class_name" placeholder="Enter your name" name="name">
+                </div>
+                <select name="" id="" class="teacher_id">
+                    {% for teacher in teachers %}
+                        <option value="{{ teacher.id }}">{{ teacher.user.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+
+        <div class="add">
+            <div class="names">
+                <div class="names_list">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th></th>
+                            <th>Nomi</th>
+                            <th>Sinf rahbar</th>
+                            <th>O'quvchilar</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="add">
+            <div class="names">
+                <div class="names_list">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th></th>
+                            <th>Nomi</th>
+                            <th>Sinf rahbar</th>
+                            <th>O'quvchilar</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><img src="" alt=""></td>
+                            <td>10-"V"</td>
+                            <td>Ahmedova.U.A</td>
+                            <td>24</td>
+                            <td><input class="radio" type="radio"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+    <script src="../../static/js/student/student.js"></script>
+    <script src="../../static/js/student/post_student.js"></script>
+{% endblock %}

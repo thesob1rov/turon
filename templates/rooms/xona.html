@@ -1,0 +1,48 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="stylesheet" href="/static/css/rooms/xona.min.css">
+{% endblock %}
+{% block section %}
+    <section class="room">
+        <div class="room_title">
+            <div></div>
+            <h1>Rooms</h1>
+            <button class="room_btn">Add</button>
+        </div>
+        <div class="room_block">
+            <div class="room_index">
+                {% for room in rooms %}
+                    <a href="{{ url_for("room_profile", room_id=room.id) }}">
+                        <div class="room_block_box">
+                            <img src="{{ room.image }}" alt="">
+                            <div>O'quvchilar soni: {{ room.chair_count }}</div>
+                        </div>
+                    </a>
+
+                {% endfor %}
+            </div>
+        </div>
+        <div class="overlay">
+            <form action="{{ url_for("creat_room") }}" method="post" enctype="multipart/form-data">
+                <div class="overlay_box">
+                    <i class="fa-solid fa-xmark x_mark"></i>
+                    <input type="text" placeholder="Nomi" class="room_name" name="name">
+                    <input type="number" placeholder="Soni" class="count" name="count">
+                    <input type="file" placeholder="Soni" class="count" name="photo">
+                    <select name="teacher_id" id="" class="teacher_id">
+                        {% for teacher in teachers %}
+                            <option value="{{ teacher.id }}">{{ teacher.user.name }} {{ teacher.user.surname }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="overlay_add">Add</button>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+    <script src="/static/js/rooms/xona.js"></script>
+{% endblock %}
+
+
+

@@ -1,0 +1,467 @@
+html {
+  font-size: 10px;
+}
+
+a {
+  text-decoration: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+* span {
+  font-weight: 600;
+  color: #001B61;
+}
+
+.main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.main_box {
+  width: 80%;
+  height: 75%;
+  box-shadow: 0 0 5px 0 black;
+}
+.main_profile {
+  width: 100%;
+  height: 25%;
+  background-color: #001B61;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2.5rem;
+}
+.main_img {
+  width: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+  color: white;
+  font-size: 2rem;
+}
+.main_picture {
+  width: 15rem;
+  height: 10rem;
+  border: 1px solid white;
+  position: relative;
+  overflow: hidden;
+}
+.main_picture img {
+  width: 100%;
+  height: 100%;
+}
+.main_about {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 2rem;
+  width: 100%;
+  height: 75%;
+}
+.main_about_information {
+  padding: 2rem;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.34);
+  width: 40rem;
+  font-size: 2rem;
+  color: black;
+  font-family: "Kanit", sans-serif;
+}
+.main_table {
+  width: 50rem;
+  max-height: 30rem;
+  overflow: auto;
+}
+.main_table table {
+  width: 100%;
+}
+.main_table td {
+  border-bottom: 1px solid black;
+  padding: 1rem 0;
+  font-size: 2rem;
+}
+
+.icon_img_i i {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  background-color: white;
+  font-size: 2rem;
+  color: #001B61;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.top {
+  background-color: rgba(208, 205, 205, 0.35);
+  width: 100%;
+  height: 50%;
+  position: absolute;
+  bottom: -6.7rem;
+  transition: 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main_picture:hover .top {
+  bottom: 0;
+}
+
+.change {
+  height: 100vh;
+  width: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.71);
+}
+.change_box {
+  width: 80%;
+  height: 75%;
+  background-color: white;
+  box-shadow: 0 0 5px 0 black;
+}
+.change_profile {
+  width: 100%;
+  height: 25%;
+  background-color: #001B61;
+  padding-left: 1rem;
+}
+.change_img {
+  width: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+  color: white;
+  font-size: 2rem;
+}
+.change_img img {
+  width: 15rem;
+  height: 10rem;
+  border: 1px solid white;
+}
+.change_about {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 2rem;
+  width: 100%;
+  height: 75%;
+}
+.change_about form {
+  width: 65%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}
+.change_about input {
+  width: 34rem;
+  height: 4rem;
+  outline: none;
+  padding: 0.5rem;
+}
+.change_about select {
+  width: 34rem;
+  height: 4rem;
+  outline: none;
+}
+.change_about button {
+  width: 15rem;
+  height: 4rem;
+  background-color: #001B61;
+  color: white;
+  align-self: flex-end;
+  outline: none;
+  border: none;
+}
+.change_about button:active {
+  transform: scale(0.5);
+}
+.change_table {
+  width: 50rem;
+  max-height: 30rem;
+  overflow: auto;
+}
+.change_table table {
+  width: 80%;
+}
+.change_table td {
+  border-bottom: 1px solid black;
+  padding: 1rem 0;
+  font-size: 2rem;
+}
+
+.div {
+  padding-left: 2rem;
+  width: 50%;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.title {
+  font-weight: 600;
+  color: #001B61;
+}
+
+.index {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.index div {
+  display: flex;
+  gap: 2rem;
+  padding-right: 1rem;
+}
+
+.delete_btn {
+  color: red;
+}
+
+.exchange {
+  color: greenyellow;
+}
+
+.xx {
+  display: flex;
+}
+
+.active {
+  display: flex;
+}
+
+.x i {
+  display: none;
+  color: red;
+}
+
+.check i {
+  display: none;
+  color: greenyellow;
+}
+
+.active_edit {
+  display: flex;
+}
+
+.change_overlay {
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(173, 173, 173, 0.4);
+}
+.change_overlay_box {
+  width: 50rem;
+  height: 35rem;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.change_overlay_box .form {
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.change_overlay_box .form select {
+  width: 30rem;
+  height: 3.5rem;
+}
+.change_overlay_box .form input {
+  width: 30rem;
+  height: 3.5rem;
+  padding-left: 0.5rem;
+}
+.change_overlay_box .form button {
+  width: 15rem;
+  height: 4rem;
+  background-color: #001B61;
+  color: white;
+  outline: none;
+  border: none;
+}
+
+.check input {
+  width: 2rem;
+  display: none;
+}
+
+.move {
+  width: 13rem;
+  height: 3rem;
+  background-color: #001B61;
+  color: white;
+  outline: none;
+  border: none;
+  display: none;
+}
+
+.add {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  font-family: "Inter", sans-serif;
+}
+.add_background {
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.39);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.names {
+  width: 100%;
+}
+.names_list {
+  max-height: 50rem;
+  overflow: auto;
+  box-shadow: 0 0 5px 0 rgba(91, 90, 90, 0.54);
+}
+.names_list table {
+  width: 100%;
+  padding: 1rem;
+}
+.names_list th {
+  font-size: 2rem;
+  text-align: left;
+}
+.names_list tr {
+  border-bottom: 1px solid black;
+}
+.names_list td {
+  border-bottom: 1px solid black;
+  padding: 1rem 0;
+  font-size: 2rem;
+}
+.names_list td img {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+.radio {
+  width: 2rem;
+  height: 2rem;
+}
+
+.send_class {
+  width: 13rem;
+  height: 5rem;
+  background-color: #001B61;
+  color: white;
+  outline: none;
+  border: none;
+  margin-top: 30px;
+}
+
+.radio {
+  width: 2rem;
+  height: 2rem;
+}
+
+.ellipsis_overlay {
+  width: 18rem;
+  height: 10rem;
+  background-color: white;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+  position: absolute;
+  top: 11rem;
+  right: 25rem;
+  border-radius: 0.5rem;
+}
+.ellipsis_overlay_box {
+  display: flex;
+  width: 100%;
+  gap: 2rem;
+  font-size: 1.6rem;
+  padding-left: 1rem;
+}
+
+.active_ellipsis {
+  display: flex;
+}
+
+.change_overlay2 {
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(173, 173, 173, 0.4);
+}
+.change_overlay2_box {
+  width: 50rem;
+  height: 35rem;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.change_overlay2_box .form {
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.change_overlay2_box .form select {
+  width: 30rem;
+  height: 3.5rem;
+}
+.change_overlay2_box .form input {
+  width: 30rem;
+  height: 3.5rem;
+  padding-left: 0.5rem;
+}
+.change_overlay2_box .form button {
+  width: 15rem;
+  height: 4rem;
+  background-color: #001B61;
+  color: white;
+  outline: none;
+  border: none;
+}
+
+/*# sourceMappingURL=sinf.css.map */

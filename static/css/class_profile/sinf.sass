@@ -1,0 +1,469 @@
+
+html
+  font-size: 10px
+
+
+a
+  text-decoration: none
+
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+  font-family: 'Inter', sans-serif
+
+  span
+    font-weight: 600
+    color: #001B61
+
+
+.main
+  height: 100vh
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 100%
+
+  &_box
+    width: 80%
+    height: 75%
+    box-shadow: 0 0 5px 0 black
+
+
+  &_profile
+    width: 100%
+    height: 25%
+    background-color: #001B61
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 2.5rem
+
+
+  &_img
+    width: 35%
+    display: flex
+    align-items: center
+    justify-content: space-around
+    height: 100%
+    color: white
+    font-size: 2rem
+
+  &_picture
+    width: 15rem
+    height: 10rem
+    border: 1px solid white
+    position: relative
+    overflow: hidden
+
+    img
+      width: 100%
+      height: 100%
+
+
+  &_about
+    display: flex
+    align-items: center
+    justify-content: space-between
+    font-size: 2rem
+    width: 100%
+    height: 75%
+
+    &_information
+      padding: 2rem
+      border-bottom: 1px solid rgba(128, 128, 128, 0.34)
+      width: 40rem
+      font-size: 2rem
+      color: black
+      font-family: "Kanit", sans-serif
+
+  &_table
+    width: 50rem
+    max-height: 30rem
+    overflow: auto
+
+    table
+      width: 100%
+
+    td
+      border-bottom: 1px solid black
+      padding: 1rem 0
+      font-size: 2rem
+
+
+.icon_img_i
+  i
+    width: 6rem
+    height: 6rem
+    border-radius: 50%
+    background-color: white
+    font-size: 2rem
+    color: #001B61
+    display: flex
+    align-items: center
+    justify-content: center
+
+.top
+  background-color: rgba(208, 205, 205, 0.35)
+  width: 100%
+  height: 50%
+  position: absolute
+  bottom: -6.7rem
+  transition: .5s
+  display: flex
+  align-items: center
+  justify-content: center
+
+.main_picture:hover .top
+  bottom: 0
+
+.change
+  height: 100vh
+  width: 100%
+  display: none
+  justify-content: center
+  align-items: center
+  position: fixed
+  top: 0
+  left: 0
+  z-index: 1
+  background-color: rgba(0, 0, 0, 0.71)
+
+  &_box
+    width: 80%
+    height: 75%
+    background-color: white
+    box-shadow: 0 0 5px 0 black
+
+
+  &_profile
+    width: 100%
+    height: 25%
+    background-color: #001B61
+    padding-left: 1rem
+
+
+  &_img
+    width: 35%
+    display: flex
+    align-items: center
+    justify-content: space-around
+    height: 100%
+    color: white
+    font-size: 2rem
+
+    img
+      width: 15rem
+      height: 10rem
+      border: 1px solid white
+
+  &_about
+    display: flex
+    align-items: center
+    justify-content: space-between
+    font-size: 2rem
+    width: 100%
+    height: 75%
+
+    form
+      width: 65%
+      height: 100%
+      display: flex
+      justify-content: space-around
+      flex-direction: column
+
+    input
+      width: 34rem
+      height: 4rem
+      outline: none
+      padding: .5rem
+
+    select
+      width: 34rem
+      height: 4rem
+      outline: none
+
+    button
+      width: 15rem
+      height: 4rem
+      background-color: #001B61
+      color: white
+      align-self: flex-end
+      outline: none
+      border: none
+
+      &:active
+        transform: scale(.5)
+
+  &_table
+    width: 50rem
+    max-height: 30rem
+    overflow: auto
+
+    table
+      width: 80%
+
+    td
+      border-bottom: 1px solid black
+      padding: 1rem 0
+      font-size: 2rem
+
+.div
+  padding-left: 2rem
+  width: 50%
+  height: 60%
+  display: flex
+  flex-direction: column
+  justify-content: center
+  gap: 2rem
+
+.title
+  font-weight: 600
+  color: #001B61
+
+.index
+  width: 100%
+  display: flex
+  justify-content: space-between
+
+  div
+    display: flex
+    gap: 2rem
+    padding-right: 1rem
+
+.delete_btn
+  color: red
+
+.exchange
+  color: greenyellow
+
+.xx
+  display: flex
+
+.active
+  display: flex
+
+.x i
+  display: none
+  color: red
+
+.check i
+  display: none
+  color: greenyellow
+
+.active_edit
+  display: flex
+
+.change_overlay
+  width: 100%
+  height: 100%
+  display: none
+  align-items: center
+  justify-content: center
+  position: absolute
+  top: 0
+  left: 0
+  background-color: rgba(173, 173, 173, 0.4)
+
+  &_box
+    width: 50rem
+    height: 35rem
+    background-color: white
+    display: flex
+    justify-content: center
+    align-items: center
+
+    .form
+      width: 100%
+      height: 90%
+      display: flex
+      flex-direction: column
+      justify-content: space-around
+      align-items: center
+
+      select
+        width: 30rem
+        height: 3.5rem
+
+      input
+        width: 30rem
+        height: 3.5rem
+        padding-left: .5rem
+
+      button
+        width: 15rem
+        height: 4rem
+        background-color: #001B61
+        color: white
+        outline: none
+        border: none
+
+.check input
+  width: 2rem
+  display: none
+
+.move
+  width: 13rem
+  height: 3rem
+  background-color: #001B61
+  color: white
+  outline: none
+  border: none
+  display: none
+
+.add
+  width: 80%
+
+
+  display: flex
+  align-items: center
+  justify-content: center
+  background-color: white
+  font-family: "Inter", sans-serif
+
+  &_background
+    top: 0
+    left: 0
+    position: fixed
+    display: none
+    width: 100%
+    height: 100%
+    //position: fixed
+    background-color: rgb(0 0 0 / 39%)
+    //display: flex
+    align-items: center
+    justify-content: center
+    flex-direction: column
+
+
+.names
+  width: 100%
+
+  &_list
+    max-height: 50rem
+    overflow: auto
+    box-shadow: 0 0 5px 0 rgba(91, 90, 90, 0.54)
+
+    table
+      width: 100%
+      padding: 1rem
+
+    th
+      font-size: 2rem
+      text-align: left
+
+    tr
+      border-bottom: 1px solid black
+
+    td
+      border-bottom: 1px solid black
+      padding: 1rem 0
+      font-size: 2rem
+
+      img
+        width: 5rem
+        height: 5rem
+        border-radius: 50%
+        border: 1px solid black
+
+.radio
+  width: 2rem
+  height: 2rem
+
+//.add_button
+//  width: 10rem
+//  height: 3rem
+//  border-radius: 1.5rem
+//  background-color: #111F4C
+//  color: white
+//  outline: none
+//  border: none
+
+
+
+
+
+
+
+
+.send_class
+  width: 13rem
+  height: 5rem
+  background-color: #001B61
+  color: white
+  outline: none
+  border: none
+  margin-top: 30px
+
+.radio
+  width: 2rem
+  height: 2rem
+
+.ellipsis_overlay
+  width: 18rem
+  height: 10rem
+  background-color: white
+  display: none
+  flex-direction: column
+  justify-content: center
+  gap: .2rem
+  position: absolute
+  top: 11rem
+  right: 25rem
+  border-radius: .5rem
+
+
+  &_box
+    display: flex
+    width: 100%
+    gap: 2rem
+    font-size: 1.6rem
+    padding-left: 1rem
+
+
+.active_ellipsis
+  display: flex
+
+.change_overlay2
+  width: 100%
+  height: 100%
+  display: none
+  align-items: center
+  justify-content: center
+  position: absolute
+  top: 0
+  left: 0
+  background-color: rgba(173, 173, 173, 0.4)
+
+  &_box
+    width: 50rem
+    height: 35rem
+    background-color: white
+    display: flex
+    justify-content: center
+    align-items: center
+
+    .form
+      width: 100%
+      height: 90%
+      display: flex
+      flex-direction: column
+      justify-content: space-around
+      align-items: center
+
+      select
+        width: 30rem
+        height: 3.5rem
+
+      input
+        width: 30rem
+        height: 3.5rem
+        padding-left: .5rem
+
+      button
+        width: 15rem
+        height: 4rem
+        background-color: #001B61
+        color: white
+        outline: none
+        border: none

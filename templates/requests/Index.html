@@ -1,0 +1,40 @@
+{% extends 'admin/index.html' %}
+{% block title %} Arizalar {% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="/static/css/requests/main.min.css">
+{% endblock %}
+{% block section %}
+    <div class="big">
+        <div class="text">
+            <h1>ARIZALAR</h1>
+        </div>
+        <div class="big_list">
+            {% for request in requests %}
+                <div class="big_box">
+                    <h2>{{ request.name }} {{ request.surname }}</h2>
+                    <h2>Tel:+{{ request.phone }}</h2>
+                    {% if request.pdf_file %}
+                        <div class="big_link">
+                            <h1>PDF</h1>
+                            <a href="{{ url_for('get_pdf',request_id=request.id) }}"><i
+                                    class="fa-solid fa-download"></i></a>
+                        </div>
+                    {% else %}
+                        <div class="big_link">
+                            <h1>PDF </h1>
+                            <i class="fa-solid fa-xmark"></i>
+                        </div>
+                    {% endif %}
+                    <i class="fa-solid fa-trash delete_request"></i>
+
+                </div>
+                <a class="delete_link" href="{{ url_for('delete_request',request_id=request.id) }}"></a>
+            {% endfor %}
+        </div>
+
+    </div>
+
+{% endblock %}
+{% block js %}
+    <script src="/static/js/requests/script.js"></script>
+{% endblock %}

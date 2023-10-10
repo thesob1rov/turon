@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lavozimlar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/static/css/jobs/main1.min.css">
+    <link rel="stylesheet" href="/static/css/modal/index.min.css">
+</head>
+<body>
+<div class="main">
+    <div class="text">
+        <h1>BIZ BILAN ISHLASH</h1>
+        <h2>LAVOZIMLAR</h2>
+    </div>
+
+    <div class="big">
+        {% for job in jobs %}
+            <div class="big_box">
+                <div class="big_box_header">
+                    <div class="big_box_icon">
+                        <img data-info_id="{{ job.id }}" src="{{ job.img }}" alt="">
+                        <h1>{{ job.title }}</h1>
+                    </div>
+                    <div class="icon_box">
+                        <i class="fa-solid fa-pen-to-square edit_icon"></i>
+                        <i class="fa-solid fa-chevron-down img"></i>
+                    </div>
+                </div>
+                <div class="inner_text">
+                    <p>{{ job.text }}</p>
+                </div>
+
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+<div class="circle" data-type_id="{{ type_id }}">
+    <div class="radius"></div>
+    <div class="plus">
+        <img src="/static/icon/plus.png" alt="">
+    </div>
+</div>
+<section class="registratsiya">
+    <div class="registratsiya_header">
+        <h1 CLASS="registratsiya_title">MA'LUMOT QO'SHISH</h1>
+        <div class="registratsiya_close">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+    </div>
+    <form class="registratsiya_block" enctype="multipart/form-data" method="post">
+        <div class="registratsiya_front">
+            <div class="registratsiya_left">
+
+                <div class="registratsiya_left_box"></div>
+                <div class="registratsiya_left_img" style="">
+
+                </div>
+
+            </div>
+
+            <input type="file" hidden class="registratsiya_file" name="img">
+            <div class="registratsiya_right">
+
+                <div class="registratsiya_top info">
+
+                    <input name="title" type="text" placeholder="title">
+                </div>
+
+                <div class="registratsiya_top">
+
+                    <textarea name="text" placeholder="Text"></textarea>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="registratsiya_button">
+
+            <a href="" class="registratsiya_delete non_active">Delete</a>
+
+            {#                <div></div>#}
+
+            <button>Add</button>
+        </div>
+
+
+    </form>
+
+
+</section>
+<script src="/static/js/jobs/Lavozim.js"></script>
+</body>
+</html>

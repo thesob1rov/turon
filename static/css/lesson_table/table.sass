@@ -1,0 +1,63 @@
+html
+  font-size: 10px
+
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+
+.main
+  width: 100%
+  min-height: 100vh
+  display: flex
+  justify-content: center
+  align-items: center
+  flex-direction: column
+  gap: 1rem
+
+  &_select
+    width: 90%
+    display: flex
+    justify-content: space-between
+
+    select
+      width: 18rem
+      height: 4rem
+      outline: none
+      color: #111f4c
+
+    button
+      width: 6rem
+      height: 4rem
+      outline: none
+      border: none
+
+      &:nth-child(2)
+        background-color: #111f4c
+        color: white
+
+  &_btns
+    display: flex
+    gap: .5rem
+
+  &_table
+    width: 90%
+    height: 100%
+    font-size: 1.6rem
+    align-items: center
+    justify-content: center
+    display: flex
+
+    table
+      width: 100%
+
+      th
+        border: 1px solid black
+        width: 15rem
+        height: 5rem
+
+      tbody
+        td
+          border: 1px solid black
+          height: 7rem
+          text-align: center

@@ -1,0 +1,326 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;900&family=Oswald&family=Roboto:wght@500&display=swap");
+html {
+  font-size: 10px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+* span {
+  font-weight: 600;
+  color: #001B61;
+}
+
+.main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main_box {
+  width: 80%;
+  height: 75%;
+  box-shadow: 0 0 5px 0 black;
+}
+.main_profile {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.main_block {
+  width: 100%;
+  height: 25%;
+  background-color: #001B61;
+  display: flex;
+  align-items: center;
+}
+.main_img {
+  width: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+}
+.main_img img {
+  width: 10rem;
+  height: 10rem;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+.main_img h1 {
+  color: white;
+  font-size: 2.2rem;
+}
+.main_img i {
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #111F4C;
+  background-color: white;
+}
+.main_about {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 2rem;
+  width: 100%;
+  height: 75%;
+}
+.main_about_information {
+  padding: 1rem;
+  border-bottom: 1px solid;
+  width: 40rem;
+  font-size: 2rem;
+  color: black;
+  font-family: "Kanit", sans-serif;
+}
+
+.div {
+  height: 25rem;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+.icon_img {
+  display: flex;
+  position: relative;
+}
+.icon_img_i {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.ellipsis {
+  color: white;
+  font-size: 2rem;
+  align-self: flex-end;
+  padding-right: 5rem;
+  position: absolute;
+}
+
+.change {
+  width: 20rem;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  color: #001B61;
+}
+.change_all {
+  background-color: white;
+  width: 70%;
+  height: 6rem;
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 0.5rem;
+}
+.change_edit, .change .change_exit {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.2rem;
+  cursor: pointer;
+}
+
+.edit {
+  height: 75%;
+  justify-content: center;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  position: absolute;
+  display: none;
+  width: 80%;
+  background-color: white;
+}
+.edit_box {
+  width: 97%;
+  height: 100%;
+  box-shadow: 0 0 5px 0 black;
+}
+.edit_profile {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.edit_block {
+  width: 100%;
+  height: 25%;
+  background-color: #001B61;
+  display: flex;
+  align-items: center;
+}
+.edit_img {
+  width: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+}
+.edit_img img {
+  width: 10rem;
+  height: 10rem;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+.edit_img h1 {
+  color: white;
+  font-size: 2.2rem;
+}
+.edit_img i {
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #111F4C;
+  background-color: white;
+}
+.edit_inputs {
+  width: 100%;
+  height: 15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+.edit_inputs input {
+  width: 70%;
+  height: 4rem;
+  outline: none;
+  border: 1px solid grey;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  color: black;
+}
+.edit_buttons {
+  width: 20rem;
+  display: flex;
+  align-self: flex-end;
+}
+.edit_buttons i {
+  font-size: 1.8rem;
+}
+.edit_lock_btn {
+  width: 8rem;
+  height: 3rem;
+  background-color: grey;
+  outline: none;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.edit_user_btn {
+  width: 8rem;
+  height: 3rem;
+  outline: none;
+  color: white;
+  border: none;
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.change_btn {
+  width: 15rem;
+  height: 4rem;
+  background-color: #001B61;
+  outline: none;
+  color: white;
+  border: none;
+}
+
+.edit_form {
+  width: 100%;
+  height: 75%;
+  display: flex;
+  align-items: center;
+}
+
+.check {
+  cursor: pointer;
+  font-size: 1.8rem;
+}
+
+.user_form {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  top: 33rem;
+  gap: 2rem;
+  width: 80%;
+  height: 28rem;
+  background-color: white;
+}
+.user_form input {
+  width: 75%;
+  height: 4rem;
+  outline: none;
+  border: 1px solid grey;
+  padding-left: 1rem;
+}
+
+.edit_form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.lock_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  height: 30rem;
+  align-items: center;
+}
+
+.active_color {
+  background-color: #001B61;
+}
+
+.show {
+  width: 25rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  justify-content: space-around;
+}
+.show input {
+  width: 2rem;
+  height: 2rem;
+}
+
+.error_length, .error_match {
+  display: none;
+  color: red;
+}
+
+a {
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=profile.css.map */

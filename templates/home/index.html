@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Nurafshon PM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="icon" href="/static/img/home/img/logo.jpg">
+    <link rel="stylesheet" href="/static/css/home/main.min.css">
+    <link rel="stylesheet" href="/static/css/home/include/menu.min.css">
+</head>
+<body>
+
+
+
+<section class="introduction">
+
+    <video src="/static/video/home/video.mp4" muted autoplay loop></video>
+    {% include 'home/menu.html' %}
+
+    <div class="introduction_backround">
+        <div class="introduction_about">
+            <h1>Turon <br>International School</h1>
+            <p>Prezident maktabi ixtisoslashtirilgan davlat umumta’lim muassasasi hisoblanib, uning faoliyati yuqori
+                malakali
+                mutaxassislarni tayyorlash uchun iqtidorli bolalarni aniqlash va o‘qitishni ta’minlashga qaratilgan.</p>
+            <a class="btn_light" href="{{ url_for('login') }}">Login</a>
+        </div>
+    </div>
+
+
+</section>
+
+
+<section class="about">
+    <div class="about_big">
+        <div class="about_big_img">
+            <img src="/static/img/studentschool.jpg" alt="">
+        </div>
+        <div class="about_big_text">
+            <div class="name">
+                <h2>TURON</h2>
+                <h2>XALQARO MAKTABI</h2>
+            </div>
+
+            <div class="info">
+                <p>Maqsadimiz«Millatning xalqaro olimpiadalarda, tanlovlarda g‘olib bo‘ladigan va dunyoning eng yaxshi
+                    oliy o‘quv yurtlariga kira oladigan kelajakdagi yetakchilarini, o‘quvchilarini tayyorlash. Biz jahon
+                    maydonida raqobatbardosh bo‘la oladigan yetakchilarni tarbiyalaymiz».</p>
+            </div>
+            <a class="btn">Batafsil</a>
+        </div>
+    </div>
+</section>
+
+
+<section class="s4">
+    <div class="main">
+        <div class="gallery">
+            <h1 class="text">Bizning galereyamiz</h1>
+        </div>
+        <div class="big">
+
+        </div>
+    </div>
+</section>
+
+<section class="s5">
+    <div class="logo">
+
+    </div>
+</section>
+<section class="s6">
+    <iframe class="map"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12036.21903323568!2d69.3533105!3d41.0459316!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae4135ee2bad79%3A0x84e5f388993c1a4a!2sToshkent%20viloyati%20Prezident%20Maktabi!5e0!3m2!1sru!2s!4v1678875013228!5m2!1sru!2s"
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+</section>
+<footer>
+    <div class="footer">
+        <div class="footer_pslogo">
+            <img src="/static/icon/tis%20png.png" alt="">
+            <div class="footer_name">
+                <h1>TURON</h1>
+                <h1>INTERNATIONAL SCHOOL</h1>
+            </div>
+        </div>
+
+        <div class="footer_number">
+            <h1>+9998900000000</h1>
+            <h1>+9998900000000</h1>
+        </div>
+    </div>
+</footer>
+<script src="/static/js/include/menu/menu.js"></script>
+<script src="/static/js/home/home.js"></script>
+</body>
+</html>

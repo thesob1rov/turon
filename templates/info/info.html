@@ -1,0 +1,24 @@
+<div class="menu_inside">
+
+    <ul>
+        <a href="{{ url_for("get_about_profile", type_id=about_us.id,info_id=about_id) }}">
+            <li>Biz haqimizda</li>
+        </a>
+        <a href="{{ url_for("vacation") }}">
+            <li>Vakansiya</li>
+        </a>
+        <a href="{{ url_for('calendar_info',type_id=news.id) }}">
+            <li>Yangiliklar</li>
+        </a>
+        <a href="{{ url_for('infos',type_id=jobs.id) }}">
+            <li>Lavozimlar</li>
+        </a>
+
+        <a href="{{ url_for("gallery") }}">
+            <li>Rasmlar</li>
+        </a>
+        <a href="{{ url_for('partners') }}">
+            <li>Hamkorlar</li>
+        </a>
+    </ul>
+</div>

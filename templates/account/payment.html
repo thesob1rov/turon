@@ -1,0 +1,27 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="stylesheet" href="/static/css/account/payment.min.css">
+{% endblock %}
+{% block section %}
+    <section class="payment">
+        <h1 class="student_id" data-id="{{ student.id }}">To'lov</h1>
+        <div class="payment_box">
+            <div class="payment_box_top">
+                <div>To'lov qilish turi</div>
+                <div class="payment_box_top_inputs">
+                    {% for account_type in account_types %}
+                        <div class="payment_box_top_type">
+                            <input data-id="{{ account_type.id }}" type="radio" class="radio" name="radio">
+                            <div>{{ account_type.name }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <input type="text" class="input" placeholder="350 000">
+            <button class="btn">To'lov</button>
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+    <script src="/static/js/payment/payment.js"></script>
+{% endblock %}

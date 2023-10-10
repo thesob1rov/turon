@@ -1,0 +1,110 @@
+html {
+  font-size: 10px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.room {
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 100%;
+}
+.room_title {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.room_title h1 {
+  font-size: 3rem;
+  color: #111f4c;
+}
+.room_btn {
+  width: 15rem;
+  height: 3.5rem;
+  background-color: #111f4c;
+  color: white;
+  outline: none;
+  border: none;
+}
+.room_block {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.room_block_box {
+  width: 32rem;
+  height: 26rem;
+  border: 1px solid black;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+.room_block_box img {
+  width: 100%;
+  height: 80%;
+}
+.room_index {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 30px;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(208, 204, 204, 0.6);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.overlay_box {
+  width: 55rem;
+  height: 40rem;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 2rem;
+}
+.overlay_box i {
+  color: #111f4c;
+  font-size: 2rem;
+  align-self: flex-end;
+}
+.overlay_box input, .overlay_box select {
+  width: 32rem;
+  height: 3.5rem;
+  padding-left: 1rem;
+  outline: none;
+}
+.overlay_box button {
+  width: 15rem;
+  height: 3.5rem;
+  background-color: #111f4c;
+  color: white;
+  outline: none;
+  border: none;
+}
+
+.active_overlay {
+  display: flex;
+}
+
+/*# sourceMappingURL=xona.css.map */

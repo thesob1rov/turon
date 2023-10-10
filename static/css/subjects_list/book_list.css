@@ -1,0 +1,200 @@
+html {
+  font-size: 10px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.book {
+  height: 100vh;
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  padding: 1rem;
+}
+.book_block {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 3rem;
+  flex-direction: column;
+  align-items: center;
+}
+.book_block_box {
+  width: 35rem;
+  height: 24rem;
+  background-color: #111f4c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  font-size: 2rem;
+  font-weight: 600;
+  border-radius: 1rem;
+  margin-top: 30px;
+}
+.book_block_box i {
+  align-self: flex-end;
+  padding: 1rem;
+}
+.book_block_box_icons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+.book_block_boxes {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.book_buttons {
+  width: 69%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.book_buttons h1 {
+  font-size: 3rem;
+}
+.book_buttons button {
+  width: 15rem;
+  height: 3.5rem;
+  background-color: greenyellow;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 1.6rem;
+}
+
+.subject_title {
+  text-align: center;
+  line-height: 12rem;
+}
+
+.subject_overlay {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.subject_overlay_index {
+  width: 55rem;
+  height: 40rem;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  padding: 4rem;
+}
+.subject_overlay_x {
+  color: #111f4c;
+  font-size: 2rem;
+  align-self: flex-end;
+}
+.subject_overlay_box {
+  width: 33rem;
+  height: 28rem;
+  border-radius: 1rem;
+  background-color: #111f4c;
+}
+.subject_overlay_box form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  color: white;
+  font-size: 1.8rem;
+}
+.subject_overlay_box form input {
+  width: 25rem;
+  height: 3.5rem;
+}
+.subject_overlay_box form button {
+  width: 15rem;
+  height: 3.5rem;
+  background-color: white;
+  outline: none;
+  border: none;
+  border-radius: 0.2rem;
+}
+
+.subject_active {
+  display: flex;
+}
+
+.subject_overlay_add {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.subject_overlay_add_index {
+  width: 55rem;
+  height: 40rem;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  padding: 4rem;
+}
+.subject_overlay_add_x {
+  color: #111f4c;
+  font-size: 2rem;
+  align-self: flex-end;
+}
+.subject_overlay_add_box {
+  width: 33rem;
+  height: 28rem;
+  border-radius: 1rem;
+  background-color: #111f4c;
+}
+.subject_overlay_add_box form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  color: white;
+  font-size: 1.8rem;
+}
+.subject_overlay_add_box form input {
+  width: 25rem;
+  height: 3.5rem;
+}
+.subject_overlay_add_box form button {
+  width: 15rem;
+  height: 3.5rem;
+  background-color: white;
+  outline: none;
+  border: none;
+  border-radius: 0.2rem;
+}
+
+.subject_active {
+  display: flex;
+}
+
+/*# sourceMappingURL=book_list.css.map */

@@ -1,0 +1,71 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../../static/css/student_payed_list/to'lov.min.css">
+{% endblock %}
+
+{% block section %}
+    <section class="pay">
+        <div class="pay_block">
+            <div class="pay_double">
+                <button class="pay_filter_btn">Filter</button>
+                <div class="pay_search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Qidiruv">
+                </div>
+
+            </div>
+
+            <div class="pay_list">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Ismi</th>
+                        <th>Familya</th>
+                        <th>Sinf narxi</th>
+                        <th>Chegirmadagi narxi</th>
+                        <th>To'lov</th>
+                        <th>Qolgan</th>
+                        <th>Sana</th>
+                        <th>skidka foizi</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for page in pages %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for("student_payment_in_month", month_payment_id=page.id) }}">{{ loop.index }}</a>
+                            </td>
+                            <td>
+                                <a href="{{ url_for("student_payment_in_month", month_payment_id=page.id) }}">{{ page.student.user.name }}</a>
+                            </td>
+                            <td>
+                                <a href="{{ url_for("student_payment_in_month", month_payment_id=page.id) }}">{{ page.student.user.surname }}</a>
+                            </td>
+                            <td>{{ page.real_price }}</td>
+                            <td>{{ page.class_price }}</td>
+                            <td>{{ page.payed }}</td>
+                            <td>{{ page.another }}</td>
+                            <td>{{ page.month.year }}-{{ page.month.month }}</td>
+                            {% if page.discount_percentage %}
+                                <td>{{ page.discount_percentage }}%</td>
+                            {% else %}
+                                <td>0%</td>
+                            {% endif %}
+                        </tr>
+
+                    {% endfor %}
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+{% endblock %}

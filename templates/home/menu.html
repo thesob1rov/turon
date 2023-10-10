@@ -1,0 +1,79 @@
+<header class="introduction_entrance">
+    <nav>
+        <a href="{{ url_for('home') }}">
+            <div class="introduction_logo">
+                <img src="/static/img/Rectangle%20637.png" alt="">
+                <h2>Turon <br>International School</h2>
+            </div>
+        </a>
+        <ol>
+            <li><a href="{{ url_for('about_front',type_id=1,info_id=about_id) }}">About us</a></li>
+            <li><a href="{{ url_for('education') }}">Education</a></li>
+            <li><a href="{{ url_for('news_front') }}">News</a></li>
+            <li><a href="{{ url_for('work_info') }}">Work with us</a></li>
+            <li><a href="{{ url_for('time_table') }}">Time Table</a></li>
+        </ol>
+        <i class="fa-solid fa-bars menu_icon"></i>
+    </nav>
+</header>
+<div class="menu">
+    <div class="menu_informations">
+        {#        <div class="menu_information">#}
+        {#            <div class="menu_section"><span>CIS</span></div>#}
+        {#            <div class="border"></div>#}
+        {#            <div>About this site</div>#}
+        {#            <div> Our website</div>#}
+        {#            <div> Cookies</div>#}
+        {#            <div> Privacy police</div>#}
+        {#            <div>Participant data and booking</div>#}
+        {#            <div> Contact us</div>#}
+        {#        </div>#}
+        {##}
+        {#        <div class="menu_information">#}
+        {#            <div><span>CIS</span></div>#}
+        {#            <div class="border"></div>#}
+        {#            <div>About this site</div>#}
+        {#            <div> Our website</div>#}
+        {#            <div> Cookies</div>#}
+        {#            <div> Privacy police</div>#}
+        {#            <div>Participant data and booking</div>#}
+        {#            <div> Contact us</div>#}
+        {#        </div>#}
+        <ol>
+            <li><a href="{{ url_for('about_front',type_id=1,info_id=about_id) }}">About us</a></li>
+            <li><a href="{{ url_for('education') }}">Education</a></li>
+            <li><a href="{{ url_for('news_front') }}">News</a></li>
+            <li><a href="{{ url_for('work_info') }}">Work with us</a></li>
+            <li><a href="{{ url_for('time_table') }}">Time Table</a></li>
+        </ol>
+    </div>
+</div>
+<div class="hamburger">
+    <div class="hamburger_circle2"></div>
+    <div class="hamburger_icon">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+    <div class="hamburger_circle"></div>
+    <div class="hamburger_circle3"></div>
+</div>
+<div class="introduction_link">
+    <div class="introduction_link_links">
+
+        <a href="https://www.instagram.com/turon_international_school/">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+        <i class="fa-brands fa-telegram"></i>
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-solid fa-comment comment"></i>
+    </div>
+</div>
+<div class="com">
+    <form class="mini" method="post" action="{{ url_for('add_comment') }}">
+        <i class="fa-solid fa-x splice"></i>
+        <label class="mini_label">
+            <span>Text</span>
+            <textarea class="mini_label_text" name="text" placeholder="Izoh qoldiring!"></textarea>
+        </label>
+        <button class="send">Yuborish</button>
+    </form>
+</div>

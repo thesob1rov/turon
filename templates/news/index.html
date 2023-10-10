@@ -1,0 +1,124 @@
+{% extends 'admin/index.html' %}
+{% block title %}Yangilklar{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="../../static/css/news/style.min.css">
+    <link rel="stylesheet" href="/static/css/info/info.min.css">
+{% endblock %}
+{% block section %}
+    <div class=""
+         style="display: flex; flex-direction: column;align-items: center; width: 100%">
+        {% include 'info/info.html' %}
+        <section class="s7">
+            <h1 class="h1">YANGILIKLAR</h1>
+            <div class="box">
+                <div class="main">
+                    <div class="line">
+                        <div class="main_months">
+                            <img class="main_months_icon back" id="prev" src="../../static/icon/chevron-left-solid.svg"
+                                 alt="">
+                            <p class="main_date">Mart 2023</p>
+                            <img class="main_months_icon next" src="../../static/icon/chevron-right-solid.svg" alt="">
+                        </div>
+                        <div class="line1"></div>
+                    </div>
+                    <div class="main_weeks">
+                        {#                <ul class="main_weeks_week">#}
+                        {#                    <li>Dush</li>#}
+                        {#                    <li>Sesh</li>#}
+                        {#                    <li>Chor</li>#}
+                        {#                    <li>Pay</li>#}
+                        {#                    <li>Jum</li>#}
+                        {#                    <li>Sham</li>#}
+                        {#                    <li>Yak</li>#}
+                        {#                </ul>#}
+                        <ul class="main_weeks_day">
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="news">
+                    <i class="fa-solid fa-circle-chevron-left news_left"></i>
+                    <div class="news_list">
+
+                    </div>
+                    <i class="fa-solid fa-circle-chevron-right news_right"></i>
+                </div>
+
+                <div class="circle">
+                    <div class="radius"></div>
+                    <div class="plus">
+                        <img class="plus1" src="../../static/icon/plus.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <form class="modal" data-type_id="{{ type_id }}" action="" method="post" enctype="multipart/form-data">
+            <div class="modal__big">
+
+                <i class="fa-solid fa-xmark close_modal"></i>
+
+                <div class="modal__big_list">
+                    <div class="modal__big__block">
+                        <h1>Yanglik o'zgartirish</h1>
+                        <label>
+                            <img src="../../static/img/add.png" class="add_img" alt="">
+                            <input type="file" name="add_img" class="file_img"
+                                   accept="image/png, image/gif, image/jpeg">
+                        </label>
+                        <label>
+                            <input required type="text" name="add_name" class="add_name" placeholder="Sarlavha">
+                        </label>
+                        <label>
+                            <textarea required name="add_desc" class="add_desc" placeholder="Text"></textarea>
+
+                        </label>
+                        <label>
+
+                            <input required type="date"
+                                   name="add_date" class="add_date">
+                        </label>
+
+                    </div>
+                    <div class="list">
+                        <div class="main">
+                            <div class="line">
+                                <div class="main_months">
+                                    <img class="main_months_icon back2" id="prev"
+                                         src="../../static/icon/chevron-left-solid.svg"
+                                         alt="">
+                                    <p class="main_date main_date2">Mart 2023</p>
+                                    <img class="main_months_icon next2" src="../../static/icon/chevron-right-solid.svg"
+                                         alt="">
+                                </div>
+                                <div class="line1"></div>
+                            </div>
+                            <div class="main_weeks">
+                                {#                        <ul class="main_weeks_week">#}
+                                {#                            <li>Dush</li>#}
+                                {#                            <li>Sesh</li>#}
+                                {#                            <li>Chor</li>#}
+                                {#                            <li>Pay</li>#}
+                                {#                            <li>Jum</li>#}
+                                {#                            <li>Sham</li>#}
+                                {#                            <li>Yak</li>#}
+                                {#                        </ul>#}
+                                <ul class="main_weeks_day days">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="main_buttons">
+                            <a href="" class="delete">Delete</a>
+                            <button class="send">ADD</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="/static/js/news/news_1.js"></script>
+{% endblock %}

@@ -1,0 +1,544 @@
+.menu {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  color: black;
+  font-size: 2rem;
+  position: fixed;
+  top: -100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 1s;
+  z-index: 5;
+}
+.menu_informations {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+.menu_information {
+  width: 35rem;
+  height: 25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.menu_information span {
+  font-weight: 600;
+  color: #001B61;
+}
+
+.introduction {
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 7rem;
+}
+.introduction video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.introduction a {
+  text-decoration: none;
+}
+.introduction .introduction_logo {
+  display: flex;
+  width: 18rem;
+  height: 7rem;
+  align-items: center;
+  justify-content: space-between;
+  color: #001B61;
+}
+.introduction .introduction_logo img {
+  width: 7.5rem;
+}
+.introduction .introduction_entrance {
+  height: 8rem;
+  width: 100%;
+  background-color: white;
+  position: fixed;
+  z-index: 6;
+  right: 0;
+}
+.introduction nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: absolute;
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+}
+.introduction nav ol {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.introduction nav li {
+  font-size: 1.8rem;
+  list-style: none;
+  transition: 0.3s;
+  cursor: pointer;
+  font-weight: 600;
+  color: black;
+}
+.introduction nav li:hover {
+  color: #001B61;
+}
+.introduction nav li a {
+  text-decoration: none;
+  color: black;
+}
+.introduction nav li a:hover {
+  color: #001B61;
+}
+.introduction i {
+  font-size: 2.2rem;
+  color: #001B61;
+  cursor: pointer;
+  right: 5%;
+}
+.introduction h1 {
+  font-size: 4rem;
+  color: white;
+}
+.introduction p {
+  font-size: 1.8rem;
+  color: rgba(255, 255, 255, 0.77);
+}
+.introduction_link {
+  right: 0;
+  top: 50%;
+  position: fixed;
+  transform: translateY(-50%);
+}
+.introduction_link_links {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  width: 4rem;
+  height: 15rem;
+  background-color: rgba(0, 27, 97, 0.55);
+}
+.introduction_link_links i {
+  font-size: 2.5rem;
+  color: white;
+}
+.introduction_about {
+  position: relative;
+  width: 50rem;
+  height: 34rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.introduction_about button {
+  width: 17rem;
+  height: 5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: white;
+  background-color: transparent;
+  border: 0.2rem solid white;
+  transition: 0.5s;
+  cursor: pointer;
+}
+.introduction_about button:hover {
+  color: #001B61;
+  background-color: white;
+  border: 0.2rem solid white;
+}
+.introduction_backround {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(40, 40, 40, 0.48);
+  padding: 13.5rem;
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+  width: 6rem;
+  height: 6rem;
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+  z-index: 5;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.hamburger_icon {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  border-radius: 50%;
+}
+.hamburger_icon i {
+  font-size: 2.8rem;
+  color: #001B61;
+}
+.hamburger_circle {
+  animation-timing-function: linear;
+  animation-name: plus;
+  animation-iteration-count: infinite;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #001B61;
+  z-index: 4;
+  border-radius: 50%;
+  animation-duration: 1s;
+}
+.hamburger_circle2 {
+  animation-timing-function: linear;
+  animation-name: plus;
+  animation-iteration-count: infinite;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #001B61;
+  z-index: 4;
+  border-radius: 50%;
+  animation-duration: 1.2s;
+}
+.hamburger_circle3 {
+  animation-timing-function: linear;
+  animation-name: plus;
+  animation-iteration-count: infinite;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #001B61;
+  z-index: 4;
+  border-radius: 50%;
+  animation-duration: 0.8s;
+}
+.hamburger .active_menu {
+  left: 0;
+}
+
+@keyframes plus {
+  from {
+    transform: scale(1);
+    border-radius: 50%;
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.5);
+    border-radius: 50%;
+    opacity: 0;
+  }
+}
+.com {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(40, 40, 40, 0.48);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.mini {
+  width: 64rem;
+  height: 34rem;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: relative;
+  justify-content: space-around;
+}
+.mini i {
+  font-size: 2rem;
+  right: 10px;
+  top: 10px;
+  position: absolute;
+  cursor: pointer;
+}
+.mini_label {
+  display: flex;
+  flex-direction: column;
+}
+.mini_label span {
+  margin-left: 2rem;
+  position: absolute;
+  font-size: 1.3rem;
+  padding: 0 1rem;
+  background-color: white;
+  cursor: pointer;
+}
+.mini_label_text {
+  margin: 1rem;
+  width: 50rem;
+  height: 23rem;
+  resize: none;
+  outline: none;
+  padding: 15px;
+}
+
+.active1 {
+  display: flex;
+}
+
+.menu_icon {
+  display: none;
+}
+
+.send {
+  width: 14rem;
+  height: 4rem;
+  background-color: #001B61;
+  color: white;
+  border: 0.2rem solid #001B61;
+  cursor: pointer;
+  transition: 0.5s;
+  font-size: 1.8rem;
+}
+
+.send:hover {
+  background-color: transparent;
+  color: #001B61;
+  border: 0.2rem solid #001B61;
+}
+
+@media (max-width: 768px) {
+  .menu_icon {
+    display: flex;
+  }
+  html {
+    font-size: 10px;
+  }
+  .introduction_entrance {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 27, 97, 0.8);
+    position: fixed;
+    left: -100%;
+    transition: all 0.5s;
+  }
+  .introduction_entrance:before {
+    display: none;
+  }
+  .introduction_entrance nav ol {
+    width: 15rem;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-around;
+    font-size: 20px;
+    margin: 2rem;
+  }
+  .introduction_entrance nav ol li {
+    font-size: 1.6rem;
+    list-style: none;
+    transition: 0.3s;
+    cursor: pointer;
+    font-weight: 600;
+    color: white;
+  }
+  .introduction_entrance nav ol li a {
+    color: white;
+  }
+  .introduction_entrance nav ol li:hover {
+    color: white;
+  }
+  .hamburger {
+    display: block;
+    position: fixed;
+    bottom: 5%;
+    right: 10%;
+    z-index: 100;
+  }
+  .hamburger.active .comment_close {
+    display: block !important;
+  }
+  .hamburger.active .comment_open {
+    display: none;
+  }
+  .hamburger .comment_close {
+    display: none !important;
+  }
+  .hamburger .hamburger_btn {
+    display: flex;
+    width: 6rem;
+    height: 6rem;
+    z-index: 1;
+  }
+  .active_menu {
+    left: 0;
+  }
+  .mini {
+    width: 100%;
+  }
+  .mini_label {
+    width: 90%;
+  }
+  .mini_label_text {
+    width: 100%;
+  }
+}
+@media (max-width: 425px) {
+  .introduction_entrance {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 27, 97, 0.8);
+    position: fixed;
+    left: -100%;
+    transition: all 0.5s;
+  }
+  .introduction_entrance:before {
+    display: none;
+  }
+  .introduction nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    z-index: 10;
+    height: 100%;
+    width: 100%;
+  }
+  .introduction nav ol {
+    width: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .introduction nav li {
+    font-size: 1.5rem;
+    list-style: none;
+    transition: 0.3s;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .introduction nav li:hover {
+    color: #001B61;
+  }
+  .introduction .hamburger {
+    display: block;
+    position: fixed;
+    bottom: 5%;
+    right: 10%;
+    z-index: 100;
+  }
+  .introduction .hamburger.active .comment_close {
+    display: block !important;
+  }
+  .introduction .hamburger.active .comment_open {
+    display: none;
+  }
+  .introduction .hamburger .comment_close {
+    display: none !important;
+  }
+  .introduction .hamburger .hamburger_btn {
+    display: flex;
+    width: 6rem;
+    height: 6rem;
+    z-index: 1;
+  }
+  .introduction .active_menu {
+    left: 0;
+  }
+  .mini {
+    width: 100%;
+  }
+}
+@media (max-width: 1200px) {
+  .about_left {
+    width: 40%;
+  }
+  .about_right {
+    width: 30%;
+  }
+  .about_right button {
+    width: 140px;
+    height: 45px;
+  }
+  .about_img {
+    width: 400px;
+    height: 280px;
+  }
+  .about img {
+    width: 330px;
+  }
+  .about p {
+    font-size: 18px;
+  }
+  .menu_informations {
+    width: 90%;
+    height: 90%;
+  }
+  .menu_information {
+    height: 20rem;
+  }
+}
+@media (max-width: 1024px) {
+  .menu {
+    height: 86%;
+  }
+  .menu_informations {
+    height: 80%;
+  }
+  .menu_information {
+    font-size: 1.5rem;
+    width: 30rem;
+    height: 15rem;
+  }
+}
+@media (max-width: 768px) {
+  .test_title {
+    display: initial;
+  }
+  .introduction_entrance nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+  .introduction_entrance nav ol {
+    display: none;
+  }
+  .introduction_about {
+    display: flex;
+    align-items: center;
+  }
+  .introduction_about h1 {
+    text-align: center;
+  }
+  .menu_informations {
+    flex-wrap: nowrap;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/*# sourceMappingURL=menu.css.map */

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../../static/css/profile/profile.min.css">
+    <link rel="stylesheet" href="../../static/css/student/main.min.css">
+    <link rel="stylesheet" href="../../static/css/student/index.min.css">
+</head>
+<body>
+
+
+<header>
+    <nav>
+        <div class="school">
+            <i class="fa-solid fa-x x"></i>
+            <i class="fa-solid fa-bars hamburger"></i>
+        </div>
+        <a href="{{ url_for("profile", user_id=user.id) }}">
+            <div class="admin">
+                <h1 class="admin_h1">{{ user.name }}</h1>
+                <img class="admin_img"
+                     src="{{ user.image }}"
+                     alt="">
+            </div>
+        </a>
+
+
+    </nav>
+</header>
+
+
+<div class="main_for_sect" style="display: flex">
+    <section class="section">
+        <div class="home">
+            <div class="home_big">
+                <a href="{{ url_for('get_about_profile', type_id=about_us.id,info_id=about_id) }}">
+                    <div class="box">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <div class="box_mini">
+                            <h1>{{ about_us.name }}</h1>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('calendar_info',type_id=news.id) }}">
+                    <div class="box">
+                        <div class="icon1">
+                            <i class="fa-solid fa-newspaper"></i>
+                        </div>
+                        <div class="box_mini">
+                            <h1>{{ news.name }}</h1>
+
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('infos',type_id=jobs.id) }}">
+                    <div class="box">
+                        <i class="fa-solid fa-address-book"></i>
+                        <div class="box_mini">
+                            <h1>{{ jobs.name }}</h1>
+
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('vacation') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <div class="box_mini">
+                            <h1>Vakansiya</h1>
+
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('student') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-users"></i>
+                        <div class="box_mini">
+                            <h1>Student</h1>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('workers') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-users"></i>
+                        <div class="box_mini">
+                            <h1>Kadrlar</h1>
+
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('gallery') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-image"></i>
+                        <div class="box_mini">
+                            <h1>Rasmlar</h1>
+
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('partners') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-building"></i>
+                        <div class="box_mini">
+                            <h1>Hamkorlar</h1>
+
+                        </div>
+                    </div>
+                </a>
+                {% if user and user.role == "director" %}
+                    <a href="{{ url_for('comments') }}">
+                        <div class="box">
+                            <i class="fa-solid fa-comment"></i>
+                            <div class="box_mini">
+                                <h1>Izohlar</h1>
+                            </div>
+                        </div>
+                    </a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <div class="box_mini">
+                            <h1>Chiqish</h1>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+        <div class="main" style="display: flex;align-items: center;justify-content: center; width: 100%;">
+            <div class="main_box">
+                <div class="main_profile">
+                    <div class="main_img">
+                        <div class="icon_img">
+                            <img src="{{ teacher.user.image }}" alt="">
+                            <a href="{{ url_for("edit_teacher_profile", teacher_id=teacher.id) }}">
+                                <div class="icon_img_i"><i class="fa-solid fa-pen i"></i></div>
+                            </a>
+                        </div>
+                        <h1>{{ teacher.user.name }} <br>{{ teacher.user.surname }}</h1>
+                    </div>
+                </div>
+                <div class="main_about">
+                    <div class="div">
+                        <div class="main_about_information">Ismi: <span>{{ teacher.user.name }}</span></div>
+                        <div class="main_about_information">Familyasi: <span>{{ teacher.user.surname }}</span></div>
+                        <div class="main_about_information">Otasining ismi: <span>{{ teacher.user.parent_name }}</span>
+                        </div>
+                        <div class="main_about_information">Tug'ilgan kuni: <span>{{ teacher.user.birth_date }}</span>
+                        </div>
+                    </div>
+                    <div class="div">
+                        <div class="main_about_information">Telefon raqami: <span>{{ teacher.user.number }}</span></div>
+                        <div class="main_about_information">Yashash joyi: <span>{{ teacher.user.address }}</span></div>
+                        <div class="main_about_information">Elektron pochta: <span>{{ teacher.user.email }}</span></div>
+                        <div class="main_about_information">Yosh: <span>{{ age }}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+
+
+<script src="../../static/js/profile/profile.js"></script>
+</body>
+</html>

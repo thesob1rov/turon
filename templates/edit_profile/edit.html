@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>edit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../../static/css/edit_profile/edit.min.css">
+</head>
+<body>
+<section class="edit">
+    <form action="{{ url_for("edit_profile", user_id=user.id) }}" enctype="multipart/form-data" method="post">
+        <div class="edit_img">
+            <img src="{{ user.image }}" alt="">
+            <div class="edit_top"><i class="fa-solid fa-image"></i></div>
+        </div>
+        <input type="file" class="img" style="display: none" name="photo">
+        <div class="edit_name">
+            <div class="edit_info">
+                <div class="edit_info_item">Username</div>
+                <input type="text" class="input" placeholder="Enter your name" name="username"
+                       value="{{ user.username }}">
+            </div>
+            {% if curr_user.role == 'admin' %}
+                <div class="edit_info">
+                    <div class="edit_info_item">Ism</div>
+                    <input type="text" class="input" placeholder="Enter your name" name="name"
+                           value="{{ user.name }}">
+                </div>
+                <div class="edit_info">
+                    <div class="edit_info_item">Familya</div>
+                    <input type="text" class="input" placeholder="Enter your surname" name="surname"
+                           value="{{ user.surname }}">
+                </div>
+                <div class="edit_info">
+                    <div class="edit_info_item">Otasining ismi</div>
+                    <input type="text" class="input" placeholder="Enter your surname" name="parent_name"
+                           value="{{ user.parent_name }}">
+                </div>
+                <div class="edit_info">
+                    <div class="edit_info_item">Address</div>
+                    <input type="text" class="input" placeholder="Enter your surname" name="address"
+                           value="{{ user.address }}">
+                </div>
+                <div class="edit_info">
+                    <div class="edit_info_item">Email</div>
+                    <input type="text" class="input" placeholder="Enter your surname" name="email"
+                           value="{{ user.email }}">
+                </div>
+                <div class="edit_info">
+                    <select name="language_type" id="">
+                        {% for language in languages %}
+                            <option value="{{ language.id }}">{{ language.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="edit_info">
+                    <select name="class_type" id="">
+                        {% for class_type in class_types %}
+                            <option value="{{ class_type.id }}">{{ class_type.class_number }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="block">
+                <div class="edit_age">
+                    <div class="edit_selects">
+                        <div class="edit_date">
+                            <div class="edit_item">Birthday</div>
+                            <select name="year" id="" class="yil">
+                                <option value="2005">2005</option>
+                                <option value="2006">2006</option>
+                                <option value="2007">2007</option>
+                                <option value="2008">2008</option>
+                                <option value="2009">2009</option>
+                                <option value="2010">2010</option>
+                                <option value="2011">2011</option>
+                                <option value="2012">2012</option>
+                                <option value="2013">2013</option>
+                                <option value="2014">2014</option>
+                                <option value="2015">2015</option>
+                                <option value="2016">2016</option>
+                                <option value="2017">2017</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                            </select>
+                        </div>
+                        <select name="month" class="oy">
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <select name="day" class="kun">
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                        </select>
+                    </div>
+                    <div class="edit_date">
+                        <div class="edit_item">Number</div>
+                        <input type="text" placeholder="+9989000000" name="number" value="{{ user.number }}">
+                    </div>
+                </div>
+
+            {% endif %}
+
+
+            {#                <div class="edit_inputs">#}
+            {#                    <input type="text" placeholder="Parent name">#}
+            {#                    <input type="text">#}
+            {#                    <input type="text">#}
+            {#                </div>#}
+
+            </div>
+            <button class="edit_btn">O'zgartirish</button>
+        </div>
+    </form>
+
+</section>
+<script src="../../static/js/edit_profile/edit.js"></script>
+</body>
+</html>

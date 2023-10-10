@@ -1,0 +1,105 @@
+{% extends 'admin/index.html' %}
+{% block title %}Kadrlar {% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="/static/css/workers/teacher.min.css">
+{% endblock %}
+
+{% block section %}
+    <section class="teacher">
+        <div class="teacher_block">
+            {% for worker in workers_list %}
+                <div class="teacher_text">
+                    <i data-worker_id="{{ worker.id }}" class="edit fa-solid fa-pen-to-square"></i>
+                    <div class="teacher_picture">
+                        <div class="teacher_box"></div>
+                        <div class="teacher_img">
+                            <img src="{{ worker.img }}" alt="">
+                        </div>
+                    </div>
+
+                    <div class="teacher_information">
+                        <div class="teacher_info">
+                            <h2><span class="name">{{ worker.name }}</span> <span
+                                    class="surname">{{ worker.surname }}</span></h2>
+                            <h3 class="job">{{ worker.info.title }}</h3>
+                        </div>
+
+                        <p>{{ worker.text }}
+                    </div>
+
+                </div>
+            {% endfor %}
+
+        </div>
+        <div class="teacher_circle">
+            <div class="teacher_radius"></div>
+            <div class="teacher_plus">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+        </div>
+
+    </section>
+    <section class="registratsiya">
+        <div class="registratsiya_header">
+            <h1 CLASS="registratsiya_title">MA'LUMOT QO'SHISH</h1>
+            <div class="registratsiya_close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <form class="registratsiya_block" enctype="multipart/form-data" method="post">
+            <div class="registratsiya_front">
+                <div class="registratsiya_left">
+
+                    <div class="registratsiya_left_box"></div>
+                    <div class="registratsiya_left_img" style="">
+
+                    </div>
+
+                </div>
+
+                <input type="file" hidden class="registratsiya_file" name="img">
+                <div class="registratsiya_right">
+
+                    <div class="registratsiya_top info">
+
+                        <input required name="name" class="modal_name" type="text" placeholder="name">
+                    </div>
+                    <div class="registratsiya_top  info">
+
+                        <input required name="surname" class="modal_surname" type="text" placeholder="surname">
+                    </div>
+                    <div class="registratsiya_top info">
+
+                        <select name="job_id" class="modal_job" id="">
+                            {% for job in jobs_list %}
+                                <option value="{{ job.id }}">{{ job.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="registratsiya_top">
+
+                        <textarea required name="text" placeholder="Text"></textarea>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="registratsiya_button">
+
+                <a href="" class="registratsiya_delete non_active">Delete</a>
+
+                {#                <div></div>#}
+
+                <button>Add</button>
+            </div>
+
+
+        </form>
+
+
+    </section>
+{% endblock %}
+{% block js %}
+    <script src="/static/js/workers/script.js"></script>
+{% endblock %}

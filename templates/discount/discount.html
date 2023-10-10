@@ -1,0 +1,29 @@
+{% extends 'admin/index.html' %}
+{% block title %}
+    Discount
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="../../static/css/discount/discount.min.css">
+{% endblock %}
+{% block section %}
+    <section class="discount">
+        <div class="discount_box">
+            <form action="{{ url_for("discount", student_id=student.id) }}" method="post">
+                <div>Discount</div>
+                <select name="discount_type" id="" class="discount_type" data-id="{{ student.id }}">
+                    {% for discount_type in discount_types %}
+                        <option value="{{ discount_type.id }}">{{ discount_type.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" placeholder="Chegirma foizi" name="percentage" class="percentage">
+                <div class="discount_box_btn">
+                    <button class="discount_add">Add</button>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}
+
+{% block js %}
+    <script src="../../static/js/discount/discount.js"></script>
+{% endblock %}

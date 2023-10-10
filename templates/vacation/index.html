@@ -1,0 +1,103 @@
+{% extends 'admin/index.html' %}
+{% block title %}Vakansiyalar{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="/static/css/vacation/vakansiya_style.min.css">
+    <link rel="stylesheet" href="/static/css/info/info.min.css">
+
+{% endblock %}
+{% block section %}
+    <div class=""
+         style="display: flex; flex-direction: column;align-items: center; width: 100%">
+    {% include 'info/info.html' %}
+    <section class="vakansiya">
+
+        <h1>VAKANSIYALAR</h1>
+
+        <div class="vakansiya_block">
+            {% for vacation in vacations %}
+                <div class="vakansiya__item">
+                    <div class="icon">
+                        <i data-vacation_id="{{ vacation.id }}" class="edit fa-solid fa-pen-to-square"></i>
+                    </div>
+
+                    <a href="{{ url_for('get_request', vacation_id=vacation.id) }}">
+                        <div class="vakansiya_information">
+
+                            <div class="vakansiya_text">
+                                <div class="vakansiya_icon">
+                                    <img src="{{ vacation.info.img }}" alt="">
+                                </div>
+                                <h2 class="job_title">{{ vacation.info.title }}</h2>
+                                <p class="vacation_text">{{ vacation.text }}</p>
+                            </div>
+
+
+                        </div>
+                    </a>
+                </div>
+
+            {% endfor %}
+
+        </div>
+        <div class="vakansiya_circle">
+            <div class="vakansiya_radius"></div>
+            <div class="vakansiya_plus">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+        </div>
+    </section>
+
+    <section class="registratsiya">
+        <div class="registratsiya_header">
+            <h1 CLASS="registratsiya_title">MA'LUMOT QO'SHISH</h1>
+            <div class="registratsiya_close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <form class="registratsiya_block" enctype="multipart/form-data" method="post">
+            <div class="registratsiya_front">
+                <div class="registratsiya_left">
+
+                    <div class="registratsiya_left_box"></div>
+                    <div class="registratsiya_left_img" style="">
+
+                    </div>
+
+                </div>
+
+                <input type="file" hidden class="registratsiya_file" name="img">
+                <div class="registratsiya_right">
+
+                    <div class="registratsiya_top info">
+                        <select name="job_id" id="">
+                            {% for job in jobs_list %}
+                                <option class="jobs" value="{{ job.id }}">{{ job.title }}</option>
+                            {% endfor %}
+                        </select>
+                        <input name="title" hidden type="text" placeholder="title">
+                    </div>
+
+                    <div class="registratsiya_top">
+
+                        <textarea name="text" placeholder="Text"></textarea>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="registratsiya_button">
+                <a href="" class="registratsiya_delete non_active">Delete</a>
+                <button>Add</button>
+            </div>
+
+
+        </form>
+
+
+    </section>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="../../static/js/vacation/script.js"></script>
+{% endblock %}

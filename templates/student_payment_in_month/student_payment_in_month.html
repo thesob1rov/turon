@@ -1,0 +1,54 @@
+{% extends 'admin/index.html' %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../../static/css/student_payed_list/to'lov.min.css">
+{% endblock %}
+
+{% block section %}
+    <h1>Payments in month</h1>
+    <section class="pay">
+        <div class="pay_block">
+            <div class="pay_double">
+                <button class="pay_filter_btn">Filter</button>
+                <div class="pay_search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Qidiruv">
+                </div>
+            </div>
+            <div class="pay_list">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Ismi</th>
+                        <th>Familya</th>
+                        <th>To'lov</th>
+                        <th>To'lov turi</th>
+                        <th>Sana</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for page in pages %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ page.student_month_payments.student.user.name }}</td>
+                            <td>{{ page.student_month_payments.student.user.surname }}</td>
+                            <td>{{ page.payed }}</td>
+                            <td>{{ page.student_month_payments.account_type.name }}</td>
+                            <td>{{ page.date }}</td>
+                            <td><i class="fa-solid fa-trash" style="color: red" data-id="{{ page.id }}"></i></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+    <script src="/static/js/student_payments_in_month/payments_in_monyh.js"></script>
+{% endblock %}

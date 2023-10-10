@@ -1,0 +1,47 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="stylesheet" href="/static/css/contract/shartnoma.min.css">
+{% endblock %}
+
+{% block section %}
+
+    <section class="shartnoma">
+        <div class="overflow">
+            <div class="shartnoma_box">
+                <form action="{{ url_for("create_contract", student_id=student.id) }}" method="post">
+                    <h1>Shartnoma yaratish</h1>
+                    <input type="text" placeholder="Vakil(a) Ismi" name="name">
+                    <input type="text" placeholder="Vakil(a) Familya" name="surname">
+                    <input type="text" placeholder="Vakil(a) Otasining ismi" name="parent_name">
+                    <input type="text" placeholder="Pasport seriyasi" name="passport_seria">
+                    <input type="text" placeholder="Berilgan vaqti" name="get_time">
+                    <input type="text" placeholder="Berilgan joyi" name="get_location">
+                    <input type="text" placeholder="Manzili" name="address">
+                    <div class="text">Dan</div>
+                    <input type="date" name="from">
+                    <div class="text">Gacha</div>
+                    <input type="date" name="to">
+                    <button>Jo'natish</button>
+                </form>
+
+            </div>
+            <div class="shartnoma_box2">
+                <form action="{{ url_for("pdf_contract", student_id=student.id) }}" method="post" enctype="multipart/form-data">
+                    <h1 style="margin: 20px">Shartnoma kiritish</h1>
+
+                    <div class="file">
+                        PDF faylni kiriting
+                        <input class="input_file" hidden type="file" name="pdf">
+                    </div>
+                    <button class="enter_btn">Kiritish</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="/static/js/contract/shartnoma.js"></script>
+{% endblock %}

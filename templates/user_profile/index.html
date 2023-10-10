@@ -1,0 +1,99 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../../static/user_profile/index.min.css">
+{% endblock %}
+{% block section %}
+    <section class="main">
+        <div class="main_block">
+            <div class="main_box">
+                <div class="main_box_img">
+                    <i class="fa-solid fa-ellipsis ellipsis"></i>
+                    <div class="main_box_name">
+                        <img src="{{ student.user.image }}" alt="">
+                        <div>{{ student.user.username }}</div>
+                        <div class="change">
+                            <a href="{{ url_for("edit_profile", user_id=student.user.id) }}">
+                                <div class="container_change">
+                                    <i class="fa-solid fa-pen "></i>
+                                    <div>Ma'lumotlarni o'zgartirish</div>
+                                </div>
+                            </a>
+                            <a href="{{ url_for("pdf_contract", student_id=student.user.id) }}">
+                                <div class="container_change">
+                                    <i class="fa-solid fa-pen "></i>
+                                    <div>Pdf kirgazish</div>
+                                </div>
+                            </a>
+                            <a href="{{ url_for("create_contract", student_id=student.user.id) }}">
+                                <div class="container_change">
+                                    <i class="fa-solid fa-pen "></i>
+                                    <div>Shartnoma</div>
+                                </div>
+                            </a>
+                            <a href="{{ url_for("add_payment", student_id=student.id) }}">
+                                <div class="container_change">
+                                    <i class="fa-solid fa-pen "></i>
+                                    <div>Pay</div>
+                                </div>
+                            </a>
+                            <a href="{{ url_for("student_payment_list", student_id=student.id) }}">
+                                <div class="container_change">
+                                    <i class="fa-solid fa-pen "></i>
+                                    <div>Payments</div>
+                                </div>
+                            </a>
+                            <a href="{{ url_for("discount", student_id=student.id) }}">
+                                <div class="container_change">
+                                    <i class="fa-solid fa-pen "></i>
+                                    <div>Discount</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="information">
+                    <div class="main_box_information">Ismi: <span>{{ student.user.name }}</span></div>
+                    <div class="main_box_information">Familyasi: <span>{{ student.user.surname }}</span></div>
+                    <div class="main_box_information">Otasining ismi: <span>{{ student.user.parent_name }}</span></div>
+                    <div class="main_box_information">Tug'ilgan kuni: <span>{{ student.user.birth_date }}</span></div>
+                    <div class="main_box_information">Telefon raqami: <span>{{ student.user.number }}</span></div>
+                    <div class="main_box_information">Yashash joyi: <span>{{ student.user.address }}</span></div>
+                    <div class="main_box_information">Elektron pochta: <span>{{ student.user.email }}</span></div>
+                </div>
+            </div>
+            <div class="main_left">
+                <div class="top">
+                    <div class="user"><i class="fa-solid fa-user"></i></div>
+                    <div>Student</div>
+                </div>
+                {% for class in student.classes %}
+                    <a href="{{ url_for('class_profile', class_id=class.id) }}">
+                        <div class="main_about">
+                            <div class="img">
+                                <img src="" alt="">
+                                <div>{{ class.name }}</div>
+                            </div>
+                            <div class="class">
+                                {% for cl in class.teacher %}
+                                    <div>O'qituvchi: <span>{{ cl.user.name }}</span></div>
+                                {% endfor %}
+                                <div>O’quvchi soni: <span>{{ students }}</span></div>
+                            </div>
+                        </div>
+                    </a>
+
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block js %}
+    <script src="../../static/js/user_profiel/script.js"></script>
+{% endblock %}
+
+

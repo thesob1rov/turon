@@ -1,0 +1,26 @@
+{% extends 'admin/index.html' %}
+{% block title %}Hamkorlar{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="/static/css/partners/style.min.css">
+    <link rel="stylesheet" href="/static/css/info/info.min.css">
+{% endblock %}
+{% block section %}
+    <div class=""
+         style="display: flex; flex-direction: column;align-items: center; width: 100%">
+        {% include 'info/info.html' %}
+        <section class="s5">
+            <h1>Hamkorlar</h1>
+            <input style="display: none" type="file" class="img">
+            <div class="logo">
+                {% for partner in partners %}
+                    <div class="logo_box" data-id="{{ partner.id }}">
+                        <img class="logo_img" src="{{ partner.img }}" alt="">
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="/static/js/partners/script.js"></script>
+{% endblock %}

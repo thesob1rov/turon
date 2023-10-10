@@ -1,0 +1,43 @@
+@media (max-width: 768px)
+  html
+    font-size: 10px
+  h1
+    text-align: center
+  .box
+    flex-wrap: wrap
+    gap: 2rem
+  .s7
+    justify-content: initial
+  .news
+    display: flex
+    flex-direction: column
+    width: 35rem
+    height: 45rem
+    position: relative
+    margin: 1rem
+
+    i
+      display: none
+    &_text
+      padding: 10px
+
+    &_list
+      display: flex
+      flex-direction: column
+      height: 100%
+      gap: 10px
+    &_item
+      position: initial
+      opacity: 1
+      visibility: visible
+
+@media (max-width: 425px)
+  html
+    font-size: 10px
+  .news
+
+    &_text
+      padding: 0
+
+  .splide
+    width: 40rem

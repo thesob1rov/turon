@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="/static/img/school_logo.png">
+    <link rel="stylesheet" href="/static/css/admin/main.min.css">
+    <link rel="stylesheet" href="/static/css/modal/index.min.css">
+    {% block css %} {% endblock %}
+</head>
+<body>
+<header>
+    <nav>
+        <div class="school">
+            <i class="fa-solid fa-x x"></i>
+            <i class="fa-solid fa-bars hamburger"></i>
+        </div>
+        <a href="{{ url_for('profile', user_id=user.id) }}">
+            <div class="admin">
+
+                <h1 class="admin_h1">{{ user.name }}</h1>
+
+                <img class="admin_img"
+                     src="{{ user.image }}"
+                     alt="">
+            </div>
+        </a>
+
+    </nav>
+</header>
+
+<section class="section">
+    <div class="home">
+        <div class="home_big">
+
+
+            <a href="{{ url_for('register') }}">
+                <div class="box">
+                    <i class="fa-solid fa-registered"></i>
+                    <div class="box_mini">
+                        <h1>Register</h1>
+
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('subject_list') }}">
+                <div class="box">
+                    <i class="fa-brands fa-readme"></i>
+                    <div class="box_mini">
+                        <h1>Subject</h1>
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('student') }}">
+                <div class="box">
+                    <i class="fa-solid fa-users"></i>
+                    <div class="box_mini">
+                        <h1>New Student</h1>
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('old_student') }}">
+                <div class="box">
+                    <i class="fa-solid fa-users"></i>
+                    <div class="box_mini">
+                        <h1>Users</h1>
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('classes') }}">
+                <div class="box">
+                    <i class="fa-solid fa-users"></i>
+                    <div class="box_mini">
+                        <h1>Classes</h1>
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('flow') }}">
+                <div class="box">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                    <div class="box_mini">
+                        <h1>New Flows</h1>
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('rooms') }}">
+                <div class="box">
+                    <i class="fa-solid fa-users"></i>
+                    <div class="box_mini">
+                        <h1>Rooms</h1>
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('timetables') }}">
+                <div class="box">
+                    <i class="fa-regular fa-clock"></i>
+                    <div class="box_mini">
+                        <h1>TimeTables</h1>
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('all_payments') }}">
+                <div class="box">
+                    <i class="fa-solid fa-money-bill"></i>
+                    <div class="box_mini">
+                        <h1>Payments</h1>
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('workers') }}">
+                <div class="box">
+                    <i class="fa-solid fa-users"></i>
+                    <div class="box_mini">
+                        <h1>Kadrlar</h1>
+                    </div>
+                </div>
+            </a>
+
+            {% if user and user.role == "director" %}
+                <a href="{{ url_for('comments') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-comment"></i>
+                        <div class="box_mini">
+                            <h1>Izohlar</h1>
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
+            <a href="{{ url_for('get_about_profile', type_id=about_us.id,info_id=about_id) }}">
+                <div class="box">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <div class="box_mini">
+                        <h1>Info</h1>
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('logout') }}">
+                <div class="box">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <div class="box_mini">
+                        <h1>Chiqish</h1>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% block section %}
+
+    {% endblock %}
+</section>
+<script src="/static/js/admin/menu.js"></script>
+{% block js %} {% endblock %}
+</body>
+</html>

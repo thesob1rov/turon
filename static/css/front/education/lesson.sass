@@ -1,0 +1,232 @@
+html
+  font-size: 10px
+
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+
+.lessons
+  height: 100vh
+  padding: 1rem
+  font-family: "Inter", sans-serif
+
+  h1
+    color: #001B61
+
+  &_block
+    height: 100%
+    display: flex
+    flex-direction: column
+    justify-content: space-around
+    gap: 1rem
+
+  &_lesson
+    width: 35rem
+    height: 28rem
+    display: flex
+    align-items: center
+    flex-direction: column
+    box-shadow: 0 0 1rem 0 #504f4f
+    position: relative
+    overflow: hidden
+
+    &_title, .lessons_lesson_title2
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 35rem
+      height: 4rem
+      font-size: 2rem
+      color: #001B61
+      font-weight: 600
+
+
+    img
+      height: 85%
+      width: 100%
+
+  &_information
+    position: absolute
+    width: 35rem
+    height: 28rem
+    display: flex
+    bottom: -100%
+    align-items: center
+    flex-direction: column
+    box-shadow: 0 0 1rem 0 #504f4f
+    background-color: white
+    padding: 1rem
+    font-size: 1.4rem
+    transition: .5s ease-in
+
+
+  &_title
+    width: 35rem
+    height: 28rem
+    display: flex
+    align-items: center
+    justify-content: center
+    font-size: 3rem
+
+
+.div
+  display: flex
+  justify-content: space-around
+
+.active
+  bottom: 0
+
+.up
+  width: 1rem
+  height: 1rem
+  border-radius: 50%
+  background-color: white
+  display: flex
+  align-items: center
+  position: absolute
+  justify-content: center
+
+.splide
+  height: 70vh
+  display: none
+  align-items: center
+  justify-content: center
+  gap: 1rem
+  font-family: "Inter", sans-serif
+
+  h1
+    color: #001B61
+    font-size: 3rem
+    text-align: center
+    padding: 2rem
+
+
+.splide__slide
+  display: flex
+  justify-content: center
+
+.title
+  width: 80%
+  text-align: center
+  height: 15%
+  font-size: 1.6rem
+
+.certificats
+  height: 100vh
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-direction: column
+  font-family: "Inter", sans-serif
+
+  h1
+    color: #001B61
+
+  &_block
+    display: flex
+    justify-content: space-between
+    height: 83%
+    width: 99%
+    position: relative
+
+  &_ielts
+    width: 32rem
+    height: 100%
+    box-shadow: 0 0 1rem 0 #7e7b7b
+    position: relative
+    overflow: hidden
+
+    &_name
+      width: 32rem
+      height: 3rem
+      background-color: white
+      font-size: 1.8rem
+      font-weight: 600
+      padding: .5rem
+
+  &_information
+    width: 32rem
+    position: absolute
+    height: 87%
+    background-color: #fff
+    display: flex
+    flex-direction: column
+    gap: 1rem
+    top: 7rem
+    padding: 2rem
+    font-size: 1.5rem
+    left: -100%
+    transition: 1s
+    i
+      align-self: flex-end
+      cursor: pointer
+
+    button
+      width: 15rem
+      height: 4rem
+      background-color: transparent
+      border: .2rem solid #F47B34
+      border-radius: .5rem
+      align-self: flex-end
+      color: #F47B34
+      font-weight: 600
+
+.info
+  width: 32rem
+  height: 65%
+  display: flex
+  flex-direction: column
+  justify-content: space-around
+
+  img
+    width: 18rem
+    height: 15rem
+    align-self: center
+
+  i
+    font-size: 3rem
+    color: white
+    padding-left: 2rem
+    cursor: pointer
+
+.certificats .certificats_ielts:nth-child(3)
+  color: #E51837
+  background-color: #E51837
+
+  button
+    border: .2rem solid #E51837
+    color: #e51837
+
+
+.certificats .certificats_ielts:nth-child(2)
+  color: #009ADA
+  background-color: #009ADA
+
+  button
+    border: .2rem solid #009ADA
+    color: #009ADA
+
+
+.certificats .certificats_ielts:nth-child(1)
+  color: #F47B34
+  background-color: #F47B34
+
+  button
+    border: .2rem solid #F47B34
+    color: #F47B34
+
+.certificats .certificats_ielts:nth-child(4)
+  color: #DAAAFF
+  background-color: #DAAAFF
+
+  button
+    border: .2rem solid #DAAAFF
+    color: #DAAAFF
+
+.active
+  left: 0
+  i
+    cursor: pointer
+
+@import "media"

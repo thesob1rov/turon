@@ -1,0 +1,25 @@
+{% extends 'admin/index.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/class_subjects/lesson.min.css">
+{% endblock %}
+{% block section %}
+    <section class="lesson">
+        <button class="save_btn" data-id="{{ classs.id }}">Save</button>
+        <div class="lesson_block">
+            <div class="lesson_index">
+                {% for subject in subjects %}
+                    {% if subject.class %}
+                        <div class="lesson_box active_color" data-id="{{ subject.id }}">{{ subject.name }}</div>
+                    {% else %}
+                        <div class="lesson_box" data-id="{{ subject.id }}">{{ subject.name }}</div>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+    <script src="/static/js/class_subjects/lesson.js"></script>
+{% endblock %}

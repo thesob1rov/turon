@@ -1,0 +1,773 @@
+@media (max-width: 1200px)
+  html
+    font-size: 10px
+  .about
+    &_big
+      padding: 10rem 5rem
+
+      &_img
+        width: 40rem
+        height: 45rem
+
+        img
+          width: 30rem
+          height: 35rem
+
+      &_text
+        width: 40rem
+        height: 45rem
+  .news
+    height: 115vh
+    padding: 1rem 1rem
+
+    h1
+      padding-left: 1rem
+
+    &_block
+      height: 100%
+      display: flex
+      justify-content: space-around
+      align-items: center
+
+    &_text
+      width: 28rem
+      height: 45rem
+      box-shadow: 0 0 10px 0 #a9a8a8
+  .big
+    display: grid
+    grid-template-columns: repeat(4, 20rem)
+    grid-template-rows: repeat(3, 20rem)
+    grid-gap: 1rem
+    justify-content: center
+
+  .s4
+    display: flex
+    height: 80rem
+
+@media (max-width: 915px)
+  html
+    font-size: 10px
+  .news
+    height: 115vh
+    padding: 0
+
+    h1
+      padding-left: 1rem
+
+    &_block
+      height: 100%
+      display: flex
+      justify-content: space-around
+      align-items: center
+
+    &_text
+      width: 24rem
+      height: 45rem
+      box-shadow: 0 0 10px 0 #a9a8a8
+
+      h3
+        font-size: 1.5rem
+
+      p
+        font-size: 1.3rem
+  .big
+    display: grid
+    grid-template-columns: repeat(4, 17rem)
+    grid-template-rows: repeat(3, 17rem)
+    grid-gap: 1rem
+    justify-content: center
+  .s4
+    height: 70rem
+  .about
+    &_big
+      padding: 10rem 1rem
+
+      &_img
+        width: 35rem
+        height: 45rem
+
+        img
+          width: 30rem
+          height: 35rem
+
+      &_text
+        width: 35rem
+        height: 45rem
+  .footer
+    &_pslogo
+      width: 25rem
+
+    &_name
+      display: flex
+      flex-direction: column
+      font-size: 1rem
+  .s4
+    display: flex
+    height: 80rem
+@media (max-width: 768px)
+  html
+    font-size: 10px
+  .splide5
+    display: none !important
+  .introduction
+    &_entrance
+      display: flex
+      flex-direction: column
+      height: 100%
+      width: 100%
+      background-color: rgba(0, 27, 97, 0.8)
+      position: fixed
+      left: -100%
+      transition: all .5s
+
+      &:before
+        display: none
+
+    nav
+      ol
+        width: 15rem
+        height: 40%
+        display: flex
+        flex-direction: column
+        align-items: start
+        justify-content: space-around
+        font-size: 20px
+        margin: 2rem
+
+    li
+      font-size: 1.8rem
+      list-style: none
+      transition: 0.3s
+      cursor: pointer
+      font-weight: 600
+      color: white
+
+      &:hover
+        color: white
+
+    .hamburger
+      display: block
+      position: fixed
+      bottom: 5%
+      right: 10%
+      z-index: 100
+
+      &.active
+        .x
+          display: block !important
+
+        .plus
+          display: none
+
+      .x
+        display: none !important
+
+      .hamburger_btn
+        display: flex
+        width: 6rem
+        height: 6rem
+        z-index: 1
+
+    .active_menu
+      left: 0
+
+    &_about
+      position: absolute
+      top: 20%
+      right: 30%
+      width: 30rem
+      height: 27rem
+      display: flex
+      flex-direction: column
+      justify-content: space-around
+      align-items: center
+      text-align: center
+
+      h1
+        font-size: 3rem
+
+      p
+        font-size: 1.4rem
+
+
+  .about
+    &_big
+      padding: 10rem 5rem
+
+      &_img
+        width: 25rem
+        height: 40rem
+
+        img
+          width: 20rem
+          height: 30rem
+
+      &_text
+        width: 25rem
+        height: 40rem
+
+        h2
+          font-size: 1.3rem
+
+        p
+          font-size: 1.5rem
+
+        h1
+          font-size: 3.5rem
+
+
+  .slide_main_box
+    width: 100vw
+    height: 100vh
+  .main1
+    display: flex
+  .splide
+    display: flex
+    height: 80vh
+  .sp_logo
+    display: none
+
+  .s4
+    display: none
+  .map
+    height: 65vh
+  .mini
+    width: 55rem
+    height: 40rem
+    background-color: white
+    display: flex
+    flex-direction: column
+    align-items: center
+    padding: 1rem 2rem
+
+    i
+      font-size: 2rem
+      margin-left: 52.5rem
+      position: absolute
+
+
+    &_label
+      display: flex
+      flex-direction: column
+
+      span
+        margin-left: 2rem
+        position: absolute
+        font-size: 1.3rem
+        padding: 0 1rem
+        background-color: white
+
+      &_text
+        margin: 1rem
+        width: 50rem
+        height: 30rem
+        resize: none
+        outline: none
+  .news
+    height: 100%
+    display: flex
+    flex-direction: column
+
+
+    h1
+      color: #001B61
+      letter-spacing: 0.1rem
+      padding-left: 5rem
+      font-size: 2.5rem
+
+    &_block
+      height: 100%
+      display: flex
+      justify-content: space-around
+      align-items: center
+      flex-wrap: wrap
+
+    &_text
+      width: 32rem
+      height: 40rem
+      box-shadow: 0 0 10px 0 #a9a8a8
+      margin: 1rem
+
+      h3
+        font-size: 1.5rem
+
+      p
+        font-size: 1.4rem
+
+      &_img
+        width: 100%
+        height: 20rem
+
+        img
+          height: 100%
+          width: 100%
+
+    &_box
+      padding: 1rem
+      height: 18rem
+      display: flex
+      justify-content: space-around
+      flex-direction: column
+
+    &_button
+      display: flex
+      justify-content: end
+      width: 16rem
+
+      button
+        width: 10rem
+        height: 3rem
+        font-size: 1.5rem
+        margin: 1rem
+@media (max-width: 630px)
+  html
+    font-size: 10px
+  .introduction
+    &_about
+      position: absolute
+      top: 20%
+      right: 30%
+  .about
+    &_big
+      padding: 10rem 5rem
+      display: flex
+      flex-wrap: wrap
+
+      &_img
+        width: 25rem
+        height: 40rem
+
+        img
+          width: 20rem
+          height: 30rem
+
+      &_text
+        width: 25rem
+        height: 40rem
+
+        h2
+          font-size: 1.2rem
+
+        p
+          font-size: 1.2rem
+
+        h1
+          font-size: 3rem
+  .news
+    height: 100%
+    display: flex
+    flex-direction: column
+
+
+    h1
+      color: #001B61
+      letter-spacing: 0.1rem
+      padding-left: 5rem
+      font-size: 2.5rem
+
+    &_block
+      height: 100%
+      display: flex
+      justify-content: space-around
+      align-items: center
+      flex-wrap: wrap
+
+    &_text
+      width: 32rem
+      height: 40rem
+      box-shadow: 0 0 10px 0 #a9a8a8
+      margin: 1rem
+
+      h3
+        font-size: 1.5rem
+
+      p
+        font-size: 1.4rem
+
+      &_img
+        width: 100%
+        height: 20rem
+
+        img
+          height: 100%
+          width: 100%
+
+    &_box
+      padding: 1rem
+      height: 18rem
+      display: flex
+      justify-content: space-around
+      flex-direction: column
+
+    &_button
+      display: flex
+      justify-content: end
+      width: 16rem
+
+      button
+        width: 10rem
+        height: 3rem
+        font-size: 1.5rem
+        margin: 1rem
+  .splide5
+    display: flex !important
+  .splide_center
+    margin-left: 20rem
+  .mini
+    width: 48rem
+    height: 40rem
+    background-color: white
+    display: flex
+    flex-direction: column
+    align-items: center
+    padding: 1rem 2rem
+
+    i
+      font-size: 2rem
+      margin-left: 44rem
+      position: absolute
+
+
+    &_label
+      display: flex
+      flex-direction: column
+
+      span
+        margin-left: 2rem
+        position: absolute
+        font-size: 1.3rem
+        padding: 0 1rem
+        background-color: white
+
+      &_text
+        margin: 1rem
+        width: 40rem
+        height: 30rem
+        resize: none
+        outline: none
+
+@media (max-width: 425px)
+  html
+    font-size: 7px
+  .splide5
+    display: none !important
+  .introduction
+    &_entrance
+      display: flex
+      flex-direction: column
+      height: 100%
+      width: 100%
+      background-color: rgba(0, 27, 97, 0.8)
+      position: fixed
+      left: -100%
+      transition: all .5s
+
+      &:before
+        display: none
+
+    nav
+      ol
+        width: 15rem
+        height: 40%
+        display: flex
+        flex-direction: column
+        align-items: start
+        justify-content: space-around
+        font-size: 20px
+        margin: 2rem
+
+
+    li
+      font-size: 1.8rem
+      list-style: none
+      transition: 0.3s
+      cursor: pointer
+      font-weight: 600
+      color: white
+
+      &:hover
+        color: white
+
+    .hamburger
+      display: block
+      position: fixed
+      bottom: 5%
+      right: 10%
+      z-index: 100
+
+      &.active
+        .x
+          display: block !important
+
+        .plus
+          display: none
+
+      .x
+        display: none !important
+
+      .hamburger_btn
+        display: flex
+        width: 6rem
+        height: 6rem
+        z-index: 1
+
+    .active_menu
+      left: 0
+
+
+    &_about
+      position: absolute
+      top: 25%
+      right: 18%
+      width: 35rem
+      height: 33rem
+      display: flex
+      flex-direction: column
+      justify-content: space-around
+      align-items: center
+      text-align: center
+
+      h1
+        font-size: 3.5rem
+
+      p
+        font-size: 1.8rem
+
+      button
+        width: 12rem
+        height: 4rem
+
+    &_backround
+      padding: 0
+  .about
+    display: flex
+    justify-content: center
+    align-items: center
+
+    &_big
+      display: flex
+      flex-wrap: wrap
+      justify-content: space-around
+      padding: 0
+
+      &_img
+        width: 30rem
+        height: 33rem
+
+        img
+          width: 25rem
+          height: 30rem
+
+      &_text
+        width: 30rem
+        height: 40rem
+        margin: 1rem
+
+        h2
+          font-size: 2rem
+
+        &_main
+          h1
+            font-size: 2.5rem
+
+        p
+          font-size: 1.6rem
+
+    .new
+      &_button
+        display: flex
+        justify-content: end
+        width: 27rem
+
+        button
+          width: 10rem
+          height: 3rem
+          font-size: 1.5rem
+          margin: 1rem
+
+    &_left
+      width: 30rem
+      display: flex
+      align-items: center
+      flex-direction: column
+      position: relative
+
+    &_img
+      width: 30rem
+      height: 13rem
+      background-color: #001B61
+      position: absolute
+      bottom: 0
+
+    &_text
+      width: 25px
+
+      p
+        font-size: 1.2rem
+
+      h1
+        font-size: 2rem
+
+
+    img
+      width: 20rem
+      height: 24rem
+      position: absolute
+      left: 50%
+      transform: translate(-50%, -50%)
+
+    &_right
+      width: 30rem
+      height: 30rem
+      display: flex
+      justify-content: space-around
+      flex-direction: column
+      box-shadow: 0 0 .1rem 0 #a19f9f
+      padding: 2rem
+
+    &_button
+      align-self: flex-end
+
+    button
+      margin: 1rem
+      width: 10rem
+      height: 3rem
+      background-color: #001B61
+      color: white
+      border: .2rem solid #001B61
+      cursor: pointer
+      transition: 0.5s
+      font-size: 1.5rem
+      align-self: flex-end
+
+      &:hover
+        background-color: transparent
+        color: #001B61
+        border: .2rem solid #001B61
+
+
+  .news
+    height: 100%
+    display: flex
+    flex-direction: column
+
+
+    h1
+      color: #001B61
+      letter-spacing: 0.1rem
+      padding-left: 5rem
+      font-size: 2.5rem
+
+    &_block
+      height: 100%
+      display: flex
+      justify-content: space-around
+      align-items: center
+      flex-wrap: wrap
+
+    &_text
+      width: 32rem
+      height: 40rem
+      box-shadow: 0 0 10px 0 #a9a8a8
+      margin: 1rem
+
+      h3
+        font-size: 1.5rem
+
+      p
+        font-size: 1.4rem
+
+      &_img
+        width: 100%
+        height: 20rem
+
+        img
+          height: 100%
+          width: 100%
+
+    &_box
+      padding: 1rem
+      height: 18rem
+      display: flex
+      justify-content: space-around
+      flex-direction: column
+
+    &_button
+      display: flex
+      justify-content: end
+      width: 16rem
+
+      button
+        width: 10rem
+        height: 3rem
+        font-size: 1.5rem
+        margin: 1rem
+
+  .main
+    flex-direction: column
+    display: none
+
+  .slide
+    display: flex
+
+
+    .button
+      display: flex
+      justify-content: space-around
+      position: absolute
+      width: 100vw
+
+      img
+        width: 5rem
+        height: 5rem
+
+    &_main
+      display: flex
+
+  .slide_main_box
+    width: 100vw
+    height: 100vh
+  .main1
+    display: flex
+  .splide
+    display: flex
+    height: 80vh
+  .splide__slide
+    background-size: cover
+  .sp_logo
+    display: flex
+    width: 100vw
+    height: 40vh
+
+    &_img
+      background-size: cover
+  .s5
+    display: none
+  .map
+    width: 100%
+    height: 60vh
+  footer
+    height: 7rem
+  .footer
+    display: flex
+    height: 7rem
+    justify-content: space-between
+    width: 35rem
+
+    &_pslogo
+      width: 15rem
+
+    img
+      width: 5rem
+      height: 5rem
+
+    h1
+      font-size: 1.3rem
+  .logo
+    flex-direction: column
+
+//@media (max-width: 375px)
+
+
+
+

@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald&family=Roboto:wght@500&display=swap')
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+  font-family: "Kanit", sans-serif
+
+html
+  font-size: 10px
+
+
+.registratsiya
+  height: 100%
+  position: fixed
+  top: 0
+  left: 0
+  display: none
+  flex-direction: column
+  padding: 7rem
+  justify-content: center
+  width: 100%
+  background-color: rgba(255, 255, 255, 0.6)
+  backdrop-filter: blur(5px)
+  z-index: 5
+  &_header
+    display: flex
+    justify-content: space-between
+    align-items: center
+  &_delete
+
+
+  &_close
+
+    background-color: red
+    padding: 10px
+    cursor: pointer
+    i
+      color: white
+      font-size: 20px
+
+  &_block
+    height: 45rem
+    width: 100%
+    display: flex
+    flex-direction: column
+    justify-content: space-around
+    align-items: center
+
+
+  &_front
+    display: flex
+    height: 35rem
+    width: 100%
+    gap: 4rem
+
+
+  h1
+    font-family: 'Oswald', sans-serif
+    font-size: 4rem
+    color: #001B61
+
+  &_left
+    width: 35rem
+    position: relative
+    display: flex
+    flex-direction: column
+    justify-content: center
+    height: 35rem
+
+    &_box
+      width: 80%
+      height: 80%
+      position: absolute
+      bottom: 0
+      background-color: #001B61
+
+
+    &_img
+      width: 80%
+      height: 80%
+      background-color: #C4C4C4
+      position: absolute
+      right: 0
+      top: 0
+      background-size: cover
+      background-position: center
+
+
+  &_right
+    width: 70%
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    height: 35rem
+    position: relative
+
+    input,select
+      width: 30rem
+      height: 3.5rem
+      border: .2rem solid rgba(96, 96, 96, 0.55)
+      outline: none
+      padding: 10px
+    select
+      height: auto
+    textarea
+      width: 100%
+      height: 17.6rem
+      outline: none
+      resize: none
+      padding: 20px
+
+  .info
+    height: 7.5rem
+    display: flex
+    flex-direction: column
+    justify-content: center
+
+  &_top
+    position: relative
+
+    &:nth-child(1) .registratsiya_top_name
+      top: 0
+
+    &_name
+      width: 7rem
+      height: 3rem
+      top: -2rem
+      left: 4%
+      position: absolute
+      background-color: white
+      text-align: center
+
+  &_button
+    display: flex
+    justify-content: space-between
+    align-items: center
+    width: 100%
+
+    button, a
+      width: 15rem
+      height: 4.5rem
+      background-color: #001B61
+      color: white
+      border: .2rem solid #001B61
+      cursor: pointer
+      transition: 0.5s
+      font-size: 1.8rem
+      align-self: flex-end
+      outline: none
+
+      &:hover
+        background-color: transparent
+        color: #001B61
+        border: .2rem solid #001B61
+
+      &:active
+        transform: scale(0.8)
+    a
+      display: flex
+      align-items: center
+      justify-content: center
+      background-color: red
+      border: .2rem solid transparent
+
+      text-decoration: none
+      color: white
+      &:hover
+        background-color: transparent
+        color: red
+        border: .2rem solid red
+
+      &:active
+        transform: scale(0.8)
+.register_active
+  display: flex
+
+
+.non_active
+  visibility: hidden
+
+.disabled
+  cursor: not-allowed

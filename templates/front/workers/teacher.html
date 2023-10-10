@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/static/css/front/teachers/teacher.min.css">
+    <link rel="stylesheet" href="/static/css/home/include/menu.min.css">
+</head>
+<body>
+{% include 'home/menu.html' %}
+<section class="teacher">
+    <div class="teacher_block">
+        {% for worker in workers_list %}
+            <div class="teacher_text">
+
+                <div class="teacher_picture">
+                    <div class="teacher_box"></div>
+                    <div class="teacher_img">
+                        <img src="{{ worker.img }}" alt="">
+                    </div>
+                </div>
+
+                <div class="teacher_information">
+                    <div class="teacher_info">
+                        <h2>{{ worker.name }} {{ worker.surname }}</h2>
+                        <h3>{{ worker.info.title }}</h3>
+                    </div>
+                    <p>{{ worker.text }}</p>
+                </div>
+
+            </div>
+        {% endfor %}
+
+    </div>
+</section>
+<script src="/static/js/include/menu/menu.js"></script>
+</body>
+</html>

@@ -21,6 +21,7 @@ html {
   width: 90%;
   display: flex;
   justify-content: space-between;
+  margin-top: 30px;
 }
 .main_select select {
   width: 18rem;
@@ -48,7 +49,7 @@ html {
   font-size: 1.6rem;
   align-items: center;
   justify-content: center;
-  display: flex;
+  display: none;
 }
 .main_table table {
   width: 100%;
@@ -62,6 +63,26 @@ html {
   border: 1px solid black;
   height: 7rem;
   text-align: center;
+}
+
+.flow_td {
+  background-color: rgba(128, 128, 128, 0.1882352941);
+}
+
+.simple_td {
+  background-color: #111f4c;
+}
+
+.simple_p {
+  color: white;
+}
+
+.flow_p {
+  color: black;
+}
+
+.active_table {
+  display: flex;
 }
 
 /*# sourceMappingURL=table.css.map */

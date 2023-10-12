@@ -389,6 +389,7 @@ def lesson_table():
         about_id = about.id
     times = TimeList.query.all()
     lesson_list = lesson_table_list()
+    days = TimeTableDay.query.all()
     pprint(lesson_list)
     return render_template('lesson_table/table.html', about_us=about_us, news=news, jobs=jobs, about_id=about_id,
-                           user=user, times=times, lesson_list=lesson_list)
+                           user=user, times=times, lesson_list=lesson_list, days=days)

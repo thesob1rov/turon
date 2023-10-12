@@ -9,7 +9,7 @@ def check_teacher_timetable(teacher_id, day_id, lesson_time_id, room_id, subject
             if daily_table.day_id == int(day_id) and daily_table.lesson_time == int(lesson_time_id):
                 if lesson_id == "":
                     message = {
-                        "text": 'bu voxta darsi teacherni cmo',
+                        "text": 'bu voxta darsi teacherni',
                         "color": "red"
                     }
                     return message
@@ -21,7 +21,7 @@ def check_teacher_timetable(teacher_id, day_id, lesson_time_id, room_id, subject
                                                     subject_id=subject_id, class_id=class_id, lesson_id=lesson_id)
                     else:
                         message = {
-                            "text": 'bu voxta darsi teacherni cmo',
+                            "text": 'bu voxta darsi teacherni',
                             "color": "red"
                         }
                         return message
@@ -184,7 +184,7 @@ def check_teacher_for_flow_timetable(flow_id, day_id, room_id, lesson_time_id, l
             if daily_table.day_id == int(day_id) and daily_table.lesson_time == int(lesson_time_id):
                 if lesson_id == "":
                     message = {
-                        "text": 'bu voxta darsi teacherni cmo',
+                        "text": 'bu voxta darsi teacherni ',
                         "color": "red"
                     }
                     return message
@@ -196,7 +196,7 @@ def check_teacher_for_flow_timetable(flow_id, day_id, room_id, lesson_time_id, l
                                                                  lesson_id=lesson_id, flow_id=flow_id)
                     else:
                         message = {
-                            "text": 'bu voxta darsi teacherni cmo',
+                            "text": 'bu voxta darsi teacherni ',
                             "color": "red"
                         }
                         return message
@@ -403,6 +403,7 @@ def lesson_table_list():
                                             "lesson_id": item.id,
                                             "flow_name": item.flow.name,
                                             "flow_id": item.flow.id,
+                                            "class_id": None
                                         })
                                     else:
                                         room = Room.query.filter(Room.id == item.room_id).first()
@@ -419,6 +420,7 @@ def lesson_table_list():
                                                 "lesson_id": item.id,
                                                 "flow_name": None,
                                                 "flow_id": None,
+                                                "class_id": item.class_id
                                             })
                                         if not item.teacher_id and subject and room:
                                             les.update({
@@ -433,6 +435,7 @@ def lesson_table_list():
                                                 "lesson_id": item.id,
                                                 "flow_name": None,
                                                 "flow_id": None,
+                                                "class_id": item.class_id
                                             })
                                         if not subject and room and item.teacher_id:
                                             les.update({
@@ -447,6 +450,7 @@ def lesson_table_list():
                                                 "lesson_id": item.id,
                                                 "flow_name": None,
                                                 "flow_id": None,
+                                                "class_id": item.class_id
                                             })
                                         if not room and not item.teacher_id:
                                             les.update({
@@ -461,6 +465,7 @@ def lesson_table_list():
                                                 "lesson_id": item.id,
                                                 "flow_name": None,
                                                 "flow_id": None,
+                                                "class_id": item.class_id
                                             })
                                         if not room and not subject:
                                             les.update({
@@ -475,6 +480,7 @@ def lesson_table_list():
                                                 "lesson_id": item.id,
                                                 "flow_name": None,
                                                 "flow_id": None,
+                                                "class_id": item.class_id
                                             })
                                         if not item.teacher_id and not subject:
                                             les.update({
@@ -489,6 +495,7 @@ def lesson_table_list():
                                                 "lesson_id": item.id,
                                                 "flow_name": None,
                                                 "flow_id": None,
+                                                "class_id": item.class_id
                                             })
                                         if item.teacher_id and subject and room:
                                             les.update({
@@ -503,6 +510,7 @@ def lesson_table_list():
                                                 "lesson_id": item.id,
                                                 "flow_name": None,
                                                 "flow_id": None,
+                                                "class_id": item.class_id
                                             })
             day_info["rooms"].append(room_info)
         lesson_list.append(day_info)

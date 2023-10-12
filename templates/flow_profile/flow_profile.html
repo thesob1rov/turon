@@ -1,0 +1,171 @@
+{% extends 'admin/index.html' %}
+{% block title %}patok{% endblock %}
+{% block css %}
+
+    <link rel="stylesheet" href="../../static/css/class_profile/sinf.min.css">
+{% endblock %}
+
+{% block section %}
+    <section class="main">
+        <div class="main_box">
+            <div class="main_profile">
+                <div class="main_img">
+                    <div class="main_picture">
+                        <img src="" alt="">
+                        <div class="top"><i class="fa-solid fa-image"></i></div>
+                    </div>
+                    <h1>{{ flow.name }}</h1>
+                </div>
+                <div class="icon_img_i"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+            </div>
+            <div class="main_about">
+                <div class="div">
+                    <div class="main_about_information">Nomi: <span>{{ flow.name }}</span></div>
+                    <div class="main_about_information">O’quvchi soni: <span>{{ students }}</span></div>
+                    <div class="main_about_information">O’qituvchi:
+                        <span>{{ flow.teacher.user.name }} {{ flow.teacher.user.surname }}</span></div>
+                    <div class="main_about_information">Tug'ilgan kuni: <span>{{ flow.teacher.user.birth_date }}</span>
+                    </div>
+                </div>
+                <div class="main_table">
+                    <div><span>O'quvchilar ro'yhati</span></div>
+                    <table>
+                        {% for cl in flow.students %}
+                            <tr>
+                                <td><span>{{ loop.index }}</span></td>
+                                <td>
+                                    <a href="{{ url_for("student_profile", student_id=cl.user.id) }}">{{ cl.user.name }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for("student_profile", student_id=cl.user.id) }}">{{ cl.user.surname }}</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="change">
+            <div class="change_box">
+                <div class="change_profile">
+                    <div class="change_img">
+                        <div class="main_picture">
+                            <img src="" alt="">
+                            <div class="top"><i class="fa-solid fa-image"></i></div>
+                        </div>
+                        <h1>{{ flow.name }}</h1>
+                    </div>
+                </div>
+                <div class="change_about">
+                    <div class="div">
+                        <form action="{{ url_for("edit_flow", flow_id=flow.id) }}" method="post">
+                            <input type="text" value="{{ flow.name }}" name="name">
+                            <select name="teacher">
+                                <option value="{{ flow.teacher.id }}">{{ flow.teacher.user.name }} {{ flow.teacher.user.surname }}</option>
+                                {% for teacher in teachers %}
+                                    <option value="{{ teacher.id }}">{{ teacher.user.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <button class="btn">Change</button>
+                        </form>
+                    </div>
+                    <div class="change_table">
+                        <div class="index">
+                            <div class="title">O'quvchilar ro'yxati</div>
+                            <div>
+                                <div class="delete_btn"><i class="fa-solid fa-trash"></i></div>
+                                <div class="exchange"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+                                <button class="move">Move</button>
+                            </div>
+                        </div>
+                        <table>
+                            {% for cl in flow.students %}
+                                <tr>
+                                    <td><span>{{ loop.index }}</span></td>
+                                    <td>{{ cl.user.name }}</td>
+                                    <td>{{ cl.user.surname }}</td>
+                                    <td class="x xx"><i class="fa-solid fa-xmark" data-id="{{ cl.id }}"
+                                                        data-flow_id="{{ flow.id }}"></i></td>
+                                    <td class="check"><input type="checkbox" data-id="{{ cl.id }}"></td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="change_overlay">
+            <div class="change_overlay_box">
+                <div class="form">
+                    <select name="" id="" class="delete_type">
+                        <option value="in_class">Delete student in class</option>
+                        <option value="all">Delete student in class and all</option>
+                    </select>
+                    <input type="text" placeholder="Sabab" class="reason">
+                    <button class="change_overlay_btn">Add</button>
+                </div>
+            </div>
+        </div>
+        <div class="add_background">
+            <div class="add">
+                <div class="names">
+                    <div class="names_list">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nomi</th>
+                                <th>Sinf rahbar</th>
+                                <th>O'quvchilar</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for flow in flows %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ flow.name }}</td>
+                                    <td>{{ flow.teacher.user.name }}{{ flow.teacher.user.surname }}</td>
+                                    <td>{{ flow.students|length }}</td>
+                                    <td><input class="radio" type="radio" name="radio" data-id="{{ flow.id }}"></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <button class="send_class" data-id="{{ flow.id }}">Send</button>
+        </div>
+        <div class="ellipsis_overlay">
+            <div id="change" class="ellipsis_overlay_box change_btn">
+                <i class="fa-solid fa-pen i"></i>
+                <div>Change</div>
+            </div>
+
+
+            <div class="ellipsis_overlay_box delete_btn_class" data-id="{{ flow.id }}">
+                <i class="fa-regular fa-trash-can"></i>
+                <div>Delete</div>
+            </div>
+        </div>
+    </section>
+    <div class="change_overlay2">
+        <div class="change_overlay2_box">
+            <div class="form">
+                <select name="" id="" class="delete_type_class">
+                    <option value="in_class">Delete to news students</option>
+                    <option value="all">Delete student in all</option>
+                </select>
+                <input type="text" placeholder="Sabab" class="reason_class">
+                <button class="delete_class" data-id="{{ flow.id }}">Add</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="/static/js/flow_profile/flow_profile.js"></script>
+{% endblock %}
+

@@ -681,3 +681,119 @@ def join_flow():
         group.students.append(student)
         db.session.commit()
     return jsonify()
+
+
+@app.route('/flow_profile/<int:flow_id>', methods=["POST", "GET"])
+def flow_profile(flow_id):
+    error = check_session()
+    if error:
+        return redirect(url_for('home'))
+    user = current_user()
+    flow = Flow.query.filter(Flow.id == flow_id).first()
+    students = len(flow.students)
+    teachers = Teacher.query.all()
+    about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
+    news = TypeInfo.query.filter(TypeInfo.id == 2).first()
+    jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
+    about = Info.query.filter(Info.type_id == about_us.id).order_by(Info.id).first()
+    about_id = 0
+    if about:
+        about_id = about.id
+    flows = Flow.query.all()
+    class_types = ClassType.query.order_by(ClassType.id).all()
+    print(flow.teacher)
+    return render_template("flow_profile/flow_profile.html", news=news, about_id=about_id, about_us=about_us,
+                           flow=flow, students=students, teachers=teachers, user=user, jobs=jobs, about=about,
+                           flows=flows, class_types=class_types)
+
+
+@app.route('/flows', methods=["POST", "GET"])
+def flows():
+    error = check_session()
+    if error:
+        return redirect(url_for('home'))
+    user = current_user()
+    about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
+    about_id = 0
+    filter_info = []
+    if about_us:
+        about_id = about_us.id
+    teachers = Teacher.query.all()
+    page = request.args.get('page')
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+    about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
+    news = TypeInfo.query.filter(TypeInfo.id == 2).first()
+    jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
+    about = Info.query.filter(Info.type_id == about_us.id).order_by(Info.id).first()
+    about_id = 0
+    if about:
+        about_id = about.id
+    # students = Flow.query.filter(Class.deleted_classes == None)
+    students = Flow.query
+    pages = students.paginate(page=page, per_page=50)
+    student_count = Flow.query.count()
+    languages = LanguageType.query.all()
+    return render_template('flows/flows.html', user=user, about_us=about_us, about_id=about_id, teachers=teachers,
+                           page=page, pages=pages, news=news, jobs=jobs, student_count=student_count,
+                           languages=languages)
+
+
+@app.route('/edit_flow/<int:flow_id>', methods=["POST", "GET"])
+def edit_flow(flow_id):
+    error = check_session()
+    if error:
+        return redirect(url_for('home'))
+    flow = Flow.query.filter(Flow.id == flow_id).first()
+    if request.method == "POST":
+        name = request.form.get("name")
+        teacher_id = request.form.get("teacher")
+        Flow.query.filter(Flow.id == flow_id).update({
+            "name": name,
+            "teacher_id": teacher_id
+        })
+        db.session.commit()
+    return redirect(url_for("flow_profile", flow_id=flow.id))
+
+
+@app.route('/transfer_students_in_flow', methods=["POST", "GET"])
+def transfer_students_in_flow():
+    info = request.get_json()["info_flow"]
+    print(info)
+    for student_id in info["students"]:
+        student = Student.query.filter(Student.id == student_id).first()
+        old_flow = Flow.query.filter(Flow.id == info["old_flow_id"]).first()
+        new_flow = Flow.query.filter(Flow.id == info["flow_id"]).first()
+        old_flow.students.remove(student)
+        db.session.commit()
+        new_flow.students.append(student)
+        db.session.commit()
+    return jsonify()
+
+
+@app.route('/delete_student_in_flow', methods=["POST"])
+def delete_student_in_flow():
+    info = request.get_json()["info"]
+    flow = Flow.query.filter(Flow.id == info['flow_id']).first()
+    student = Student.query.filter(Student.id == info['student_id']).first()
+    flow.students.remove(student)
+    db.session.commit()
+    print("in_class")
+    return jsonify()
+
+
+@app.route('/delete_flow', methods=["POST", "GET"])
+def delete_flow():
+    info = request.get_json()["info"]
+    flow = Flow.query.filter(Flow.id == info['flow_id']).first()
+    if flow.students:
+        for student in flow.students:
+            flow.students.remove(student)
+            db.session.commit()
+        db.session.delete(flow)
+        db.session.commit()
+    else:
+        db.session.commit()
+    return jsonify()

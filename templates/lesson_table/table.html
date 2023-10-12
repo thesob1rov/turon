@@ -6,111 +6,73 @@
 {% block section %}
     <section class="main">
         <div class="main_select">
-            <select name="" id="">
-                <option value="">Hafta kunlari</option>
+            <select name="" id="" class="select">
+                {% for day in days %}
+                    <option value="{{ day.name }}">{{ day.name }}</option>
+                {% endfor %}
             </select>
             <div class="main_btns">
                 <button id="patok">Patok</button>
                 <button id="sinf">Sinf</button>
             </div>
         </div>
-        <div class="main_table">
-            <table>
-                <thead>
-                <tr>
-                    <th rowspan="2">Xonalar nomi</th>
-                    {% for time in times %}
-                        <th>{{ time.start }} : {{ time.end }}</th>
+        {% for lessons in lesson_list %}
+            <div class="main_table {{ lessons["day_name"] }}">
+                <table>
+                    <thead>
+                    <tr>
+                        <th rowspan="2">Xonalar nomi</th>
+                        {% for time in times %}
+                            <th>{{ time.start }} : {{ time.end }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for room in lessons["rooms"] %}
+                        <tr>
+                            <td>{{ room["room_name"] }}</td>
+                            {% for lesson in room["lessons"] %}
+
+                                {% if lesson["lesson_type"] == "flow" %}
+                                    <td class="flow_td">
+                                        <a href="{{ url_for("flow_profile", flow_id=lesson["flow_id"]) }}">
+                                            {% if lesson["teacher_name"] %}
+                                                <p class="flow_p">{{ lesson["teacher_name"] }}</p>
+                                            {% endif %}
+                                            {% if lesson["subject_name"] %}
+                                                <p class="flow_p">{{ lesson["subject_name"] }}</p>
+                                            {% endif %}
+                                            {% if lesson["flow_name"] %}
+                                                <p class="flow_p">{{ lesson["flow_name"] }}</p>
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                {% else %}
+                                    {% if lesson["lesson_type"] == "simple" %}
+                                        <td class="simple_td">
+                                            <a href="{{ url_for("class_profile", class_id=lesson["class_id"]) }}">
+                                                {% if lesson["teacher_name"] %}
+                                                    <p class="simple_p">{{ lesson["teacher_name"] }}</p>
+                                                {% endif %}
+                                                {% if lesson["subject_name"] %}
+                                                    <p class="simple_p">{{ lesson["subject_name"] }}</p>
+                                                {% endif %}
+                                            </a>
+                                        </td>
+                                    {% else %}
+                                        <td></td>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
                     {% endfor %}
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Lorem</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Lorem</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Lorem</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Lorem</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Lorem</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Lorem</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Lorem</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
     </section>
+{% endblock %}
+
+{% block js %}
+    <script src="../../static/js/lesson_table/lesson_table.js"></script>
 {% endblock %}

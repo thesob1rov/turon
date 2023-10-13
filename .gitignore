@@ -2,3 +2,4 @@ template2
 .idea
 venv
 __pycache__/
+migrations

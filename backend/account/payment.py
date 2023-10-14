@@ -467,7 +467,8 @@ def search_pay():
 @app.route('/search_cost', methods=["POST", "GET"])
 def search_cost():
     search = string.capwords(request.get_json()["search"])
-    cost_all = Overhead.query.filter(Overhead.name.like('%' + search + '%'), Overhead.deleted_over_head==None).order_by(Overhead.id).all()
+    cost_all = Overhead.query.filter(Overhead.name.like('%' + search + '%'),
+                                     Overhead.deleted_over_head == None).order_by(Overhead.id).all()
     filtered_cost = []
     for cost in cost_all:
         info = {

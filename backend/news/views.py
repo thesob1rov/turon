@@ -9,7 +9,6 @@ from dateutil.rrule import rrule, DAILY
 from datetime import date
 from pprint import pprint
 
-
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
 
 
@@ -24,9 +23,9 @@ def checkFile(filename):
     return value and type_file
 
 
-now = datetime.now()
-year = now.year
-month = now.month
+# now = datetime.now()
+# year = now.year
+# month = now.month
 
 
 def update_dates():
@@ -118,7 +117,6 @@ def change_status():
 
 @app.route("/edit_news/<int:info_id>", methods=["POST"])
 def edit_news(info_id):
-
     user = current_user()
     error = check_session()
     if error:

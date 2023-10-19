@@ -4,8 +4,6 @@ from datetime import datetime
 from flask_paginate import Pagination, get_page_args
 
 
-# test
-
 @app.route('/collection')
 def collection():
     """

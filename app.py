@@ -38,6 +38,7 @@ from backend.sinf.routes import *
 from backend.subjects.views import *
 from backend.contract.views import *
 from backend.account.payment import *
+from backend.account.account import *
 from backend.room.view import *
 from backend.timetable.view import *
 

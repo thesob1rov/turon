@@ -45,6 +45,8 @@ class Teacher(db.Model):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("user.id"))
     subject_id = Column(Integer, ForeignKey("subject.id"))
+    salary_percentage = Column(Integer)
+    salary_type = Column(Integer, ForeignKey("teacher_salary_type.id"))
     classes = relationship("Class", backref="teacher", secondary="teacher_class", order_by="Class.id")
     rooms = relationship("Room", backref="teacher", order_by="Room.id")
     flows = relationship("Flow", backref="teacher", order_by="Flow.id")
@@ -400,3 +402,26 @@ db.Table("time_table_day_lessons",
          Column("time_table_day_id", Integer, ForeignKey("time_table_day.id")),
          Column("daily_table_id", Integer, ForeignKey("daily_table.id"))
          )
+
+
+class TeacherSalaryType(db.Model):
+    id = Column(Integer, primary_key=True)
+    __tablename__ = "teacher_salary_type"
+    type_name = Column(String)
+    salary = Column(Integer)
+    teacher = relationship("Teacher", backref="teacher_salary_type", order_by="Teacher.id")
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class TeacherSalary(db.Model):
+    id = Column(Integer, primary_key=True)
+    __tablename__ = "teacher_salary"
+    teacher_id = Column(Integer)
+    salary = Column(Integer)
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()

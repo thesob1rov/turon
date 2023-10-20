@@ -5,6 +5,11 @@ from backend.timetable.timetable_functions import *
 
 @app.route('/creat_timetable/<int:class_id>', methods=["POST", "GET"])
 def creat_timetable(class_id):
+    """
+    timetable yaratiladigan page sinfni ichidan
+    :param class_id: kirilgan classni id si
+    :return: timetable objectlarini yuvoradi
+    """
     # check_session()
     user = User.query.filter(User.id == 1).first()
     # if not user:
@@ -132,6 +137,10 @@ def creat_timetable(class_id):
 
 @app.route('/timetables', methods=["POST", "GET"])
 def timetables():
+    """
+    timetable yaratiladigan page
+    :return: timetable objectlari yuvoriladi
+    """
     user = User.query.filter(User.id == 1).first()
     # if not user:
     #     return redirect(url_for('home'))
@@ -264,6 +273,10 @@ def timetables():
 
 @app.route('/creat_table', methods=["POST"])
 def creat_table():
+    """
+    dars jadali yaratiladigan finksiya
+    :return: dars jadvali yaralishi uchun teaherni telshiradi check_teacher_timetable funksiyasiga ma'lumotalni yovoradi
+    """
     info = request.get_json()["info"]
     day = TimeTableDay.query.filter(TimeTableDay.id == info["day_id"]).first()
     teacher = Teacher.query.filter(Teacher.id == info["teacher_id"]).first()
@@ -280,6 +293,10 @@ def creat_table():
 
 @app.route('/delete_item_in_lesson', methods=["POST", "GET"])
 def delete_item_in_lesson():
+    """
+    darslikdan teacher xona yoki subjectni optashidigan funksiya
+    :return:
+    """
     info = request.get_json()["info"]
     time_table_day = TimeTableDay.query.filter(TimeTableDay.id == info["time_table_day_id"]).first()
     if info["text"] == "room":
@@ -310,6 +327,10 @@ def delete_item_in_lesson():
 
 @app.route('/flow_timetable', methods=["POST", "GET"])
 def flow_timetable():
+    """
+    patok yaratildigan page
+    :return:
+    """
     user = User.query.filter(User.id == 1).first()
     # if not user:
     #     return redirect(url_for('home'))
@@ -334,6 +355,10 @@ def flow_timetable():
 
 @app.route('/creat_flow_timetable', methods=["POST", "GET"])
 def creat_flow_timetable():
+    """
+    patok yaratadi
+    :return: patok uchun teacherni voxtini tekshiradigan funksiyaga yuvoradi
+    """
     info = request.get_json()["info"]
     return jsonify({
         "status": check_teacher_for_flow_timetable(day_id=info["day_id"],
@@ -342,17 +367,15 @@ def creat_flow_timetable():
     })
 
 
-# return jsonify({
-#     "status": add_flow_timetable(day_id=info["day_id"],
-#                                  lesson_time_id=info["lesson_time"], room_id=info["room_id"],
-#                                  lesson_id=info["lesson_id"], flow_id=info["flow_id"])
-# })
 
 
 @app.route('/delete_flow_item_in_lesson', methods=["POST", "GET"])
 def delete_flow_item_in_lesson():
+    """
+    patokdan darsligidan patok yoki xonani optashidigan funksiya
+    :return:
+    """
     info = request.get_json()["info"]
-    print(info)
     time_table_day = TimeTableDay.query.filter(TimeTableDay.id == info["time_table_day_id"]).first()
     if info["text"] == "room":
         DailyTable.query.filter(DailyTable.id == info["lesson_id"]).update({
@@ -377,6 +400,10 @@ def delete_flow_item_in_lesson():
 
 @app.route('/lesson_table', methods=["POST", "GET"])
 def lesson_table():
+    """
+    tayyor dars jadvalini korish uchun page
+    :return:
+    """
     user = User.query.filter(User.id == 1).first()
     # if not user:
     #     return redirect(url_for('home'))

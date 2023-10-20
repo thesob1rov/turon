@@ -11,9 +11,15 @@
                     <option value="{{ day.name }}">{{ day.name }}</option>
                 {% endfor %}
             </select>
-            <div class="main_btns">
-                <button id="patok">Patok</button>
-                <button id="sinf">Sinf</button>
+            <div class="right_nav">
+
+                <div class="main_btns">
+                    <button id="patok">Patok</button>
+                    <button id="sinf">Sinf</button>
+                </div>
+                <a href="{{ url_for("timetables") }}" style="margin-top: 10px; align-self: flex-end">
+                    <button >Change</button>
+                </a>
             </div>
         </div>
         {% for lessons in lesson_list %}

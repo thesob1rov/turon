@@ -85,4 +85,9 @@ html {
   display: flex;
 }
 
+.right_nav {
+  display: flex;
+  flex-direction: column;
+}
+
 /*# sourceMappingURL=table.css.map */

@@ -3,6 +3,17 @@ from backend.settings.settings import *
 
 
 def check_teacher_timetable(teacher_id, day_id, lesson_time_id, room_id, subject_id, class_id, lesson_id):
+    """
+    dars jadvalini yaratish uchun teacherni tekshiradigan funksiya
+    :param teacher_id: teacherni id si
+    :param day_id: kuni id si
+    :param lesson_time_id: dars voxtini id is
+    :param room_id: xonani id si
+    :param subject_id: fanlani id si
+    :param class_id: dinf id si
+    :param lesson_id: dars id si toldirilmagan darslik bosa oshani id si keladi
+    :return: agar teacher etilgan payt bosh bosa kegin check_room_timetable funksiyasigi yuvoradi u funksiya room ni tekshiradi
+    """
     teacher = Teacher.query.filter(Teacher.id == teacher_id).first()
     if teacher.daily_table:
         for daily_table in teacher.daily_table:
@@ -36,6 +47,18 @@ def check_teacher_timetable(teacher_id, day_id, lesson_time_id, room_id, subject
 
 
 def check_room_timetable(teacher_id, day_id, lesson_time_id, room_id, subject_id, class_id, lesson_id):
+    """
+    agar dars jadvaliga yuvorilgan teacherni voxti bosa kegn shu funksiya ishlidi roomlani tekshirib chiqadi voxtini
+    :param teacher_id: teacherni id si
+    :param day_id: kuni id si
+    :param lesson_time_id: dars voxtini id is
+    :param room_id: xonani id si
+    :param subject_id: fanlani id si
+    :param class_id: dinf id si
+    :param lesson_id: dars id si toldirilmagan darslik bosa oshani id si keladi
+    :return: agar roomni voxti bosa darslikni saqlab olish uchun add_new_daily_table funksiyasiga yuvoradi yoki toldirilmagan darslik bosa uni
+     update_old_time_table funksiyasiga yuvoradi va darslkni yangilidi
+    """
     room = Room.query.filter(Room.id == room_id).first()
     status = True
     if room.daily_table:
@@ -88,6 +111,17 @@ def check_room_timetable(teacher_id, day_id, lesson_time_id, room_id, subject_id
 
 
 def add_new_daily_table(teacher_id, day_id, lesson_time_id, room_id, subject_id, class_id, lesson_id):
+    """
+    darslikni qoshadi
+    :param teacher_id: teacherni id si
+    :param day_id: kuni id si
+    :param lesson_time_id: dars voxtini id is
+    :param room_id: xonani id si
+    :param subject_id: fanlani id si
+    :param class_id: dinf id si
+    :param lesson_id: dars id si toldirilmagan darslik bosa oshani id si keladi
+    :return: darslik qoshgani xaqida xabar yuvoradi
+    """
     day = TimeTableDay.query.filter(TimeTableDay.id == day_id).first()
     add = DailyTable(teacher_id=teacher_id, subject_id=subject_id, room_id=room_id, class_id=class_id,
                      lesson_time=lesson_time_id, day_id=day_id)
@@ -103,6 +137,17 @@ def add_new_daily_table(teacher_id, day_id, lesson_time_id, room_id, subject_id,
 
 
 def update_old_time_table(teacher_id, day_id, lesson_time_id, room_id, subject_id, class_id, lesson_id):
+    """
+    darslikni yangilidigan funksiya
+    :param teacher_id: teacherni id si
+    :param day_id: kuni id si
+    :param lesson_time_id: dars voxtini id is
+    :param room_id: xonani id si
+    :param subject_id: fanlani id si
+    :param class_id: dinf id si
+    :param lesson_id: dars id si toldirilmagan darslik bosa oshani id si keladi
+    :return: darslik yangilangani xaqida xabar yuvoradi
+    """
     DailyTable.query.filter(DailyTable.id == lesson_id).update({
         "room_id": room_id,
         "subject_id": subject_id,
@@ -117,6 +162,10 @@ def update_old_time_table(teacher_id, day_id, lesson_time_id, room_id, subject_i
 
 
 def flow_student__table_information():
+    """
+    patok yaratilidigan page uchun objectlani yuvoradigan funksiya
+    :return: tayyor listni yuvoradi
+    """
     days = TimeTableDay.query.all()
     times = TimeList.query.order_by(TimeList.id).all()
     day_list = []
@@ -177,6 +226,15 @@ def flow_student__table_information():
 
 
 def check_teacher_for_flow_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_id):
+    """
+    patok yaratish uchun teacherni voxtini tekshiradi
+    :param flow_id: patok id si
+    :param day_id: kun id si
+    :param room_id: xonani id si
+    :param lesson_time_id: voxtni id si
+    :param lesson_id: toldirilmagan darslik bosa uni id si
+    :return: agar teacherni voxti bosa check_students_for_flow_timetable funksiyasiga yuvoradi u funksiya studentlani voxtini tekshiradi
+    """
     flow = Flow.query.filter(Flow.id == flow_id).first()
     teacher = Teacher.query.filter(Teacher.id == flow.teacher_id).first()
     if teacher.daily_table:
@@ -211,6 +269,15 @@ def check_teacher_for_flow_timetable(flow_id, day_id, room_id, lesson_time_id, l
 
 
 def check_students_for_flow_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_id):
+    """
+    studentlani voxtini tekshiradgan funksiya
+    :param flow_id: patok id si
+    :param day_id: kun id si
+    :param room_id: xonani id si
+    :param lesson_time_id: voxtni id si
+    :param lesson_id: toldirilmagan darslik bosa uni id si
+    :return: agar studentlani voxti bosa check_flow_room_timetable funksiyasiga yuvoradi u funksiya roomni voxtini tekshiradi
+    """
     flow = Flow.query.filter(Flow.id == flow_id).first()
     status = True
     filter_time = TimeList.query.filter(TimeList.id == lesson_time_id).first()
@@ -287,13 +354,19 @@ def check_students_for_flow_timetable(flow_id, day_id, room_id, lesson_time_id, 
 
 
 def check_flow_room_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_id):
-    print(lesson_id, "asc")
+    """
+    bu funksiya roomni voxtini tekshiradi
+    :param flow_id: patok id si
+    :param day_id: kun id si
+    :param room_id: xonani id si
+    :param lesson_time_id: voxtni id si
+    :param lesson_id: toldirilmagan darslik bosa uni id si
+    :return: agar roomni voxti bosa add_flow_timetable yuvoradi yoki update_old_flow_timetable funksiyasiga yuvoriladi
+    """
     room = Room.query.filter(Room.id == room_id).first()
     status = True
-    print(room.daily_table)
     if room.daily_table:
         for daily_table in room.daily_table:
-            print(daily_table.day_id, int(day_id), daily_table.lesson_time, int(lesson_time_id))
             if daily_table.day_id == int(day_id) and daily_table.lesson_time == int(lesson_time_id):
                 if lesson_id == "":
                     status = False
@@ -335,6 +408,15 @@ def check_flow_room_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_i
 
 
 def add_flow_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_id):
+    """
+    patoklaga dars jadvalini saqlash uchun funksiyasi
+    :param flow_id: patok id si
+    :param day_id: kun id si
+    :param room_id: xonani id si
+    :param lesson_time_id: voxtni id si
+    :param lesson_id: toldirilmagan darslik bosa uni id si
+    :return: darslik saqlangani xaqida xabar jonatadi
+    """
     day = TimeTableDay.query.filter(TimeTableDay.id == day_id).first()
     add = DailyTable(flow_id=flow_id, day_id=day_id, lesson_time=lesson_time_id, room_id=room_id, flow_lesson=True)
     db.session.add(add)
@@ -349,6 +431,15 @@ def add_flow_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_id):
 
 
 def update_old_flow_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_id):
+    """
+    darslikni yangilash uchun funksiyasi
+    :param flow_id: patok id si
+    :param day_id: kun id si
+    :param room_id: xonani id si
+    :param lesson_time_id: voxtni id si
+    :param lesson_id: toldirilmagan darslik bosa uni id si
+    :return: darslikni yangilangani xaqida xabar beradi
+    """
     DailyTable.query.filter(DailyTable.id == lesson_id).update({
         "room_id": room_id,
         "flow_id": flow_id
@@ -362,6 +453,10 @@ def update_old_flow_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_i
 
 
 def lesson_table_list():
+    """
+    dars jadvalini yaratadigan pageni objectlarni yuvoradigan funksiya
+    :return: tayyor malumotlani yuvoradi
+    """
     lesson_list = []
     days = TimeTableDay.query.all()
     rooms = Room.query.all()

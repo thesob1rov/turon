@@ -3,7 +3,6 @@ from backend.models.basic_model import *
 from backend.settings.settings import *
 
 
-
 @app.route('/about_front/<int:type_id>/<int:info_id>')
 def about_front(type_id, info_id):
     error = check_session()
@@ -61,8 +60,6 @@ def get_about_profile(type_id, info_id):
         about_id = about.id
     return render_template('about_us/index.html', type_id=type_id, infos=infos, current_info=current_info, news=news,
                            about_us=about_us, about_id=about_id, jobs=jobs, user=user)
-
-
 
 
 @app.route('/infos/<int:type_id>', methods=['POST', 'GET'])

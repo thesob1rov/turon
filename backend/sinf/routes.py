@@ -6,6 +6,11 @@ import datetime
 
 @app.route('/classes', methods=["POST", "GET"])
 def classes():
+
+    """
+    xamma siniflar chiqib turadigan page
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -93,7 +98,6 @@ def filter_classes():
                         "language": group.language.name
                     }
                     filter_classes.append(filtered)
-        print(filter_classes)
     else:
         if info['class_number'] == 'sinflar':
             classes = Class.query.filter(Class.language_type == info['language_type'],
@@ -148,7 +152,6 @@ def filter_classes():
                         "language": group.language.name
                     }
                     filter_classes.append(filtered)
-        print(filter_classes)
     return jsonify({
         "filter_classes": filter_classes
     })
@@ -156,6 +159,10 @@ def filter_classes():
 
 @app.route('/creat_class', methods=["POST", "GET"])
 def creat_class():
+    """
+    sinif yaratish
+    :return:
+    """
     class_info = request.get_json()['class_info']
     class_name = class_info['name']
     class_number = class_info['class_number']
@@ -173,19 +180,23 @@ def creat_class():
         print('bu teacherni classi bor')
     students = class_info['students']
     for student in students:
-        print(student)
+
         filter_student = Student.query.filter(Student.user_id == int(student)).first()
         if not filter_student.classes:
             filter_student.classes.append(add_class)
             db.session.commit()
         else:
             print('bu studentni classi bor ')
-    print(class_name)
     return jsonify()
 
 
 @app.route('/class_profile/<int:class_id>', methods=["POST", "GET"])
 def class_profile(class_id):
+    """
+    sinifi profili
+    :param class_id: kirilgan sinifi id si
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -209,6 +220,11 @@ def class_profile(class_id):
 
 @app.route('/edit_class/<int:class_id>', methods=["POST", "GET"])
 def edit_class(class_id):
+    """
+    sinifi malumotlarini ozgartirish
+    :param class_id: kirilgan sinifi id si
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -245,6 +261,10 @@ def edit_class(class_id):
 
 @app.route('/delete_student_in_class', methods=["POST"])
 def delete_student_in_class():
+    """
+    studentlani sinifdan ochirish
+    :return:
+    """
     info = request.get_json()["info"]
     if info["delete_type"] == "in_class":
         group = Class.query.filter(Class.id == info['class_id']).first()
@@ -254,7 +274,7 @@ def delete_student_in_class():
         add = DeletedStudentForClasses(student_id=info['student_id'], class_id=info['class_id'], reason=info['reason'])
         db.session.add(add)
         db.session.commit()
-        print("in_class")
+
     else:
         group = Class.query.filter(Class.id == info['class_id']).first()
         student = Student.query.filter(Student.id == info['student_id']).first()
@@ -266,15 +286,18 @@ def delete_student_in_class():
         add = DeletedStudentForClasses(student_id=info['student_id'], class_id=info['class_id'], reason=info['reason'])
         db.session.add(add)
         db.session.commit()
-        print("all")
-    print(info['class_id'])
+
     return jsonify()
 
 
 @app.route('/transfer_students_in_class', methods=["POST", "GET"])
 def transfer_students_in_class():
+    """
+    studentlani sinifdan sinifga otqazish
+    :return:
+    """
     info = request.get_json()["info_class"]
-    print(info)
+
     for student_id in info["students"]:
         student = Student.query.filter(Student.id == student_id).first()
         old_class = None
@@ -290,6 +313,10 @@ def transfer_students_in_class():
 
 @app.route('/delete_class', methods=["POST", "GET"])
 def delete_class():
+    """
+    sinifi ochirish
+    :return:
+    """
     info = request.get_json()["info"]
     group = Class.query.filter(Class.id == info['class_id']).first()
     if group.student:
@@ -303,7 +330,7 @@ def delete_class():
                 del_class = DeletedClasses(class_id=group.id)
                 db.session.add(del_class)
                 db.session.commit()
-                print("in_class")
+
         else:
             for student in group.student:
                 student.classes.remove(group)
@@ -317,7 +344,7 @@ def delete_class():
                 del_class = DeletedClasses(class_id=group.id)
                 db.session.add(del_class)
                 db.session.commit()
-            print("all")
+
     else:
         del_class = DeletedClasses(class_id=group.id)
         db.session.add(del_class)
@@ -327,6 +354,11 @@ def delete_class():
 
 @app.route('/class_subjects/<int:class_id>', methods=["POST", "GET"])
 def class_subjects(class_id):
+    """
+    sinfni fanlari
+    :param class_id: kirilgan sinfni id si
+    :return:
+    """
     check_session()
     user = current_user()
     if not user:
@@ -347,13 +379,15 @@ def class_subjects(class_id):
 
 @app.route('/add_class_subjects', methods=["POST", "GET"])
 def add_class_subjects():
+    """
+    sinfga fan qoshish yoki optashash
+    :return:
+    """
     info = request.get_json()["info"]
-    print(info)
+
     classs = Class.query.filter(Class.id == int(info["class_id"])).first()
-    print(classs)
     for subject in info["subjects"]:
         filter_subject = Subject.query.filter(Subject.id == int(subject)).first()
-        print(filter_subject)
         classs.subjects.append(filter_subject)
         db.session.commit()
     if info["remove_subject"]:
@@ -366,6 +400,10 @@ def add_class_subjects():
 
 @app.route('/flow', methods=["POST", "GET"])
 def flow():
+    """
+    patok yaratish yoki patokga qoshish uchun page
+    :return:
+    """
     add_lesson_time()
     discount_type()
     add_class_type()
@@ -376,7 +414,7 @@ def flow():
     if error:
         return redirect(url_for('home'))
     user = current_user()
-    print(user.id)
+
     about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
     about_id = 0
     filter_info = []
@@ -391,7 +429,7 @@ def flow():
     student_count = Student.query.count()
     students = Student.query.filter(Student.classes, Student.deleted_student == None).order_by(Student.id)
     pages = students.paginate(page=page, per_page=50)
-    print(pages)
+
     # for page in pages.iter_count
     groups = Flow.query.all()
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
@@ -410,8 +448,12 @@ def flow():
 
 @app.route('/filter_student_for_flow', methods=["POST"])
 def filter_student_for_flow():
+    """
+    patokda bor studentlani filteri
+    :return: filterlangan studentlani listi
+    """
     info = request.get_json()["info"]
-    print(info)
+
     filter_student = []
     if info["search"] == "":
         if info['language_type'] == "all":
@@ -424,7 +466,7 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
+
 
                             filtered = {
                                 "id": user.id,
@@ -448,7 +490,7 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
+
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -461,7 +503,6 @@ def filter_student_for_flow():
                                 "language": student.language.name
                             }
                             filter_student.append(filtered)
-            print(filter_student)
         else:
             if info['class_number'] == 'sinflar':
                 students = Student.query.filter(Student.classes,
@@ -474,7 +515,7 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
+
 
                             filtered = {
                                 "id": user.id,
@@ -499,7 +540,7 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
+
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -512,7 +553,7 @@ def filter_student_for_flow():
                                 "language": student.language.name
                             }
                             filter_student.append(filtered)
-            print(filter_student)
+
     else:
         if info['language_type'] == "all":
             if info['class_number'] == 'sinflar':
@@ -526,7 +567,7 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
+
 
                             filtered = {
                                 "id": user.id,
@@ -552,7 +593,7 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
+
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -565,7 +606,7 @@ def filter_student_for_flow():
                                 "language": student.language.name
                             }
                             filter_student.append(filtered)
-            print(filter_student)
+
         else:
             if info['class_number'] == 'sinflar':
                 students = Student.query.filter(Student.classes,
@@ -580,7 +621,7 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
+
 
                             filtered = {
                                 "id": user.id,
@@ -607,7 +648,7 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
+
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -620,7 +661,6 @@ def filter_student_for_flow():
                                 "language": student.language.name
                             }
                             filter_student.append(filtered)
-            print(filter_student)
     return jsonify({
         "filter_student": filter_student
     })
@@ -628,6 +668,10 @@ def filter_student_for_flow():
 
 @app.route('/search_not_student_for_flow', methods=["POST", "GET"])
 def search_not_student_for_flow():
+    """
+    patokda yo'q studentlani qidirish
+    :return: filterlangan studentlani listi
+    """
     search = request.get_json()["search"]
     users = User.query
     users = users.filter(or_(User.name.like('%' + search + '%'), User.surname.like('%' + search + '%')))
@@ -655,6 +699,10 @@ def search_not_student_for_flow():
 
 @app.route('/creat_flow', methods=["POST", "GET"])
 def creat_flow():
+    """
+    patok yaratish
+    :return:
+    """
     class_info = request.get_json()['flow_info']
     class_name = class_info['name']
     subject_id = class_info["subject_id"]
@@ -664,16 +712,18 @@ def creat_flow():
     db.session.commit()
     students = class_info['students']
     for student in students:
-        print(student)
         filter_student = Student.query.filter(Student.user_id == int(student)).first()
         add_flow.students.append(filter_student)
         db.session.commit()
-    print(class_name)
     return jsonify()
 
 
 @app.route('/join_flow', methods=["POST", "GET"])
 def join_flow():
+    """
+    bor patokga student qoshish
+    :return:
+    """
     join_class = request.get_json()["join_class"]
     group = Flow.query.filter(Flow.id == join_class['class_id']).first()
     for st in join_class['students']:
@@ -685,6 +735,11 @@ def join_flow():
 
 @app.route('/flow_profile/<int:flow_id>', methods=["POST", "GET"])
 def flow_profile(flow_id):
+    """
+    patokni profili
+    :param flow_id: kirilgan patokni id si
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -701,7 +756,6 @@ def flow_profile(flow_id):
         about_id = about.id
     flows = Flow.query.all()
     class_types = ClassType.query.order_by(ClassType.id).all()
-    print(flow.teacher)
     return render_template("flow_profile/flow_profile.html", news=news, about_id=about_id, about_us=about_us,
                            flow=flow, students=students, teachers=teachers, user=user, jobs=jobs, about=about,
                            flows=flows, class_types=class_types)
@@ -709,6 +763,10 @@ def flow_profile(flow_id):
 
 @app.route('/flows', methods=["POST", "GET"])
 def flows():
+    """
+    patoklani listi
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -743,6 +801,11 @@ def flows():
 
 @app.route('/edit_flow/<int:flow_id>', methods=["POST", "GET"])
 def edit_flow(flow_id):
+    """
+    patokni ozgartirish
+    :param flow_id: kirilgan patokni id si
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -760,8 +823,12 @@ def edit_flow(flow_id):
 
 @app.route('/transfer_students_in_flow', methods=["POST", "GET"])
 def transfer_students_in_flow():
+    """
+    patokdan patokga studentlani otqazish
+    :return:
+    """
     info = request.get_json()["info_flow"]
-    print(info)
+
     for student_id in info["students"]:
         student = Student.query.filter(Student.id == student_id).first()
         old_flow = Flow.query.filter(Flow.id == info["old_flow_id"]).first()
@@ -775,17 +842,24 @@ def transfer_students_in_flow():
 
 @app.route('/delete_student_in_flow', methods=["POST"])
 def delete_student_in_flow():
+    """
+    patokdan studentlani ochirish
+    :return:
+    """
     info = request.get_json()["info"]
     flow = Flow.query.filter(Flow.id == info['flow_id']).first()
     student = Student.query.filter(Student.id == info['student_id']).first()
     flow.students.remove(student)
     db.session.commit()
-    print("in_class")
     return jsonify()
 
 
 @app.route('/delete_flow', methods=["POST", "GET"])
 def delete_flow():
+    """
+    patokni ochirish
+    :return:
+    """
     info = request.get_json()["info"]
     flow = Flow.query.filter(Flow.id == info['flow_id']).first()
     if flow.students:

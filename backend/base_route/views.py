@@ -74,7 +74,6 @@ def register():
         class_number = request.form.get("class_number")
         language = request.form.get("language")
         hashed = generate_password_hash(password=password, method="sha256")
-        print(day)
         datetime_str = f'{year}-{month}-{day}'
         datetime_object = datetime.datetime.strptime(datetime_str, '%Y-%m-%d')
         birth_year = year
@@ -96,7 +95,6 @@ def register():
                 months = f'{result_date.month}-1-{result_date.year}'
                 if not months in month_list:
                     month_list.append(months)
-            print(month_list)
         else:
             start = datetime.date(today.year, today.month, today.day)
             next_year = today.year + 1
@@ -106,9 +104,7 @@ def register():
                 months = f'{result_date.month}-1-{result_date.year}'
                 if not months in month_list:
                     month_list.append(months)
-        print(month_list)
         for month in month_list:
-            print('asc')
             data_object = datetime.datetime.strptime(month, '%m-%d-%Y')
             add = StudentMonthPayments(student_id=filter_student.id, month=data_object,
                                        class_price=filter_student.class_type.price,
@@ -179,7 +175,6 @@ def profile(user_id):
         birth_year = user.birth_date
         current_year = datetime.datetime.now()
         age = int(current_year.year) - int(birth_year.year)
-        print(birth_year.year)
         User.query.filter(User.id == user_id).update({
             "age": age
         })
@@ -226,7 +221,6 @@ def edit_profile(user_id):
                         months = f'{result_date.month}-1-{result_date.year}'
                         if not months in month_list:
                             month_list.append(months)
-                    print(month_list)
                 else:
                     start = datetime.date(today.year, today.month, today.day)
                     next_year = today.year + 1
@@ -236,9 +230,7 @@ def edit_profile(user_id):
                         months = f'{result_date.month}-1-{result_date.year}'
                         if not months in month_list:
                             month_list.append(months)
-                print(month_list)
                 for month in month_list:
-                    print('asc')
                     data_object = datetime.datetime.strptime(month, '%m-%d-%Y')
                     add = StudentMonthPayments(student_id=student.id, month=data_object,
                                                class_price=student.class_type.price,
@@ -257,7 +249,6 @@ def edit_profile(user_id):
             number = request.form.get("number")
             language_type = request.form.get("language_type")
             photo = request.files["photo"]
-            print(day)
             datetime_str = f'{year}-{month}-{day}'
             datetime_object = datetime.datetime.strptime(datetime_str, '%Y-%m-%d')
             folder = users_folder()

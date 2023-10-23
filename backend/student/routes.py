@@ -131,9 +131,8 @@ def language_type():
 
     for language in languages:
         filter = LanguageType.query.filter(LanguageType.name == language).first()
-        print(filter)
+
         if not filter:
-            print("add language")
             add = LanguageType(name=language)
             db.session.add(add)
             db.session.commit()
@@ -148,9 +147,8 @@ def account_type():
 
     for account_type in account_types:
         filter = AccountType.query.filter(AccountType.name == account_type).first()
-        print(filter)
+
         if not filter:
-            print("add language")
             add = AccountType(name=account_type)
             db.session.add(add)
             db.session.commit()
@@ -163,7 +161,6 @@ def discount_type():
     ]
     for discount_type in discount_types:
         filter = DiscountType.query.filter(DiscountType.name == discount_type).first()
-        print(filter)
         if not filter:
             add = DiscountType(name=discount_type)
             db.session.add(add)
@@ -188,6 +185,10 @@ def add_time_table_day():
 
 @app.route('/student', methods=["POST", "GET"])
 def student():
+    """
+    studentlani spiska page
+    :return:
+    """
     add_lesson_time()
     discount_type()
     add_class_type()
@@ -198,7 +199,6 @@ def student():
     if error:
         return redirect(url_for('home'))
     user = current_user()
-    print(user.id)
     about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
     about_id = 0
     filter_info = []
@@ -213,7 +213,6 @@ def student():
     student_count = Student.query.count()
     students = Student.query.filter(Student.classes == None, Student.deleted_student == None).order_by(Student.id)
     pages = students.paginate(page=page, per_page=50)
-    print(pages)
     # for page in pages.iter_count
     groups = Class.query.filter(Class.deleted_classes == None).all()
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
@@ -231,8 +230,12 @@ def student():
 
 @app.route('/filter_student', methods=["POST"])
 def filter_student():
+    """
+    yangi studentlani filteri
+    :return: filterlangan studentlani yuvoradi
+    """
     info = request.get_json()["info"]
-    print(info)
+
     filter_student = []
     if info["search"] == "":
         if info['language_type'] == "all":
@@ -245,8 +248,6 @@ def filter_student():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -269,7 +270,6 @@ def filter_student():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -282,7 +282,6 @@ def filter_student():
                                 "language": student.language.name
                             }
                             filter_student.append(filtered)
-            print(filter_student)
         else:
             if info['class_number'] == 'sinflar':
                 students = Student.query.filter(Student.classes == None,
@@ -295,8 +294,6 @@ def filter_student():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -320,7 +317,6 @@ def filter_student():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -333,7 +329,7 @@ def filter_student():
                                 "language": student.language.name
                             }
                             filter_student.append(filtered)
-            print(filter_student)
+
     else:
         if info['language_type'] == "all":
             if info['class_number'] == 'sinflar':
@@ -347,8 +343,6 @@ def filter_student():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -373,7 +367,6 @@ def filter_student():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -386,7 +379,7 @@ def filter_student():
                                 "language": student.language.name
                             }
                             filter_student.append(filtered)
-            print(filter_student)
+
         else:
             if info['class_number'] == 'sinflar':
                 students = Student.query.filter(Student.classes == None,
@@ -401,8 +394,6 @@ def filter_student():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -428,7 +419,6 @@ def filter_student():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -441,7 +431,7 @@ def filter_student():
                                 "language": student.language.name
                             }
                             filter_student.append(filtered)
-            print(filter_student)
+
     return jsonify({
         "filter_student": filter_student
     })
@@ -449,8 +439,11 @@ def filter_student():
 
 @app.route('/filter_student_old', methods=["POST"])
 def filter_student_old():
+    """
+    sinifi bor stduentlani filteri
+    :return: filterlangan sinifi bor studentlani listini yuvoradi
+    """
     info = request.get_json()["info"]
-    print(info)
     filter_student = []
     if info["search"] == "":
         if info['language_type'] == "all":
@@ -463,8 +456,6 @@ def filter_student_old():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -486,7 +477,6 @@ def filter_student_old():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -499,7 +489,7 @@ def filter_student_old():
                                 "language": student.language.name
                             }
                             filter_student.append(filtered)
-            print(filter_student)
+
         else:
             if info['class_number'] == 'sinflar':
                 students = Student.query.filter(Student.classes,
@@ -511,8 +501,6 @@ def filter_student_old():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -535,7 +523,6 @@ def filter_student_old():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -548,7 +535,7 @@ def filter_student_old():
                                 "language": student.language.name
                             }
                             filter_student.append(filtered)
-            print(filter_student)
+
     else:
         if info['language_type'] == "all":
             if info['class_number'] == 'sinflar':
@@ -562,8 +549,6 @@ def filter_student_old():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -587,7 +572,6 @@ def filter_student_old():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -600,7 +584,7 @@ def filter_student_old():
                                 "language": student.language.name
                             }
                             filter_student.append(filtered)
-            print(filter_student)
+
         else:
             if info['class_number'] == 'sinflar':
                 students = Student.query.filter(Student.classes,
@@ -614,8 +598,6 @@ def filter_student_old():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -640,7 +622,6 @@ def filter_student_old():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -653,7 +634,7 @@ def filter_student_old():
                                 "language": student.language.name
                             }
                             filter_student.append(filtered)
-            print(filter_student)
+
     return jsonify({
         "filter_student": filter_student
     })
@@ -661,9 +642,13 @@ def filter_student_old():
 
 @app.route('/get_students', methods=["GET"])
 def get_students():
+    """
+    xamma studentlani js ga yuvorish uchun funksiya
+    :return: stduentlani yuvoradi
+    """
     student_list = []
     students = Student.query.all()
-    print("hello")
+
     for student in students:
         users = User.query.filter(User.id == student.user_id).all()
         birth_year = student.user.birth_date
@@ -688,6 +673,11 @@ def get_students():
 
 @app.route('/student_profile/<int:student_id>', methods=["POST", "GET"])
 def student_profile(student_id):
+    """
+    student profili
+    :param student_id:
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -733,6 +723,10 @@ def not_in_class_student():
 
 @app.route('/join_class', methods=["POST", "GET"])
 def join_class():
+    """
+    bor siniflarga student qoshish
+    :return:
+    """
     join_class = request.get_json()["join_class"]
     group = Class.query.filter(Class.id == join_class['class_id']).first()
     for st in join_class['students']:
@@ -770,6 +764,10 @@ def join_class():
 
 @app.route('/edit_user_password', methods=["POST", "GET"])
 def edit_user_password():
+    """
+    user parolini ozgartiradi
+    :return:
+    """
     user = current_user()
     info = request.get_json()["info"]
     hashed = generate_password_hash(password=info, method="sha256")
@@ -782,6 +780,10 @@ def edit_user_password():
 
 @app.route('/edit_username', methods=["POST", "GET"])
 def edit_username():
+    """
+    userusernameni ozgartiradi
+    :return:
+    """
     user = current_user()
     info = request.get_json()["info"]
     User.query.filter(User.id == user.id).update({
@@ -793,6 +795,10 @@ def edit_username():
 
 @app.route('/old_student', methods=["POST", "GET"])
 def old_student():
+    """
+    sinifi bor studentlani pagesi
+    :return:
+    """
     user = current_user()
     error = check_session()
     if error:
@@ -826,6 +832,11 @@ def old_student():
 
 @app.route('/pdf_contract/<int:student_id>', methods=["POST", "GET"])
 def pdf_contract(student_id):
+    """
+    studentni pdf shartnomasi
+    :param student_id:
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -859,6 +870,10 @@ def pdf_contract(student_id):
 
 @app.route('/search_not_student_in_class', methods=["POST", "GET"])
 def search_not_student_in_class():
+    """
+    sinifi yo'q studentlani filterlash
+    :return:
+    """
     search = request.get_json()["search"]
     users = User.query
     users = users.filter(or_(User.name.like('%' + search + '%'), User.surname.like('%' + search + '%')))
@@ -889,6 +904,10 @@ def search_not_student_in_class():
 
 @app.route('/search_student_in_class', methods=["POST", "GET"])
 def search_student_in_class():
+    """
+    sinifi bor studentlani filterlash
+    :return:
+    """
     search = request.get_json()["search"]
     users = User.query
     users = users.filter(or_(User.name.like('%' + search + '%'), User.surname.like('%' + search + '%')))
@@ -920,6 +939,10 @@ def search_student_in_class():
 
 @app.route('/delete_student', methods=["POST", "GET"])
 def delete_student():
+    """
+    studentni ochirish
+    :return:
+    """
     id = request.get_json()["id"]
     add = DeletedStudent(student_id=id)
     db.session.add(add)
@@ -929,6 +952,10 @@ def delete_student():
 
 @app.route('/deleted_students', methods=["POST", "GET"])
 def deleted_students():
+    """
+    ochirilgan studentlar
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -959,6 +986,10 @@ def deleted_students():
 
 @app.route('/return_students', methods=["POST", "GET"])
 def return_students():
+    """
+    ochirilgan studentlani qaytarish
+    :return:
+    """
     id = request.get_json()["id"]
     DeletedStudent.query.filter(DeletedStudent.student_id == id).delete()
     db.session.commit()
@@ -967,6 +998,10 @@ def return_students():
 
 @app.route('/filter_delete_student', methods=["POST", "GET"])
 def filter_delete_student():
+    """
+    ochirilgan syudentlani filteri
+    :return:
+    """
     info = request.get_json()["info"]
 
     filter_student = []
@@ -1004,7 +1039,6 @@ def filter_delete_student():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -1082,8 +1116,6 @@ def filter_delete_student():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-                            print(user)
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -1184,6 +1216,10 @@ def filter_delete_student():
 
 @app.route('/search_delete_student', methods=["POST", "GET"])
 def search_delete_student():
+    """
+    ochirilgan studentlani qidirish
+    :return:
+    """
     search = request.get_json()["search"]
     users = User.query
     users = users.filter(or_(User.name.like('%' + search + '%'), User.surname.like('%' + search + '%')))

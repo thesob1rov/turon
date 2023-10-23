@@ -90,9 +90,7 @@ def add_news(type_id):
         date = request.form.get("add_date")
         photo = request.files['add_img']
         folder = news_folder()
-        print(photo)
         if photo and checkFile(photo.filename):
-            print(True)
             photo_file = secure_filename(photo.filename)
             photo_url = "/" + folder + "/" + photo_file
             app.config['UPLOAD_FOLDER'] = folder

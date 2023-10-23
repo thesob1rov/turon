@@ -4,6 +4,11 @@ from backend.models.basic_model import Subject
 
 @app.route('/add_subject', methods=["POST", "GET"])
 def add_subject():
+
+    """
+    subject qoishish
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -17,6 +22,10 @@ def add_subject():
 
 @app.route('/subject_list', methods=["POST", "GET"])
 def subject_list():
+    """
+    subjectlani listi
+    :return:
+    """
     user = current_user()
     error = check_session()
     if error:
@@ -37,6 +46,10 @@ def subject_list():
 
 @app.route('/change_subjects', methods=["POST", "GET"])
 def change_subjects():
+    """
+    subjectni ozgartirish
+    :return:
+    """
     info = request.get_json()["info"]
     Subject.query.filter(Subject.id == info["subject_id"]).update({
         "name": info["subject_name"]
@@ -47,6 +60,10 @@ def change_subjects():
 
 @app.route('/delete_subjects', methods=["POST", "GET"])
 def delete_subjects():
+    """
+    subject ochirish
+    :return:
+    """
     info = request.get_json()["info"]
     Subject.query.filter(Subject.id == int(info)).delete()
     db.session.commit()

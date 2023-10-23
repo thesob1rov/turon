@@ -7,12 +7,12 @@ import string
 
 @app.route('/add_payment/<int:student_id>', methods=["POST", "GET"])
 def add_payment(student_id):
+
     error = check_session()
     if error:
         return redirect(url_for('home'))
     today = datetime.today()
     datem = datetime(today.year, today.month, 1)
-    print(datem)
     user = current_user()
     student = Student.query.filter(Student.id == student_id).first()
     about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
@@ -101,7 +101,6 @@ def payment():
                 })
                 db.session.commit()
             break
-    print(student_id, money, account_type_id)
     return jsonify()
 
 
@@ -267,7 +266,6 @@ def filter_payments():
     data = "2023-08"
     date = datetime.strptime(data, "%Y-%m")
     payments = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.date == date).all()
-    print(payments)
     filtered_payments = []
     if info["account_type_id"] == "all":
         if info["year"] == "all":
@@ -340,7 +338,6 @@ def filter_payments():
         #                 filtered_payments.append(info)
         #         else:
         #             pass
-    print(filtered_payments)
     return jsonify()
 
 
@@ -413,7 +410,6 @@ def delete_payment():
     for payment in all_payments:
         sum += int(payment.payed)
     another = int(month_payment.class_price) - int(sum)
-    print(sum)
     StudentMonthPayments.query.filter(
         StudentMonthPayments.id == month_payment.id).update({
         "payed": sum,
@@ -457,7 +453,6 @@ def search_pay():
             "account_type_name": pay.account_type.name,
             "date": pay.date.strftime("%Y-%m-%d")
         }
-        print(info)
         filtered_pay.append(info)
     return jsonify({
         "filtered_pay": filtered_pay

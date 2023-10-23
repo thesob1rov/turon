@@ -4,6 +4,10 @@ from backend.settings.settings import *
 
 @app.route('/rooms', methods=["POST", "GET"])
 def rooms():
+    """
+    xonalini page
+    :return:
+    """
     check_session()
     user = current_user()
     if not user:
@@ -24,6 +28,10 @@ def rooms():
 
 @app.route('/creat_room', methods=["POST", "GET"])
 def creat_room():
+    """
+    xona yaratish
+    :return:
+    """
     if request.method == "POST":
         name = request.form.get("name")
         teacher_id = request.form.get("teacher_id")
@@ -47,6 +55,11 @@ def creat_room():
 
 @app.route('/room_profile/<int:room_id>', methods=["POST", "GET"])
 def room_profile(room_id):
+    """
+    xonani profili
+    :param room_id: kirilgan xonani id si
+    :return:
+    """
     room = Room.query.filter(Room.id == room_id).first()
     check_session()
     user = current_user()
@@ -66,6 +79,11 @@ def room_profile(room_id):
 
 @app.route('/edit_room/<int:room_id>', methods=["POST", "GET"])
 def edit_room(room_id):
+    """
+    xonani profili
+    :param room_id: kirilgan xonani id si
+    :return:
+    """
     if request.method == "POST":
         name = request.form.get("name")
         teacher_id = request.form.get("teacher_id")
@@ -95,6 +113,11 @@ def edit_room(room_id):
 
 @app.route('/delete_room/<int:room_id>', methods=["POST", "GET"])
 def delete_room(room_id):
+    """
+    xonani ochirish
+    :param room_id: tanlangan xonani id si
+    :return:
+    """
     delete_room = Room.query.filter(Room.id == room_id).first()
     db.session.delete(delete_room)
     db.session.commit()

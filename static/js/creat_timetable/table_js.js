@@ -4,27 +4,27 @@ let teacher = document.querySelector('#teacher_list'), subject = document.queryS
 room_btn = document.querySelector('#room');
 
 teacher_btn.addEventListener('click', () => {
-    teacher.classList.add('active')
-    subject.classList.remove('active')
-    room.classList.remove('active')
+    teacher.classList.add('active_var')
+    subject.classList.remove('active_var')
+    room.classList.remove('active_var')
     teacher_btn.style.background = " #111f4c"
     subject_btn.style.background = " #adadad"
     room_btn.style.background = " #adadad"
 
 })
 subject_btn.addEventListener('click', () => {
-    subject.classList.add('active')
-    teacher.classList.remove('active')
-    room.classList.remove('active')
+    subject.classList.add('active_var')
+    teacher.classList.remove('active_var')
+    room.classList.remove('active_var')
     subject_btn.style.background = " #111f4c"
     teacher_btn.style.background = " #adadad"
     room_btn.style.background = " #adadad"
 })
 
 room_btn.addEventListener('click', () => {
-    room.classList.add('active')
-    teacher.classList.remove('active')
-    subject.classList.remove('active')
+    room.classList.add('active_var')
+    teacher.classList.remove('active_var')
+    subject.classList.remove('active_var')
     room_btn.style.background = " #111f4c"
     subject_btn.style.background = " #adadad"
     teacher_btn.style.background = " #adadad"

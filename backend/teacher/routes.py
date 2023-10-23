@@ -4,6 +4,10 @@ from backend.settings.settings import *
 
 @app.route('/register_teacher', methods=["POST", "GET"])
 def register_teacher():
+    """
+    teacher registratsiya qilish
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -20,7 +24,7 @@ def register_teacher():
         subject_id = request.form.get("subject_id")
         number = request.form.get("number")
         hashed = generate_password_hash(password=password, method="sha256")
-        print(day)
+
         datetime_str = f'{year}-{month}-{day}'
         datetime_object = datetime.strptime(datetime_str, '%Y-%m-%d')
         add = User(name=name, username=username, surname=surname, parent_name=parent_name, birth_date=datetime_object,
@@ -34,6 +38,10 @@ def register_teacher():
 
 @app.route('/teacher', methods=["POST", "GET"])
 def teacher():
+    """
+    teacherlani listi
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -62,6 +70,11 @@ def teacher():
 
 @app.route('/teacher_profile/<int:teacher_id>', methods=['POST', 'GET'])
 def teacher_profile(teacher_id):
+    """
+    teacherni profili
+    :param teacher_id: kirilgan teacherni id si
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -69,10 +82,7 @@ def teacher_profile(teacher_id):
     teacher = Teacher.query.filter(Teacher.id == teacher_id).first()
     teacher_birth_year = teacher.user.birth_date
     current_year = datetime.now()
-    print(current_year.year)
-    print(teacher_birth_year)
-    print(teacher.subject.name)
-    print(int(teacher_birth_year.year))
+
     age = int(current_year.year) - int(teacher_birth_year.year)
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()
@@ -89,7 +99,11 @@ def teacher_profile(teacher_id):
 
 @app.route('/filter_teacher', methods=["POST", "GET"])
 def filter_teacher():
-    print(True)
+    """
+    teavherlani filterlash
+    :return:
+    """
+
     info = request.get_json()["info"]
     filtered_teachers = []
     if info["search"] == "":
@@ -141,21 +155,31 @@ def filter_teacher():
 
 @app.route('/teacher_profile_info/<int:teacher_id>', methods=["POST", "GET"])
 def teacher_profile_info(teacher_id):
+    """
+    teacherni profili
+    :param teacher_id: kirilgan teacherni id si
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
     teacher = Teacher.query.filter(Teacher.user_id == teacher_id).first()
-    print(teacher)
+
     students = None
     for cl in teacher.classes:
         group = Class.query.filter(Class.id == cl.id).first()
-        print(len(group.student))
+
         students = len(group.student)
     return render_template('teacher_profile_info/index.html', teacher=teacher, students=students)
 
 
 @app.route('/edit_teacher_profile/<int:teacher_id>', methods=['POST', 'GET'])
 def edit_teacher_profile(teacher_id):
+    """
+    teacher profilini ozgartirish
+    :param teacher_id: kirilgan teacherni id si
+    :return:
+    """
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -174,7 +198,7 @@ def edit_teacher_profile(teacher_id):
             year = request.form.get("year")
             number = request.form.get("number")
             photo = request.files["photo"]
-            print(day)
+
             datetime_str = f'{year}-{month}-{day}'
             datetime_object = datetime.strptime(datetime_str, '%Y-%m-%d')
             folder = users_folder()
@@ -236,6 +260,10 @@ def edit_teacher_profile(teacher_id):
 
 @app.route('/search_teacher', methods=["POST", "GET"])
 def search_teacher():
+    """
+    oquvchilani qidirish
+    :return:
+    """
     search = request.get_json()["search"]
     users = User.query
     users = users.filter(or_(User.name.like('%' + search + '%'), User.surname.like('%' + search + '%')))
@@ -245,8 +273,6 @@ def search_teacher():
         if user.teacher:
             for filtered in user.teacher:
                 if filtered.classes:
-                    print(filtered.classes)
-                    print(user)
                     info = {
                         "id": user.id,
                         "name": user.name,

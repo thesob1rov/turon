@@ -4,6 +4,9 @@ from werkzeug.utils import secure_filename
 import os
 from datetime import datetime
 from pprint import pprint
+import requests
+
+link = 'https://turonedu.uz/'
 
 # from backend.settings.settings import *
 
@@ -42,6 +45,7 @@ from backend.account.payment import *
 from backend.account.account import *
 from backend.room.view import *
 from backend.timetable.view import *
+from backend.teacher.teacher_salarys import *
 
 if __name__ == '__main__':
     app.run()

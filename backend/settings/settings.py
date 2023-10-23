@@ -10,8 +10,6 @@ def current_user():
     return get_user
 
 
-
-
 def create_menu():
     menu_list = ["Biz haqimizda", "Yangiliklar", "Lavozimlar"]
     for menu in menu_list:

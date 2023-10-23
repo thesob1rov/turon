@@ -400,3 +400,42 @@ db.Table("time_table_day_lessons",
          Column("time_table_day_id", Integer, ForeignKey("time_table_day.id")),
          Column("daily_table_id", Integer, ForeignKey("daily_table.id"))
          )
+
+
+class Years(db.Model):
+    __tablename__ = 'years'
+    id = Column(Integer, primary_key=True)
+    year = Column(Integer)
+    month = db.relationship('Month', backref='years', order_by='Month.id')
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class Month(db.Model):
+    __tablename__ = "month"
+    id = Column(Integer, primary_key=True)
+    month_number = Column(Integer)
+    month_name = Column(String)
+    years_id = Column(Integer, ForeignKey('years.id'))
+    days = db.relationship('Days', backref='month', order_by='Days.id')
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class Days(db.Model):
+    __tablename__ = "days"
+    id = Column(Integer, primary_key=True)
+    day_number = Column(Integer)
+    day_name = Column(String)
+    month_id = Column(Integer, ForeignKey('month.id'))
+    year_id = Column(Integer, ForeignKey('years.id'))
+
+    # daily_lesson = db.relationship('DailyLesson', backref='days', order_by='DailyLesson.id')
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()

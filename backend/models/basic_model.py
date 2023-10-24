@@ -421,6 +421,7 @@ class TeacherSalary(db.Model):
     __tablename__ = "teacher_salary"
     teacher_id = Column(Integer)
     salary = Column(Integer)
+    date = Column(DateTime)
 
     def add(self):
         db.session.add(self)

@@ -404,6 +404,13 @@ db.Table("time_table_day_lessons",
          )
 
 
+class Years(db.Model):
+    __tablename__ = 'years'
+    id = Column(Integer, primary_key=True)
+    year = Column(Integer)
+    month = db.relationship('Month', backref='years', order_by='Month.id')
+
+
 class TeacherSalaryType(db.Model):
     id = Column(Integer, primary_key=True)
     __tablename__ = "teacher_salary_type"
@@ -414,6 +421,30 @@ class TeacherSalaryType(db.Model):
     def add(self):
         db.session.add(self)
         db.session.commit()
+
+
+class Month(db.Model):
+    __tablename__ = "month"
+    id = Column(Integer, primary_key=True)
+    month_number = Column(Integer)
+    month_name = Column(String)
+    years_id = Column(Integer, ForeignKey('years.id'))
+    days = db.relationship('Days', backref='month', order_by='Days.id')
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class Days(db.Model):
+    __tablename__ = "days"
+    id = Column(Integer, primary_key=True)
+    day_number = Column(Integer)
+    day_name = Column(String)
+    month_id = Column(Integer, ForeignKey('month.id'))
+    year_id = Column(Integer, ForeignKey('years.id'))
+
+    # daily_lesson = db.relationship('DailyLesson', backref='days', order_by='DailyLesson.id')
 
 
 class TeacherSalary(db.Model):

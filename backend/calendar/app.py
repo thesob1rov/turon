@@ -49,12 +49,88 @@ def get_calendar(current_year, next_year):
                     day_b = Days.query.filter(Days.day_number == day['day_number'], Days.month_id == month_one.id,
                                               Days.year_id == year_b.id).first()
                     if not day_b:
-                        new_day = Days(day_number=day['day_number'], day_name=day['day_name'],
-                                       month_id=month_one.id, year_id=year_b.id)
+                        if day['day_name'] == 'Sunday':
+                            new_day = Days(day_number=day['day_number'], day_name=day['day_name'],
+                                           month_id=month_one.id, year_id=year_b.id, type_id=1)
+                        else:
+                            new_day = Days(day_number=day['day_number'], day_name=day['day_name'],
+                                           month_id=month_one.id, year_id=year_b.id, type_id=2)
                         new_day.add()
 
 
 @app.route('/calendar_year')
 def calendar_year():
     get_calendar(datetime.now().year, datetime.now().year + 1)
-    return render_template('calendar/index.html')
+    error = check_session()
+    # if error:
+    #     return redirect(url_for('home'))
+    user = User.query.filter(User.id == 1).first()
+    about_id = 0
+    about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
+    news = TypeInfo.query.filter(TypeInfo.id == 2).first()
+    jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
+    about = Info.query.filter(Info.type_id == about_us.id).order_by(Info.id).first()
+    types = TypeDay.query.order_by(TypeDay.id).all()
+    calendar = []
+    account_types = AccountType.query.all()
+    month_all = Month.query.order_by(Month.id).all()
+    for month in month_all:
+        week_name = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        object = {
+            'year': month.years.year,
+            'month': month.month_name,
+            'week': [],
+        }
+        week = []
+        for name in week_name:
+            day_first_name = None
+            days = []
+            for day in month.days:
+                if day.day_name == name:
+                    if day.day_number == 1:
+                        day_first_name = day.day_name
+                    day_object = {
+                        'day_id': day.id,
+                        'day_number': day.day_number,
+                        'day_name': day.day_name[0:3],
+                        'color': day.type_day.color
+                    }
+                    days.append(day_object)
+
+            if day_first_name != None:
+                number = week_name.index(day_first_name)
+                while number + 1 <= 7:
+                    week.append(week_name[number])
+                    number += 1
+            if name in week:
+                week_object = {
+                    'day_name': name,
+                    'week': name,
+                    'days': days
+                }
+                object['week'].append(week_object)
+            else:
+                week_object = {
+                    'day_name': name,
+                    'days': days
+                }
+                object['week'].append(week_object)
+        calendar.append(object)
+    return render_template('calendar/index.html', user=user, about_us=about_us, calendar_all=calendar, types=types,
+                           about_id=about_id, news=news,
+                           jobs=jobs, about=about,
+                           account_types=account_types, month_all=month_all)
+
+
+@app.route('/change_type', methods=['POST'])
+def change_type():
+    day_id = request.get_json()['day_id']
+    type_id = request.get_json()['type_id']
+    Days.query.filter(Days.id == day_id).update({
+        'type_id': type_id
+    })
+    color = TypeDay.query.filter(TypeDay.id == type_id).first().color
+    db.session.commit()
+    return jsonify({
+        'color': color
+    })

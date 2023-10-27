@@ -410,6 +410,10 @@ class Years(db.Model):
     year = Column(Integer)
     month = db.relationship('Month', backref='years', order_by='Month.id')
 
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
 
 class TeacherSalaryType(db.Model):
     id = Column(Integer, primary_key=True)
@@ -443,6 +447,11 @@ class Days(db.Model):
     day_name = Column(String)
     month_id = Column(Integer, ForeignKey('month.id'))
     year_id = Column(Integer, ForeignKey('years.id'))
+    type_id = Column(Integer, ForeignKey('type_day.id'))
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
 
     # daily_lesson = db.relationship('DailyLesson', backref='days', order_by='DailyLesson.id')
 
@@ -452,6 +461,18 @@ class TeacherSalary(db.Model):
     __tablename__ = "teacher_salary"
     teacher_id = Column(Integer)
     salary = Column(Integer)
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class TypeDay(db.Model):
+    __tablename__ = "type_day"
+    id = Column(Integer, primary_key=True)
+    type = Column(String)
+    color = Column(String)
+    days = db.relationship('Days', backref='type_day', order_by='Days.id')
 
     def add(self):
         db.session.add(self)

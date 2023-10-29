@@ -10,7 +10,7 @@ def get_calendar(current_year, next_year):
     for year in range(current_year, next_year + 1):
         for month in range(1, 13):
             if (year == current_year and month not in [1, 2, 3, 4, 5, 6, 7, 8]) or (
-                    year == next_year and month not in [6, 7, 8, 9, 10, 11, 12]):
+                    year == next_year and month not in [ 9, 10, 11, 12]):
                 month_name = calendar.month_name[month]
                 object_days = {
                     'month_number': month,
@@ -46,10 +46,10 @@ def get_calendar(current_year, next_year):
                 month.add()
                 month_one = Month.query.filter(Month.month_number == year['month_number']).first()
                 for day in year['days']:
-                    day_b = Days.query.filter(Days.day_number == day['day_number'], Days.month_id == month_one.id,
-                                              Days.year_id == year_b.id).first()
+                    day_b = Day.query.filter(Day.day_number == day['day_number'], Day.month_id == month_one.id,
+                                              Day.year_id == year_b.id).first()
                     if not day_b:
-                        new_day = Days(day_number=day['day_number'], day_name=day['day_name'],
+                        new_day = Day(day_number=day['day_number'], day_name=day['day_name'],
                                        month_id=month_one.id, year_id=year_b.id)
                         new_day.add()
 

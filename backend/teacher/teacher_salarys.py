@@ -31,49 +31,59 @@ def calculate_teacher_salary():
     teachers = Teacher.query.all()
     today = datetime.today()
     date = datetime(today.year, today.month, today.day)
-    print(date)
     calc_salary = 0
+    result_calc = 0
     yy = 2017
     mm = 11
+    year = Years.query.filter(Years.year == int(today.year)).first()
+    month = Month.query.filter(Month.month_number == today.month, Month.years_id == year.id).first()
     cal = calendar.calendar(today.year)
     cl = calendar.Calendar()
     rez = cl.itermonthdates(today.year, 12)
     # print(calendar.calendar(today.year))
-    print(list(rez.datetime))
     for teacher in teachers:
         if teacher.daily_table:
             teacher_lesson_count = len(teacher.daily_table)
             salary_percentage = teacher.salary_percentage
             percentage_result = (teacher.teacher_salary_type.salary * salary_percentage) / 100
-            print(percentage_result)
-            calc_salary = ((teacher_lesson_count / 20) * teacher.teacher_salary_type.salary) + percentage_result
+            calc_salary = ((teacher_lesson_count / 20) * teacher.teacher_salary_type.salary)
+            result_calc = (calc_salary * salary_percentage) / 100
             salaries = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id).all()
+
+            for attendance in teacher.teacher_attendance:
+                attendance_count = TeacherAttendance.query.filter(TeacherAttendance.teacher_id == attendance.teacher_id,
+                                                                  TeacherAttendance.month_id == attendance.month_id,
+                                                                  TeacherAttendance.status == True).all()
+                print(attendance_count)
             if salaries:
                 for salary in salaries:
-                    if salary.date.strftime("%Y") == str(today.year) and salary.date.strftime("%m") == str(today.month):
+                    if salary.month_id == month.id:
                         TeacherSalary.query.filter(TeacherSalary.id == salary.id,
                                                    TeacherSalary.teacher_id == teacher.id).update({
                             "salary": calc_salary
                         })
                         db.session.commit()
-                        print("bu yil bor")
                     else:
-                        add = TeacherSalary(teacher_id=teacher.id, salary=calc_salary, date=date)
+                        add = TeacherSalary(teacher_id=teacher.id, salary=result_calc, month_id=month.id)
                         add.add()
             else:
-                add = TeacherSalary(teacher_id=teacher.id, salary=calc_salary, date=date)
+                add = TeacherSalary(teacher_id=teacher.id, salary=result_calc, month_id=month.id)
                 add.add()
-            print(
-                f'{teacher.user.name} {teacher.user.surname} {teacher_lesson_count} {teacher.teacher_salary_type.salary} '
-                f' salary {calc_salary}')
         else:
+            if teacher.teacher_attendance:
+
+                for attendance in teacher.teacher_attendance:
+                    attendance_count = TeacherAttendance.query.filter(TeacherAttendance.teacher_id == attendance.teacher_id,
+                                                                      TeacherAttendance.month_id == attendance.month_id,
+                                                                      TeacherAttendance.status == True).count()
+                    print(attendance_count)
             salaries = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id).all()
             if salaries:
                 for salary in salaries:
-                    if salary.date.strftime("%Y") == str(today.year) and salary.date.strftime("%m") == str(today.month):
+                    if salary.month_id == month.id:
                         TeacherSalary.query.filter(TeacherSalary.id == salary.id,
                                                    TeacherSalary.teacher_id == teacher.id).update({
-                            "salary": calc_salary
+                            "salary": result_calc
                         })
                         db.session.commit()
     return "hello"

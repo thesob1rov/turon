@@ -51,7 +51,7 @@ class Teacher(db.Model):
     rooms = relationship("Room", backref="teacher", order_by="Room.id")
     flows = relationship("Flow", backref="teacher", order_by="Flow.id")
     daily_table = relationship("DailyTable", backref="teacher", order_by="DailyTable.id")
-
+    teacher_attendance = db.relationship('TeacherAttendance', backref='teacher', order_by='TeacherAttendance.id')
     def add(self):
         db.session.add(self)
         db.session.commit()
@@ -409,6 +409,12 @@ class Years(db.Model):
     id = Column(Integer, primary_key=True)
     year = Column(Integer)
     month = db.relationship('Month', backref='years', order_by='Month.id')
+    day = db.relationship('Day', backref='years', order_by='Day.id')
+    teacher_attendance = db.relationship('TeacherAttendance', backref='years', order_by='TeacherAttendance.id')
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
 
 
 class TeacherSalaryType(db.Model):
@@ -429,22 +435,29 @@ class Month(db.Model):
     month_number = Column(Integer)
     month_name = Column(String)
     years_id = Column(Integer, ForeignKey('years.id'))
-    days = db.relationship('Days', backref='month', order_by='Days.id')
+    day = db.relationship('Day', backref='month', order_by='Day.id')
+    teacher_salary = db.relationship('TeacherSalary', backref='month', order_by='TeacherSalary.id')
+    teacher_attendance = db.relationship('TeacherAttendance', backref='month', order_by='TeacherAttendance.id')
 
     def add(self):
         db.session.add(self)
         db.session.commit()
 
 
-class Days(db.Model):
-    __tablename__ = "days"
+class Day(db.Model):
+    __tablename__ = "day"
     id = Column(Integer, primary_key=True)
     day_number = Column(Integer)
     day_name = Column(String)
     month_id = Column(Integer, ForeignKey('month.id'))
     year_id = Column(Integer, ForeignKey('years.id'))
+    teacher_attendance = db.relationship('TeacherAttendance', backref='day', order_by='TeacherAttendance.id')
 
     # daily_lesson = db.relationship('DailyLesson', backref='days', order_by='DailyLesson.id')
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
 
 
 class TeacherSalary(db.Model):
@@ -452,7 +465,21 @@ class TeacherSalary(db.Model):
     __tablename__ = "teacher_salary"
     teacher_id = Column(Integer)
     salary = Column(Integer)
-    date = Column(DateTime)
+    month_id = Column(Integer, ForeignKey("month.id"))
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class TeacherAttendance(db.Model):
+    id = Column(Integer, primary_key=True)
+    __tablename__ = "teacher_attendance"
+    teacher_id = Column(Integer, ForeignKey("teacher.id"))
+    year_id = Column(Integer, ForeignKey("years.id"))
+    month_id = Column(Integer, ForeignKey("month.id"))
+    day_id = Column(Integer, ForeignKey("day.id"))
+    status = Column(Boolean)
 
     def add(self):
         db.session.add(self)

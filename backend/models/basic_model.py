@@ -52,6 +52,7 @@ class Teacher(db.Model):
     flows = relationship("Flow", backref="teacher", order_by="Flow.id")
     daily_table = relationship("DailyTable", backref="teacher", order_by="DailyTable.id")
     teacher_attendance = db.relationship('TeacherAttendance', backref='teacher', order_by='TeacherAttendance.id')
+
     def add(self):
         db.session.add(self)
         db.session.commit()
@@ -416,6 +417,10 @@ class Years(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
 
 class TeacherSalaryType(db.Model):
     id = Column(Integer, primary_key=True)
@@ -452,20 +457,40 @@ class Day(db.Model):
     month_id = Column(Integer, ForeignKey('month.id'))
     year_id = Column(Integer, ForeignKey('years.id'))
     teacher_attendance = db.relationship('TeacherAttendance', backref='day', order_by='TeacherAttendance.id')
-
-    # daily_lesson = db.relationship('DailyLesson', backref='days', order_by='DailyLesson.id')
+    type_id = Column(Integer, ForeignKey('type_day.id'))
+    given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='day',
+                                              order_by='GivenSalariesInMonth.id')
 
     def add(self):
         db.session.add(self)
         db.session.commit()
+
+    # daily_lesson = db.relationship('DailyLesson', backref='days', order_by='DailyLesson.id')
 
 
 class TeacherSalary(db.Model):
     id = Column(Integer, primary_key=True)
     __tablename__ = "teacher_salary"
     teacher_id = Column(Integer)
-    salary = Column(Integer)
+    salary = Column(String)
+    give_salary = Column(String)
     month_id = Column(Integer, ForeignKey("month.id"))
+    rest_salary = Column(String)
+    given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='teacher_salary',
+                                              order_by='GivenSalariesInMonth.id')
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class GivenSalariesInMonth(db.Model):
+    id = Column(Integer, primary_key=True)
+    __tablename__ = "given_salaries_in_month"
+    teacher_salary_id = Column(Integer, ForeignKey("teacher_salary.id"))
+    given_salary = Column(String)
+    day_id = Column(Integer, ForeignKey("day.id"))
+    reason = Column(String)
 
     def add(self):
         db.session.add(self)
@@ -480,6 +505,18 @@ class TeacherAttendance(db.Model):
     month_id = Column(Integer, ForeignKey("month.id"))
     day_id = Column(Integer, ForeignKey("day.id"))
     status = Column(Boolean)
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class TypeDay(db.Model):
+    __tablename__ = "type_day"
+    id = Column(Integer, primary_key=True)
+    type = Column(String)
+    color = Column(String)
+    day = db.relationship('Day', backref='type_day', order_by='Day.id')
 
     def add(self):
         db.session.add(self)

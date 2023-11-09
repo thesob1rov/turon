@@ -2,7 +2,7 @@ from app import *
 from backend.settings.settings import *
 from datetime import datetime
 import calendar
-
+from backend.teacher.teacher_salarys import *
 
 @app.route('/teacher_attendance', methods=["POST", "GET"])
 def teacher_attendance():
@@ -18,8 +18,9 @@ def teacher_attendance():
                                                     TeacherAttendance.day_id == int(day_id)).first()
     if not now_attendance:
         add_attendance = TeacherAttendance(teacher_id=teacher_id, year_id=year_id, month_id=month_id, day_id=day_id,
-                                           status=bool(status))
+                                           status=status)
         add_attendance.add()
+        calculate_teacher_salary()
         return jsonify("keldi")
     else:
         return jsonify("bu kunda davomat qilingan")

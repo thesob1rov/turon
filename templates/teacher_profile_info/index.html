@@ -21,14 +21,21 @@
                 <div class="main_box_name">
                     <img src="{{ teacher.user.image }}" alt="">
                     <div>{{ teacher.user.username }}</div>
-                </div>
-                <a href="{{ url_for("edit_profile", user_id=teacher.user.id) }}">
                     <div class="change">
-                        <i class="fa-solid fa-pen "></i>
-                        <div>Ma'lumotlarni o'zgartirish</div>
+                        <a href="{{ url_for("edit_profile", user_id=teacher.user.id) }}">
+                            <div class="container_change">
+                                <i class="fa-solid fa-pen "></i>
+                                <div>Ma'lumotlarni o'zgartirish</div>
+                            </div>
+                        </a>
+                        <a href="{{ url_for("edit_profile", user_id=teacher.user.id) }}">
+                            <div class="container_change">
+                                <i class="fa-solid fa-pen "></i>
+                                <div>Oylik</div>
+                            </div>
+                        </a>
                     </div>
-                </a>
-
+                </div>
             </div>
             <div class="information">
                 <div class="main_box_information">Ismi: <span>{{ teacher.user.name }}</span></div>

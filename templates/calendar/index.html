@@ -1,10 +1,105 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'admin/index.html' %}
 
-</body>
-</html>
+
+{% block css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../../static/css/calendar/calendar.min.css">
+{% endblock %}
+
+{% block section %}
+
+    <section class="calendar" data-type="{{ type_request }}">
+        <div class="calendar_block">
+            <div class="calendar_container">
+                <div class="calendar_double">
+                    <button class="calendar_filter_btn">Filter</button>
+                    <div class="calendar_search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Qidiruv">
+                    </div>
+                </div>
+
+                <div class="filter">
+                    <select name="language_type" id="" class="account_type">
+                        <option value="all">all</option>
+                        {% for account_type in account_types %}
+                            <option value="{{ account_type.id }}">{{ account_type.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="class_number" class="year">
+                        <option value="all">all</option>
+                        {% for year in years %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="class_number" class="month">
+                        <option value="all">all</option>
+                        {% for month in months %}
+                            <option value="{{ month }}">{{ month }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="class_number" class="day">
+                        <option value="all">all</option>
+                        {% for day in days %}
+                            <option value="{{ day }}">{{ day }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="form_filter">Search</button>
+                </div>
+            </div>
+            <div class="account_types" style="display: flex; width: 50%; justify-content: space-around">
+                <h1 style="margin-top: 30px; font-size: 30px">Calendar Year</h1>
+            </div>
+            <div class="calendar_list">
+                {% for  calendar in calendar_all %}
+                    <div class="index_box_calendar">
+                        <div class="index_box_top">
+                            <div>{{ calendar.month }}</div>
+                            <div>{{ calendar.year }}</div>
+                        </div>
+
+                        <div class="index_box_days">
+                            <table>
+                                <thead>
+                                <tr>
+                                    {% for name in calendar.day_name %}
+                                        <th>{{ name }}</th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for day_name in calendar.week %}
+                                    <tr {% if not day_name.week %}style="padding-top: 60px"
+                                        {% else %}style="padding-top: 20px"{% endif %}>
+                                        <td>{{ day_name.day_name[0:3] }}</td>
+                                        {% for day in day_name.days %}
+                                            <td data-id="{{ day.day_id }}" class="td"
+                                                style="background: {{ day.color }}">{{ day.day_number }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="calendar_active active_sunday">
+                <div class="calendar_active_item"><h1>Type day</h1></div>
+                <select id="select" name="" id="">
+                    {% for type in types %}
+                        <option value="{{ type.id }}">{{ type.type }}</option>
+                    {% endfor %}
+                </select>
+                <button class="button">Send</button>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+    <script src="../../static/js/calendar/calendar.js"></script>
+
+{% endblock %}

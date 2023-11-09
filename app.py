@@ -48,6 +48,7 @@ from backend.account.account import *
 from backend.room.view import *
 from backend.timetable.view import *
 from backend.teacher.teacher_salarys import *
+from backend.teacher.teacher_attendance import *
 
 if __name__ == '__main__':
     app.run()

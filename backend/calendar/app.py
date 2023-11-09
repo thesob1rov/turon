@@ -2,15 +2,16 @@ from app import *
 from backend.settings.settings import *
 import calendar
 from datetime import datetime
-
+from backend.teacher.teacher_salarys import *
 list_days = []
 
 
 def get_calendar(current_year, next_year):
+    calculate_teacher_salary()
     for year in range(current_year, next_year + 1):
         for month in range(1, 13):
             if (year == current_year and month not in [1, 2, 3, 4, 5, 6, 7, 8]) or (
-                    year == next_year and month not in [6, 7, 8, 9, 10, 11, 12]):
+                    year == next_year and month not in [9, 10, 11, 12]):
                 month_name = calendar.month_name[month]
                 object_days = {
                     'month_number': month,
@@ -46,20 +47,25 @@ def get_calendar(current_year, next_year):
                 month.add()
                 month_one = Month.query.filter(Month.month_number == year['month_number']).first()
                 for day in year['days']:
-                    day_b = Days.query.filter(Days.day_number == day['day_number'], Days.month_id == month_one.id,
-                                              Days.year_id == year_b.id).first()
+                    day_b = Day.query.filter(Day.day_number == day['day_number'], Day.month_id == month_one.id,
+                                             Day.year_id == year_b.id).first()
                     if not day_b:
+
+                        new_day = Day(day_number=day['day_number'], day_name=day['day_name'],
+                                      month_id=month_one.id, year_id=year_b.id)
+
                         if day['day_name'] == 'Sunday':
-                            new_day = Days(day_number=day['day_number'], day_name=day['day_name'],
-                                           month_id=month_one.id, year_id=year_b.id, type_id=1)
+                            new_day = Day(day_number=day['day_number'], day_name=day['day_name'],
+                                          month_id=month_one.id, year_id=year_b.id, type_id=1)
                         else:
-                            new_day = Days(day_number=day['day_number'], day_name=day['day_name'],
-                                           month_id=month_one.id, year_id=year_b.id, type_id=2)
+                            new_day = Day(day_number=day['day_number'], day_name=day['day_name'],
+                                          month_id=month_one.id, year_id=year_b.id, type_id=2)
                         new_day.add()
 
 
 @app.route('/calendar_year')
 def calendar_year():
+    calculate_teacher_salary()
     get_calendar(datetime.now().year, datetime.now().year + 1)
     error = check_session()
     # if error:
@@ -85,17 +91,26 @@ def calendar_year():
         for name in week_name:
             day_first_name = None
             days = []
-            for day in month.days:
+            for day in month.day:
                 if day.day_name == name:
                     if day.day_number == 1:
                         day_first_name = day.day_name
-                    day_object = {
-                        'day_id': day.id,
-                        'day_number': day.day_number,
-                        'day_name': day.day_name[0:3],
-                        'color': day.type_day.color
-                    }
-                    days.append(day_object)
+                    if day.type_day:
+                        day_object = {
+                            'day_id': day.id,
+                            'day_number': day.day_number,
+                            'day_name': day.day_name[0:3],
+                            'color': day.type_day.color
+                        }
+                        days.append(day_object)
+                    else:
+                        day_object = {
+                            'day_id': day.id,
+                            'day_number': day.day_number,
+                            'day_name': day.day_name[0:3],
+                            # 'color': day.type_day.color
+                        }
+                        days.append(day_object)
 
             if day_first_name != None:
                 number = week_name.index(day_first_name)
@@ -126,7 +141,7 @@ def calendar_year():
 def change_type():
     day_id = request.get_json()['day_id']
     type_id = request.get_json()['type_id']
-    Days.query.filter(Days.id == day_id).update({
+    Day.query.filter(Day.id == day_id).update({
         'type_id': type_id
     })
     db.session.commit()

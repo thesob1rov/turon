@@ -1,6 +1,6 @@
 from app import *
 from backend.settings.settings import *
-
+from backend.teacher.teacher_salarys import *
 
 def check_teacher_timetable(teacher_id, day_id, lesson_time_id, room_id, subject_id, class_id, lesson_id):
     """
@@ -133,6 +133,7 @@ def add_new_daily_table(teacher_id, day_id, lesson_time_id, room_id, subject_id,
         "text": 'darslik qowildi',
         "color": "green"
     }
+    calculate_teacher_salary()
     return message
 
 
@@ -158,6 +159,7 @@ def update_old_time_table(teacher_id, day_id, lesson_time_id, room_id, subject_i
         "text": 'darslik yangilandi',
         "color": "green"
     }
+    calculate_teacher_salary()
     return message
 
 
@@ -427,6 +429,7 @@ def add_flow_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_id):
         "text": 'darslik qowildi',
         "color": "green"
     }
+    calculate_teacher_salary()
     return message
 
 
@@ -449,6 +452,7 @@ def update_old_flow_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_i
         "text": 'darslik yangilandi',
         "color": "green"
     }
+    calculate_teacher_salary()
     return message
 
 

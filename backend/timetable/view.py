@@ -1,6 +1,7 @@
 from app import *
 from backend.settings.settings import *
 from backend.timetable.timetable_functions import *
+from backend.teacher.teacher_salarys import *
 
 
 @app.route('/creat_timetable/<int:class_id>', methods=["POST", "GET"])
@@ -141,6 +142,7 @@ def timetables():
     timetable yaratiladigan page
     :return: timetable objectlari yuvoriladi
     """
+    calculate_teacher_salary()
     user = User.query.filter(User.id == 1).first()
     # if not user:
     #     return redirect(url_for('home'))
@@ -314,6 +316,7 @@ def delete_item_in_lesson():
             "teacher_id": None
         })
         db.session.commit()
+        calculate_teacher_salary()
     daily_table_all_none = DailyTable.query.filter(DailyTable.id == info["lesson_id"],
                                                    DailyTable.subject_id == None, DailyTable.room_id == None,
                                                    DailyTable.teacher_id == None).first()
@@ -322,6 +325,7 @@ def delete_item_in_lesson():
         db.session.commit()
         db.session.delete(daily_table_all_none)
         db.session.commit()
+        calculate_teacher_salary()
     return jsonify()
 
 
@@ -367,8 +371,6 @@ def creat_flow_timetable():
     })
 
 
-
-
 @app.route('/delete_flow_item_in_lesson', methods=["POST", "GET"])
 def delete_flow_item_in_lesson():
     """
@@ -387,6 +389,7 @@ def delete_flow_item_in_lesson():
             "flow_id": None
         })
         db.session.commit()
+        calculate_teacher_salary()
     daily_table_all_none = DailyTable.query.filter(DailyTable.id == info["lesson_id"],
                                                    DailyTable.room_id == None,
                                                    DailyTable.flow_id == None).first()
@@ -395,6 +398,7 @@ def delete_flow_item_in_lesson():
         db.session.commit()
         db.session.delete(daily_table_all_none)
         db.session.commit()
+        calculate_teacher_salary()
     return jsonify()
 
 

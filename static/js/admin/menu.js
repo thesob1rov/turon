@@ -7,7 +7,6 @@ let hamburger = document.querySelector('.hamburger'),
 
 
 hamburger.addEventListener('click', () => {
-
     page.style.display = 'flex'
     hamburger.style.display = 'none'
     all.classList.toggle('active')

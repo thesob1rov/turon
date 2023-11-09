@@ -126,11 +126,15 @@ def calendar_year():
 def change_type():
     day_id = request.get_json()['day_id']
     type_id = request.get_json()['type_id']
+    print(True)
+    # day = Days.query.filter(Days.id == day_id).first()
+    # if day:
     Days.query.filter(Days.id == day_id).update({
         'type_id': type_id
     })
-    color = TypeDay.query.filter(TypeDay.id == type_id).first().color
     db.session.commit()
+    color = TypeDay.query.filter(TypeDay.id == type_id).first().color
+
     return jsonify({
         'color': color
     })

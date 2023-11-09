@@ -3,6 +3,7 @@ from backend.models.basic_model import *
 from werkzeug.security import *
 
 
+
 def current_user():
     get_user = None
     if 'username' in session:

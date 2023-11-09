@@ -309,3 +309,5 @@ def edit_profile(user_id):
             return redirect(url_for("student_profile", student_id=user.id))
     return render_template('edit_profile/edit.html', user=user, curr_user=curr_user, languages=languages,
                            class_types=class_types)
+
+

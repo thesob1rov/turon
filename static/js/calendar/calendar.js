@@ -25,5 +25,4 @@ button.addEventListener('click', () => {
             calendar_active.classList.add('active_sunday')
             day_id = 0
         })
-
 })

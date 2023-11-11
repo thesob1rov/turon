@@ -76,64 +76,64 @@ def calculate_teacher_salary():
         working_day = Day.query.filter(Day.id == day.id, Day.type_id == 1).first()
         if working_day:
             working_days += 1
-    for teacher in teachers:
-        if teacher.daily_table:
-            teacher_lesson_count = len(teacher.daily_table)
-            salary_percentage = teacher.salary_percentage
-            print(teacher_lesson_count)
-            # ustama foizidan ciqqan summa
-
-            # xaftasiga dars soati / 20 * oylik
-            calc_salary = ((teacher_lesson_count / 20) * teacher.teacher_salary_type.salary)
-            percentage_result = (calc_salary * salary_percentage) / 100
-            print(calc_salary)
-            print(percentage_result)
-            # kemagan kunlari
-            attendance_count = TeacherAttendance.query.filter(TeacherAttendance.teacher_id == teacher.id,
-                                                              TeacherAttendance.month_id == month.id,
-                                                              TeacherAttendance.status == False).count()
-            # dars bor kunlaridan kemagan kunlari ayriladi
-            print(working_days, attendance_count)
-            if attendance_count == 0:
-                worked_count = working_days
-            else:
-                worked_count = working_days - attendance_count
-            # oyligiga + ustama summasi
-            overal = (calc_salary + percentage_result) * (worked_count / working_days)
-            # ishlagan kunlari oylikdan bolib tashaladi
-            print(worked_count)
-            print(overal)
-            if worked_count == 0:
-                result = overal
-            else:
-                result = overal / worked_count
-            salaries = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id).all()
-            if salaries:
-                for salary in salaries:
-                    if salary.month_id == month.id:
-                        TeacherSalary.query.filter(TeacherSalary.id == salary.id,
-                                                   TeacherSalary.teacher_id == teacher.id).update({
-                            "salary": result
-                        })
-                        db.session.commit()
-                    else:
-                        add = TeacherSalary(teacher_id=teacher.id, salary=result, month_id=month.id)
-                        add.add()
-            else:
-                add = TeacherSalary(teacher_id=teacher.id, salary=result, month_id=month.id)
-                add.add()
-        else:
-            if teacher.teacher_attendance:
-                attendance_count = TeacherAttendance.query.filter(TeacherAttendance.teacher_id == teacher.id,
-                                                                  TeacherAttendance.month_id == month.id,
-                                                                  TeacherAttendance.status == False).count()
-            salaries = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id).all()
-            if salaries:
-                for salary in salaries:
-                    if salary.month_id == month.id:
-                        TeacherSalary.query.filter(TeacherSalary.id == salary.id,
-                                                   TeacherSalary.teacher_id == teacher.id).update({
-                            "salary": result
-                        })
-                        db.session.commit()
+    # for teacher in teachers:
+    #     if teacher.daily_table:
+    #         teacher_lesson_count = len(teacher.daily_table)
+    #         salary_percentage = teacher.salary_percentage
+    #         print(teacher_lesson_count)
+    #         # ustama foizidan ciqqan summa
+    #
+    #         # xaftasiga dars soati / 20 * oylik
+    #         calc_salary = ((teacher_lesson_count / 20) * teacher.teacher_salary_type.salary)
+    #         percentage_result = (calc_salary * salary_percentage) / 100
+    #         print(calc_salary)
+    #         print(percentage_result)
+    #         # kemagan kunlari
+    #         attendance_count = TeacherAttendance.query.filter(TeacherAttendance.teacher_id == teacher.id,
+    #                                                           TeacherAttendance.month_id == month.id,
+    #                                                           TeacherAttendance.status == False).count()
+    #         # dars bor kunlaridan kemagan kunlari ayriladi
+    #         print(working_days, attendance_count)
+    #         if attendance_count == 0:
+    #             worked_count = working_days
+    #         else:
+    #             worked_count = working_days - attendance_count
+    #         # oyligiga + ustama summasi
+    #         overal = (calc_salary + percentage_result) * (worked_count / working_days)
+    #         # ishlagan kunlari oylikdan bolib tashaladi
+    #         print(worked_count)
+    #         print(overal)
+    #         if worked_count == 0:
+    #             result = overal
+    #         else:
+    #             result = overal / worked_count
+    #         salaries = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id).all()
+    #         if salaries:
+    #             for salary in salaries:
+    #                 if salary.month_id == month.id:
+    #                     TeacherSalary.query.filter(TeacherSalary.id == salary.id,
+    #                                                TeacherSalary.teacher_id == teacher.id).update({
+    #                         "salary": result
+    #                     })
+    #                     db.session.commit()
+    #                 else:
+    #                     add = TeacherSalary(teacher_id=teacher.id, salary=result, month_id=month.id)
+    #                     add.add()
+    #         else:
+    #             add = TeacherSalary(teacher_id=teacher.id, salary=result, month_id=month.id)
+    #             add.add()
+    #     else:
+    #         if teacher.teacher_attendance:
+    #             attendance_count = TeacherAttendance.query.filter(TeacherAttendance.teacher_id == teacher.id,
+    #                                                               TeacherAttendance.month_id == month.id,
+    #                                                               TeacherAttendance.status == False).count()
+    #         salaries = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id).all()
+    #         if salaries:
+    #             for salary in salaries:
+    #                 if salary.month_id == month.id:
+    #                     TeacherSalary.query.filter(TeacherSalary.id == salary.id,
+    #                                                TeacherSalary.teacher_id == teacher.id).update({
+    #                         "salary": result
+    #                     })
+    #                     db.session.commit()
     return "hello"

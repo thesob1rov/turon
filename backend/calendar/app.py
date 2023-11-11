@@ -71,7 +71,7 @@ def calendar_year():
     error = check_session()
     if error:
         return redirect(url_for('home'))
-
+    user = current_user()
     about_id = 0
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()

@@ -1,0 +1,190 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="stylesheet" href="../../static/css/lesson_plan/dars_reja.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+{% endblock %}
+{% block section %}
+    <section class="lesson_plan">
+        <h1>Dars reja</h1>
+        <div class="lesson_plan_table">
+            <div class="lesson_plan_date">
+                <div class="date">2023-11</div>
+                <div class="btns">
+                    <button>Patok</button>
+                    <button>Sinf</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th rowspan="2">Hafta kunlari</th>
+                    <th>8:00 - 8:45</th>
+                    <th>10:00 - 10:45</th>
+                    <th>10:00 - 10:45</th>
+                    <th>10:00 - 10:45</th>
+                    <th>10:00 - 10:45</th>
+                    <th>10:00 - 10:45</th>
+                    <th>10:00 - 10:45</th>
+                    <th>10:00 - 10:45</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Dushanba <br>9</td>
+                    <td class="span">Patok</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Seshanba <br>10</td>
+                    <td></td>
+                    <td class="span">Sinf</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Chorshanba <br>11</td>
+                    <td></td>
+                    <td></td>
+                    <td class="span">Patok</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Payshanba <br>12</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="span">Sinf</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Juma <br>13</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="span">Patok</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Shanba <br>14</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="span">Sinf</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Yakshanba <br>15</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="span">Patok</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Dushanba <br>16</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="span">Sinf</td>
+                </tr>
+                <tr>
+                    <td>Seshanba <br>17</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Chorshanba <br>18</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Payshanba <br>19</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Juma <br>20</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="plan">
+            <div class="plan_box">
+                <form class="plan_form" action="">
+                    <input type="text" placeholder="Lesson name">
+                    <div class="plan_items">
+                        <textarea name="" cols="30" rows="10" placeholder="Lesson target"></textarea>
+                        <textarea name="" cols="30" rows="10" placeholder="Main lesson"></textarea>
+                    </div>
+                    <div class="plan_items">
+                        <textarea name="" cols="30" rows="10" placeholder="Assessment"></textarea>
+                        <textarea name="" cols="30" rows="10" placeholder="Homework"></textarea>
+                    </div>
+                    <button>Add</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+    <script src="../../static/js/lesson_plan/script.js"></script>
+{% endblock %}

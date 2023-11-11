@@ -192,6 +192,25 @@ def profile(user_id):
                            about=about, about_id=about_id)
 
 
+@app.route('/lesson_plan/<int:teacher_id>', methods=['POST', 'GET'])
+def lesson_plan(teacher_id):
+    error = check_session()
+    if error:
+        return redirect(url_for('home'))
+    user = User.query.filter(User.id == teacher_id).first()
+    about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
+    news = TypeInfo.query.filter(TypeInfo.id == 2).first()
+    jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
+    about = Info.query.filter(Info.type_id == about_us.id).order_by(Info.id).first()
+    about_id = 0
+    if about:
+        about_id = about.id
+    if about_us:
+        about_id = about_us.id
+    return render_template('lesson_plan/index.html', user=user, about_us=about_us, news=news, jobs=jobs,
+                           about=about, about_id=about_id)
+
+
 @app.route('/edit_profile/<int:user_id>', methods=['POST', 'GET'])
 def edit_profile(user_id):
     class_types = ClassType.query.order_by(ClassType.id).all()
@@ -309,5 +328,3 @@ def edit_profile(user_id):
             return redirect(url_for("student_profile", student_id=user.id))
     return render_template('edit_profile/edit.html', user=user, curr_user=curr_user, languages=languages,
                            class_types=class_types)
-
-

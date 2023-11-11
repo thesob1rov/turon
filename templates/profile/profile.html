@@ -26,12 +26,16 @@
                                 <i class="fa-solid fa-pen"></i>
                                 <div>Ma'lumotlarni o'zgartirish</div>
                             </div>
+                            <div class="lesson_plan">
+                                <a href="{{ url_for('lesson_plan', teacher_id=user.id) }}"><h3>Dars reja</h3></a>
+                            </div>
                             <a href="{{ url_for("logout") }}">
                                 <div class="change_exit">
                                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                     <div>Chiqish</div>
                                 </div>
                             </a>
+
                         </div>
                     </div>
                 </div>

@@ -1,3 +1,5 @@
+import requests
+
 from app import *
 from backend.settings.settings import *
 from datetime import datetime
@@ -7,7 +9,6 @@ import string
 
 @app.route('/add_payment/<int:student_id>', methods=["POST", "GET"])
 def add_payment(student_id):
-
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -158,6 +159,13 @@ def calc(months, years, days):
                                                   Overhead.deleted_over_head == None).all()
     click_payments_in_cost = Overhead.query.filter(Overhead.account_type_id == 2,
                                                    Overhead.deleted_over_head == None).all()
+    payments_in_salary = Teacher_salary_day.query.order_by(Teacher_salary_day.id).all()
+    cash_payments_in_salary = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 3).order_by(
+        Teacher_salary_day.id).all()
+    bank_payments_in_salary = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 1).order_by(
+        Teacher_salary_day.id).all()
+    click_payments_in_salary = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 2).order_by(
+        Teacher_salary_day.id).all()
 
     for payment in payments_in_pay:
         balance += int(payment.payed)
@@ -167,6 +175,7 @@ def calc(months, years, days):
         bank += int(bank_payment.payed)
     for click_payment in click_payments_in_pay:
         click += int(click_payment.payed)
+
     for payment in payments_in_cost:
         balance -= int(payment.payed)
     for cash_payment in cash_payments_in_cost:
@@ -175,6 +184,16 @@ def calc(months, years, days):
         bank -= int(bank_payment.payed)
     for click_payment in click_payments_in_cost:
         click -= int(click_payment.payed)
+
+    for payment in payments_in_salary:
+        balance -= int(payment.salary)
+    for cash_payment in cash_payments_in_salary:
+        cash -= int(cash_payment.salary)
+    for bank_payment in bank_payments_in_salary:
+        bank -= int(bank_payment.salary)
+    for click_payment in click_payments_in_salary:
+        click -= int(click_payment.salary)
+
     for payment in payments_in_pay:
         payment_date = payment.date.month
         if not payment_date in months:
@@ -212,9 +231,9 @@ def add_cost():
 @app.route('/all_payments/<type_request>/<int:page_num>', methods=["POST", "GET"])
 def all_payments(type_request, page_num):
     error = check_session()
-    if error:
-        return redirect(url_for('home'))
-    user = current_user()
+    # if error:
+    #     return redirect(url_for('home'))
+    user = User.query.first()
     about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
     about_id = 0
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
@@ -243,7 +262,9 @@ def all_payments(type_request, page_num):
         del_cost = DeleteDOverhead.query.order_by(DeleteDOverhead.id).all()
         payments = Overhead.query.filter(
             Overhead.deleted_over_head == None).paginate(per_page=5, page=page_num, error_out=True)
-
+    elif type_request == 'salary':
+        payments = Teacher_salary_day.query.paginate(per_page=5, page=page_num,
+                                                     error_out=True)
     page_nex = page_num + 1
     page_prev = page_num - 1
     page_pres = page_num
@@ -252,7 +273,11 @@ def all_payments(type_request, page_num):
     for list in payments.iter_pages():
         page = list
         page_last = page
+    year_b = Years.query.order_by(Years.id).all()
+    month_b = Month.query.order_by(Month.id).all()
+    day_b = Day.query.order_by(Day.id).all()
     return render_template("all_payments/all_payments.html", payments=payments, user=user, about_us=about_us,
+                           year_b=year_b, month_b=month_b, day_b=day_b,
                            about_id=about_id, news=news,
                            jobs=jobs, about=about, balance=balance, cash=cash, bank=bank, click=click,
                            account_types=account_types, months=months, years=years, days=days,
@@ -476,4 +501,82 @@ def search_cost():
         filtered_cost.append(info)
     return jsonify({
         "filtered_cost": filtered_cost
+    })
+
+
+@app.route('/filter_salary', methods=["POST", "GET"])
+def filter_salary():
+    button_id = request.get_json()["button_id"]
+    salary_all = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == button_id).order_by(
+        Teacher_salary_day.id).all()
+    filtered_salary = []
+    for salary in salary_all:
+        info = {
+            'teacher_name': salary.teacher.user.name,
+            'reason': salary.reason,
+            'salary': salary.salary,
+            'account_type': salary.account_type.name,
+            'date': f' {salary.day.years.year} - {salary.day.month.month_number} - {salary.day.day_number} '
+        }
+        filtered_salary.append(info)
+    return jsonify({
+        'filtered_salary': filtered_salary
+    })
+
+
+@app.route('/filter_date', methods=["POST", "GET"])
+def filter_date():
+    year = request.get_json()["year"]
+    month = request.get_json()["month"]
+    day = request.get_json()["day"]
+    print(year)
+    print(month)
+    print(day)
+    if year:
+        print(True)
+        salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
+            contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year).order_by(
+            Teacher_salary_day.id).all()
+
+        if month:
+            print(month)
+            salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
+                contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year, Day.month_id == month).order_by(
+                Teacher_salary_day.id).all()
+
+            if day:
+                print(day)
+                salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
+                    contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year, Day.month_id == month,
+                                                                   Day.id == day).order_by(
+                    Teacher_salary_day.id).all()
+    elif not year and month and day:
+        salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
+            contains_eager(Teacher_salary_day.day)).filter(Day.month_id == month, Day.id == day).order_by(
+            Teacher_salary_day.id).all()
+    elif year and not month and day:
+        salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
+            contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year, Day.id == day).order_by(
+            Teacher_salary_day.id).all()
+    elif not year and not day and month:
+        salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
+            contains_eager(Teacher_salary_day.day)).filter(Day.month_id == month).order_by(
+            Teacher_salary_day.id).all()
+    elif not year and not month and day:
+        salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
+            contains_eager(Teacher_salary_day.day)).filter(Day.id == day).order_by(
+            Teacher_salary_day.id).all()
+
+    filtered_salary = []
+    for salary in salary_all:
+        info = {
+            'teacher_name': salary.teacher.user.name,
+            'reason': salary.reason,
+            'salary': salary.salary,
+            'account_type': salary.account_type.name,
+            'date': f' {salary.day.years.year} - {salary.day.month.month_number} - {salary.day.day_number} '
+        }
+        filtered_salary.append(info)
+    return jsonify({
+        'filtered_salary': filtered_salary
     })

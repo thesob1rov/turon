@@ -8,8 +8,70 @@ let filter_btn = document.querySelector('.pay_filter_btn'), filter_form = docume
     plus = document.querySelector('.harajat_plus_circle'), radio = document.querySelectorAll('.radio'),
     nameInput = document.querySelector('.nameInput'), paginate = document.querySelector('.pay_next'),
     input_type_id = document.querySelector('.input_type_id'), payedInput = document.querySelector('.payedInput'),
-    select = document.querySelector('.select'), tbody = document.querySelector('tbody');
+    select = document.querySelector('.select'), tbody = document.querySelector('tbody'),
+    select_year = document.getElementById('select_year'), select_month = document.getElementById('select_month'),
+    select_day = document.getElementById('select_day'), salary_btn = document.querySelectorAll('.salary_btn'),
+    select_date = document.querySelectorAll('.select_date');
 
+if (section.dataset.type === 'salary') {
+    select_date.forEach(item => {
+        item.addEventListener('change', () => {
+            fetch('/filter_date', {
+                method: "POST", body: JSON.stringify({
+                    'year': select_year.value, 'month': select_month.value, 'day': select_day.value
+                }), headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(resp => {
+                    paginate.classList.remove('active_paginate')
+                    tbody.innerHTML = ''
+                    for (let i = 0; i < resp['filtered_salary'].length; i++) {
+                        tbody.innerHTML += `<tr>
+                                <td>${i + 1}</td>
+                                <td>${resp['filtered_salary'][i].teacher_name}</td>
+                                <td>${resp['filtered_salary'][i].reason}</td>
+                                <td>${resp['filtered_salary'][i].salary}</td>
+                                <td>${resp['filtered_salary'][i].account_type}</td>
+                                <td>${resp['filtered_salary'][i].date}</td>
+                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                       data-id="${resp['filtered_salary'][i].id}"></i></td>
+                            </tr>`
+                    }
+                })
+        })
+    })
+
+}
+salary_btn.forEach(item => {
+    item.addEventListener('click', () => {
+        fetch('/filter_salary', {
+            method: "POST", body: JSON.stringify({
+                "button_id": item.dataset.id
+            }), headers: {
+                'Content-type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(resp => {
+                paginate.classList.remove('active_paginate')
+                tbody.innerHTML = ''
+                for (let i = 0; i < resp['filtered_salary'].length; i++) {
+                    tbody.innerHTML += `<tr>
+                                <td>${i + 1}</td>
+                                <td>${resp['filtered_salary'][i].teacher_name}</td>
+                                <td>${resp['filtered_salary'][i].reason}</td>
+                                <td>${resp['filtered_salary'][i].salary}</td>
+                                <td>${resp['filtered_salary'][i].account_type}</td>
+                                <td>${resp['filtered_salary'][i].date}</td>
+                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                       data-id="${resp['filtered_salary'][i].id}"></i></td>
+                            </tr>`
+                }
+            })
+    })
+})
 paginate.classList.add('active_paginate')
 if (section.dataset.type === 'pay') {
     search.addEventListener('input', () => {
@@ -92,13 +154,16 @@ select.addEventListener('change', () => {
         window.location.href = '/all_payments/pay/1';
     } else if (select.value === 'costOption') {
         window.location.href = '/all_payments/cost/1';
+    } else if (select.value === 'salaryOption') {
+        window.location.href = '/all_payments/salary/1';
     }
 })
 
-
-plus.addEventListener('click', () => {
-    index.classList.add('active')
-})
+if (section.dataset.type === 'cost') {
+    plus.addEventListener('click', () => {
+        index.classList.add('active')
+    })
+}
 index.addEventListener('click', (e) => {
     if (e.target === index) {
         index.classList.remove('active')

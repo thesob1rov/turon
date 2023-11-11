@@ -51,6 +51,7 @@ class Teacher(db.Model):
     rooms = relationship("Room", backref="teacher", order_by="Room.id")
     flows = relationship("Flow", backref="teacher", order_by="Flow.id")
     daily_table = relationship("DailyTable", backref="teacher", order_by="DailyTable.id")
+    teacher_salary_day = relationship("Teacher_salary_day", backref="teacher", order_by="Teacher_salary_day.id")
     teacher_attendance = db.relationship('TeacherAttendance', backref='teacher', order_by='TeacherAttendance.id')
 
     def add(self):
@@ -236,6 +237,8 @@ class AccountType(db.Model):
                                              order_by="StudentPaymentsInMonth.id")
     overhead = relationship("Overhead", backref="account_type",
                             order_by="Overhead.id")
+    teacher_salary_day = relationship("Teacher_salary_day", backref="account_type",
+                                      order_by="Teacher_salary_day.id")
 
 
 class StudentMonthPayments(db.Model):
@@ -417,10 +420,6 @@ class Years(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def add(self):
-        db.session.add(self)
-        db.session.commit()
-
 
 class TeacherSalaryType(db.Model):
     id = Column(Integer, primary_key=True)
@@ -460,6 +459,7 @@ class Day(db.Model):
     type_id = Column(Integer, ForeignKey('type_day.id'))
     given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='day',
                                               order_by='GivenSalariesInMonth.id')
+    teacher_salary_day = db.relationship('Teacher_salary_day', backref='day', order_by='Teacher_salary_day.id')
 
     def add(self):
         db.session.add(self)
@@ -478,6 +478,8 @@ class TeacherSalary(db.Model):
     rest_salary = Column(String)
     given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='teacher_salary',
                                               order_by='GivenSalariesInMonth.id')
+    teacher_salary_days = db.relationship('Teacher_salary_day', backref='teacher_salary',
+                                          order_by='Teacher_salary_day.id')
 
     def add(self):
         db.session.add(self)
@@ -517,6 +519,21 @@ class TypeDay(db.Model):
     type = Column(String)
     color = Column(String)
     day = db.relationship('Day', backref='type_day', order_by='Day.id')
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class Teacher_salary_day(db.Model):
+    __tablename__ = "teacher_salary_day"
+    id = Column(Integer, primary_key=True)
+    salary = Column(Integer)
+    reason = Column(String)
+    account_type_id = Column(Integer, ForeignKey("account_type.id"))
+    day_id = Column(Integer, ForeignKey("day.id"))
+    teacher_id = Column(Integer, ForeignKey("teacher.id"))
+    teacher_salary_id = Column(Integer, ForeignKey("teacher_salary.id"))
 
     def add(self):
         db.session.add(self)

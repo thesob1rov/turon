@@ -25,6 +25,9 @@ html
   flex-direction: column
   padding: 2rem
   //gap: 5rem
+
+
+
   h1
     font-size: 25px
 
@@ -34,16 +37,30 @@ html
     display: flex
     flex-direction: column
     align-items: center
+    overflow: auto
+
+    &::-webkit-scrollbar
+      width: 1rem
+
+    &::-webkit-scrollbar-track
+      background-color: #ffffff
+
+    &::-webkit-scrollbar-thumb
+      cursor: pointer
+      background-color: #111f4c
 
 
     table
       width: 90%
       border-collapse: collapse
+      height: 100%
+
 
       th
         border: 1px solid black
         width: 15rem
         height: 4rem
+
 
     tbody
       td
@@ -115,6 +132,9 @@ html
       button
         width: 16rem
         height: 4rem
+        display: flex
+        align-items: center
+        justify-content: center
         background-color: #111f4c
         border: none
         color: white

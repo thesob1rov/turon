@@ -53,6 +53,7 @@ class Teacher(db.Model):
     daily_table = relationship("DailyTable", backref="teacher", order_by="DailyTable.id")
     teacher_salary_day = relationship("Teacher_salary_day", backref="teacher", order_by="Teacher_salary_day.id")
     teacher_attendance = db.relationship('TeacherAttendance', backref='teacher', order_by='TeacherAttendance.id')
+    lesson_plan = db.relationship('Lesson_plan_day', backref='teacher', order_by='Lesson_plan_day.id')
 
     def add(self):
         db.session.add(self)
@@ -378,6 +379,8 @@ class TimeList(db.Model):
     end = Column(String)
     daily_time = relationship("DailyTable", backref="time_list",
                               order_by="DailyTable.id")
+    lesson_days = relationship("Lesson_plan_day", backref="time_list",
+                               order_by="Lesson_plan_day.id")
 
 
 class TimeTableDay(db.Model):
@@ -460,6 +463,7 @@ class Day(db.Model):
     given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='day',
                                               order_by='GivenSalariesInMonth.id')
     teacher_salary_day = db.relationship('Teacher_salary_day', backref='day', order_by='Teacher_salary_day.id')
+    lesson_plans = db.relationship('Lesson_plan_day', backref='day', order_by='Lesson_plan_day.id')
 
     def add(self):
         db.session.add(self)
@@ -534,6 +538,23 @@ class Teacher_salary_day(db.Model):
     day_id = Column(Integer, ForeignKey("day.id"))
     teacher_id = Column(Integer, ForeignKey("teacher.id"))
     teacher_salary_id = Column(Integer, ForeignKey("teacher_salary.id"))
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class Lesson_plan_day(db.Model):
+    __tablename__ = "lesson_plan_day"
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    target = Column(String)
+    main = Column(String)
+    assessment = Column(String)
+    homework = Column(String)
+    day_id = Column(Integer, ForeignKey("day.id"))
+    lesson_time_id = Column(Integer, ForeignKey("time_list.id"))
+    teacher_id = Column(Integer, ForeignKey("teacher.id"))
 
     def add(self):
         db.session.add(self)

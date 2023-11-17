@@ -4,20 +4,42 @@ from datetime import datetime
 import calendar
 
 
-# @app.route('/teacher_salary_list', methods=["POST", "GET"])
-# def teacher_salary_list():
-#
-#     return render_template()
+@app.route('/teacher_salary/<int:teacher_id>', methods=["POST", "GET"])
+def teacher_salary(teacher_id):
+    teacher = Teacher.query.filter(Teacher.id == teacher_id).first()
+    salaries = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id).all()
+    teacher_salary_types = TeacherSalaryType.query.all()
+    return render_template("teacher_salary/oylik.html", salaries=salaries, teacher=teacher,
+                           teacher_salary_types=teacher_salary_types)
+
+
+@app.route('/enter_teacher_salary_type', methods=["POST", "GET"])
+def enter_teacher_salary_type():
+    info = request.get_json()["info"]
+    teacher_id = info["teacher_id"]
+    salary_type_id = info["salary_type_id"]
+    Teacher.query.filter(Teacher.id == teacher_id).update({
+        "salary_type": salary_type_id
+    })
+    db.session.commit()
+    calculate_teacher_salary()
+    return jsonify()
+
 
 @app.route('/create_teacher_salary_type', methods=["POST", "GET"])
 def create_teacher_salary_type():
-    if request.method == "POST":
-        type = request.form.get("type")
-        salary = request.form.get("salary")
-        add = TeacherSalaryType(type_name=type, salary=salary)
-        add.add()
-        return redirect(url_for(""))
-    return True
+    info = request.get_json()["info"]
+    teacher_id = info["teacher_id"]
+    type_name = info["salary_type_name"]
+    salary = info["new_salary_money"]
+    add = TeacherSalaryType(type_name=type_name, salary=salary)
+    add.add()
+    Teacher.query.filter(Teacher.id == teacher_id).update({
+        "salary_type": add.id
+    })
+    db.session.commit()
+    calculate_teacher_salary()
+    return jsonify()
 
 
 @app.route('/add_teacher_salary_percentage/<int:teacher_id>', methods=["POST", "GET"])
@@ -32,13 +54,20 @@ def add_teacher_salary_percentage(teacher_id):
     return True
 
 
-@app.route('/given_teacher_salary/<int:teacher_salary_id>', methods=["POST", "GET"])
-def given_teacher_salary(teacher_salary_id):
+@app.route('/given_teacher_salary', methods=["POST", "GET"])
+def given_teacher_salary():
     info = request.get_json()["info"]
-    print(info)
+    teacher_salary_id = info["teacher_salary_id"]
+    account_type_id = info["account_type_id"]
     money = info["money"]
     reason = info["reason"]
-    add = GivenSalariesInMonth(given_salary=money, reason=reason, teacher_salary_id=teacher_salary_id)
+
+    today = datetime.today()
+    year = Years.query.filter(Years.year == int(today.year)).first()
+    month = Month.query.filter(Month.month_number == today.month, Month.years_id == year.id).first()
+    day = Day.query.filter(Day.year_id == year.id, Day.month_id == month.id, Day.day_number == int(today.day)).first()
+    add = GivenSalariesInMonth(given_salary=money, reason=reason, teacher_salary_id=teacher_salary_id, day_id=day.id,
+                               account_type_id=account_type_id, year_id=year.id, month_id=month.id)
     add.add()
     teacher_salary = TeacherSalary.query.filter(TeacherSalary.id == teacher_salary_id).first()
     old_given_salary = 0
@@ -46,31 +75,54 @@ def given_teacher_salary(teacher_salary_id):
         old_given_salary += int(salary.given_salary)
     calc_salary = float(teacher_salary.salary) - float(old_given_salary)
     TeacherSalary.query.filter(TeacherSalary.id == teacher_salary_id).update({
-        "rest_salary": calc_salary,
+        "rest_salary": round(calc_salary),
         "give_salary": old_given_salary
     })
     db.session.commit()
-    return jsonify({
-        "name": "json"
+    return jsonify()
+
+
+@app.route('/delete_teacher_given_salary', methods=["POST", "GET"])
+def delete_teacher_given_salary():
+    info = request.get_json()["info"]
+    print(info)
+    given_salary_id = info["given_salary_id"]
+
+    GivenSalariesInMonth.query.filter(GivenSalariesInMonth.id == int(given_salary_id)).delete()
+    db.session.commit()
+    return jsonify()
+
+
+@app.route('/teacher_salaries_in_month/<int:teacher_salary_id>', methods=["POST", "GET"])
+def teacher_salaries_in_month(teacher_salary_id):
+    teacher_salary = TeacherSalary.query.filter(TeacherSalary.id == teacher_salary_id).first()
+    account_types = AccountType.query.all()
+    return render_template("given_teacher_salary/salary.html", teacher_salary=teacher_salary,
+                           account_types=account_types)
+
+
+@app.route('/enter_teacher_worked_days', methods=["POST", "GET"])
+def enter_teacher_worked_days():
+    info = request.get_json()["info"]
+    teacher_salary_id = info["teacher_salary_id"]
+    worked_days = info["worked_days"]
+    print(teacher_salary_id, worked_days)
+    TeacherSalary.query.filter(TeacherSalary.id == teacher_salary_id).update({
+        "worked_days": worked_days
     })
+    db.session.commit()
+    calculate_teacher_salary()
+    return jsonify()
 
 
 def calculate_teacher_salary():
     teachers = Teacher.query.all()
     today = datetime.today()
-    date = datetime(today.year, today.month, today.day)
     calc_salary = 0
     result_calc = 0
-    result = 0
-    attendance_count = 0
-    yy = 2017
-    mm = 11
     year = Years.query.filter(Years.year == int(today.year)).first()
     month = Month.query.filter(Month.month_number == today.month, Month.years_id == year.id).first()
-    cal = calendar.calendar(today.year)
-    cl = calendar.Calendar()
-    rez = cl.itermonthdates(today.year, 12)
-    # print(calendar.calendar(today.year))
+    overal = 0
     working_days = 0
     for day in month.day:
         working_day = Day.query.filter(Day.id == day.id, Day.type_id == 1).first()
@@ -80,60 +132,32 @@ def calculate_teacher_salary():
         if teacher.daily_table:
             teacher_lesson_count = len(teacher.daily_table)
             salary_percentage = teacher.salary_percentage
-            print(teacher_lesson_count)
-            # ustama foizidan ciqqan summa
-
-            # xaftasiga dars soati / 20 * oylik
             calc_salary = ((teacher_lesson_count / 20) * teacher.teacher_salary_type.salary)
             percentage_result = (calc_salary * salary_percentage) / 100
-            print(calc_salary)
-            print(percentage_result)
-            # kemagan kunlari
-            attendance_count = TeacherAttendance.query.filter(TeacherAttendance.teacher_id == teacher.id,
-                                                              TeacherAttendance.month_id == month.id,
-                                                              TeacherAttendance.status == False).count()
-            # dars bor kunlaridan kemagan kunlari ayriladi
-            print(working_days, attendance_count)
-            if attendance_count == 0:
-                worked_count = working_days
+            salary = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id,
+                                                TeacherSalary.month_id == month.id).first()
+            if salary:
+                if salary.worked_days:
+                    overal = (calc_salary + percentage_result) * (int(salary.worked_days) / working_days)
+                    TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id,
+                                               TeacherSalary.month_id == month.id).update({
+                        "salary": round(overal)
+                    })
+                    db.session.commit()
+                else:
+                    overal = (calc_salary + percentage_result)
+                    TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id,
+                                               TeacherSalary.month_id == month.id).update({
+                        "salary": round(overal)
+                    })
+                    db.session.commit()
             else:
-                worked_count = working_days - attendance_count
-            # oyligiga + ustama summasi
-            overal = (calc_salary + percentage_result) * (worked_count / working_days)
-            # ishlagan kunlari oylikdan bolib tashaladi
-            print(worked_count)
-            print(overal)
-            if worked_count == 0:
-                result = overal
-            else:
-                result = overal / worked_count
-            salaries = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id).all()
-            if salaries:
-                for salary in salaries:
-                    if salary.month_id == month.id:
-                        TeacherSalary.query.filter(TeacherSalary.id == salary.id,
-                                                   TeacherSalary.teacher_id == teacher.id).update({
-                            "salary": result
-                        })
-                        db.session.commit()
-                    else:
-                        add = TeacherSalary(teacher_id=teacher.id, salary=result, month_id=month.id)
-                        add.add()
-            else:
-                add = TeacherSalary(teacher_id=teacher.id, salary=result, month_id=month.id)
+                add = TeacherSalary(teacher_id=teacher.id, salary=overal, month_id=month.id)
                 add.add()
         else:
-            if teacher.teacher_attendance:
-                attendance_count = TeacherAttendance.query.filter(TeacherAttendance.teacher_id == teacher.id,
-                                                                  TeacherAttendance.month_id == month.id,
-                                                                  TeacherAttendance.status == False).count()
-            salaries = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id).all()
-            if salaries:
-                for salary in salaries:
-                    if salary.month_id == month.id:
-                        TeacherSalary.query.filter(TeacherSalary.id == salary.id,
-                                                   TeacherSalary.teacher_id == teacher.id).update({
-                            "salary": result
-                        })
-                        db.session.commit()
+            TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id,
+                                       TeacherSalary.month_id == month.id).update({
+                "salary": overal
+            })
+            db.session.commit()
     return "hello"

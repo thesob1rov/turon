@@ -20,10 +20,22 @@ def checkFile(filename):
     return value and type_file
 
 
+def user_password_update():
+    users = User.query.filter(User.id >= 70, User.id <= 140).all()
+    print(len(users))
+    for user in users:
+        password = "12345678"
+        hashed = generate_password_hash(password=password)
+        User.query.filter(User.id == user.id).update({
+            "password": hashed
+        })
+        db.session.commit()
+
+
 @app.route('/')
 def home():
     user = current_user()
-
+    # user_password_update()
     create_menu()
     news = Info.query.filter(Info.type_id == 2).order_by(desc(Info.id)).limit(3)
     about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
@@ -73,7 +85,7 @@ def register():
         number = request.form.get("number")
         class_number = request.form.get("class_number")
         language = request.form.get("language")
-        hashed = generate_password_hash(password=password, method="sha256")
+        hashed = generate_password_hash(password=password)
         datetime_str = f'{year}-{month}-{day}'
         datetime_object = datetime.datetime.strptime(datetime_str, '%Y-%m-%d')
         birth_year = year
@@ -131,6 +143,7 @@ def login():
         if username_sign and check_password_hash(username_sign.password, password):
             session['username'] = username
             return redirect(url_for('student'))
+
     return render_template('login/login.html')
 
 

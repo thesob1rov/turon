@@ -1,7 +1,7 @@
 from app import *
 from backend.models.basic_model import *
 from backend.settings.settings import *
-
+from backend.student.routes import *
 
 @app.route('/about_front/<int:type_id>/<int:info_id>')
 def about_front(type_id, info_id):

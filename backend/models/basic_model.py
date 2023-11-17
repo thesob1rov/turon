@@ -33,6 +33,7 @@ class User(db.Model):
     age = Column(String)
     teacher = db.relationship("Teacher", backref="user", order_by="Teacher.id")
     student = db.relationship("Student", backref="user", order_by="Student.id")
+    worker = db.relationship("Worker", backref="user", order_by="Worker.id")
     pdf_contract = relationship("PdfContract", backref="user", order_by="PdfContract.id")
 
     def add(self):
@@ -56,10 +57,49 @@ class Teacher(db.Model):
     teacher_salaries = relationship("TeacherSalary", backref="teacher", order_by="TeacherSalary.id")
     lesson_plan = db.relationship('Lesson_plan_day', backref='teacher', order_by='Lesson_plan_day.id')
 
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
 
-def add(self):
-    db.session.add(self)
-    db.session.commit()
+
+class Worker(db.Model):
+    __tablename__ = "worker"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    worker_salary = relationship("WorkerSalary", backref="worker", order_by="WorkerSalary.id")
+    salary = Column(String)
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class WorkerSalary(db.Model):
+    __tablename__ = "worker_salary"
+    id = Column(Integer, primary_key=True)
+    worker_id = Column(Integer, ForeignKey("worker.id"))
+    salary = Column(String)
+    give_salary = Column(String)
+    rest_salary = Column(String)
+    month_id = Column(Integer, ForeignKey("month.id"))
+    worker_salary_in_days = relationship("WorkerSalaryInDay", backref="worker_salary", order_by="WorkerSalaryInDay.id")
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class WorkerSalaryInDay(db.Model):
+    __tablename__ = "worker_salary_in_day"
+    id = Column(Integer, primary_key=True)
+    worker_id = Column(Integer, ForeignKey("worker.id"))
+    salary = Column(Integer)
+    reason = Column(String)
+    worker_salary_id = Column(Integer, ForeignKey("worker_salary.id"))
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
 
 
 class Student(db.Model):
@@ -108,7 +148,7 @@ class Info(db.Model):
     type_id = Column(Integer, ForeignKey('type_info.id'))
     date = Column(DateTime)
     vacations = relationship("Vacation", backref="info", order_by="Vacation.id")
-    workers = relationship("Worker", backref="info", order_by="Worker.id")
+    # workers = relationship("Worker", backref="info", order_by="Worker.id")
 
     def add(self):
         db.session.add(self)
@@ -127,18 +167,18 @@ class Vacation(db.Model):
         db.session.commit()
 
 
-class Worker(db.Model):
-    __tablename__ = "worker"
-    id = Column(Integer, primary_key=True)
-    info_id = Column(Integer, ForeignKey('info.id'))
-    name = Column(String)
-    surname = Column(String)
-    img = Column(String)
-    text = Column(String)
-
-    def add(self):
-        db.session.add(self)
-        db.session.commit()
+# class Worker(db.Model):
+#     __tablename__ = "worker"
+#     id = Column(Integer, primary_key=True)
+#     info_id = Column(Integer, ForeignKey('info.id'))
+#     name = Column(String)
+#     surname = Column(String)
+#     img = Column(String)
+#     text = Column(String)
+#
+#     def add(self):
+#         db.session.add(self)
+#         db.session.commit()
 
 
 class Gallery(db.Model):

@@ -25,17 +25,12 @@ def lesson_plan(teacher_id):
                            about=about, about_id=about_id, time_list=time_list)
 
 
-year = 2023
-month = 12
-
-
 @app.route('/add_lesson_plan', methods=['POST'])
 def add_lesson_plan():
     user = current_user()
     teacher = Teacher.query.filter(Teacher.user_id == user.id).first()
     day_id = request.get_json()["day_id"]
     lesson_time_id = request.get_json()["lesson_time_id"]
-    print(lesson_time_id)
     name = request.get_json()["name"]
     target = request.get_json()["target"]
     main = request.get_json()["main"]
@@ -94,8 +89,13 @@ def get_lesson_plan():
 
 
 def filter_day_lesson(teacher_id):
-    year_this = Years.query.filter(Years.year == year).first()
-    month_this = Month.query.filter(Month.month_number == month).first()
+    date = datetime.today()
+    today = date.strftime("%d")
+    this_month = date.strftime("%m")
+    this_year = date.strftime("%Y")
+
+    year_this = Years.query.filter(Years.year == this_year).first()
+    month_this = Month.query.filter(Month.month_number == this_month).first()
     day_in_month = Day.query.filter(Day.month_id == month_this.id, Day.year_id == year_this.id).order_by(Day.id).all()
     day_list = []
     day_table = [
@@ -130,11 +130,6 @@ def filter_day_lesson(teacher_id):
         day_lesson_all = DailyTable.query.filter(DailyTable.day_id == day_lesson_id).order_by(DailyTable.id).all()
         time_list = TimeList.query.order_by(TimeList.id).all()
         day_lessons = []
-
-        date = datetime.today()
-        today = date.strftime("%d")
-        this_month = date.strftime("%m")
-        this_year = date.strftime("%Y")
 
         if day_lesson_all:
             for time in time_list:

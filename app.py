@@ -5,6 +5,7 @@ import os
 from datetime import datetime
 from pprint import pprint
 import requests
+from flask_cors import CORS
 
 link = 'https://turonedu.uz/'
 
@@ -14,6 +15,7 @@ app = Flask(__name__)
 app.config.from_object('backend.models.config')
 db = db_setup(app)
 migrate = Migrate(app, db)
+CORS(app)
 
 
 def check_session():
@@ -30,6 +32,7 @@ def check_session():
 
 
 from backend.base_route.views import *
+from backend.lesson_plan.views import *
 from backend.calendar.app import *
 from backend.about_us_jobs.views import *
 from backend.news.views import *

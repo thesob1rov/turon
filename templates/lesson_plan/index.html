@@ -1,0 +1,83 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="stylesheet" href="../../static/css/lesson_plan/dars_reja.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+{% endblock %}
+{% block section %}
+    <section class="lesson_plan">
+        <h1>Dars reja</h1>
+        <div class="lesson_plan_table">
+            <div class="lesson_plan_date">
+                <div class="date">2023-11</div>
+                <div class="btns">
+                    <button>Patok</button>
+                    <button>Sinf</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th rowspan="2">Hafta kunlari</th>
+                    {% for time in time_list %}
+                        <th>{{ time.start }}- {{ time.end }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for day in day_list %}
+                    <tr>
+                        <td>{{ day.day_name }} <br>{{ day.day_number }}</td>
+                        {% for day_lesson in day.day_lessons %}
+                            {% if day_lesson.name != None %}
+                                <td data-change="{{ day.day_change_status }}"
+                                    data-status="{{ day_lesson.lesson_status }}"
+                                    data-time="{{ day_lesson.time_id }}"
+                                    data-id="{{ day.day_id }}" class="span">
+                                    {{ day_lesson.name }}
+                                    {% if day_lesson.lesson_status == True and day.day_change_status %}
+                                        <i style="color: #34d534"
+                                           class="fa-solid fa-check">
+                                        </i>
+                                    {% endif %}
+                                    {% if day_lesson.lesson_status == True and not day.day_change_status %}
+                                        <i style="color: #34d534" class="fa-solid fa-check-double"></i>
+                                    {% endif %}
+                                    {% if not day.day_change_status and day_lesson.lesson_status  == False %}
+                                        <i style="color: red" class="fa-solid fa-x"></i>
+                                    {% endif %}
+
+                                </td>
+
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="plan">
+            <div class="plan_box">
+                <div class="plan_form">
+                    <input type="text" class="name" placeholder="Lesson name">
+                    <div class="plan_items">
+                        <textarea name="" class="target" cols="30" rows="10" placeholder="Lesson target"></textarea>
+                        <textarea name="" class="main" cols="30" rows="10" placeholder="Main lesson"></textarea>
+                    </div>
+                    <div class="plan_items">
+                        <textarea name="" class="assessment" cols="30" rows="10" placeholder="Assessment"></textarea>
+                        <textarea name="" class="homework" cols="30" rows="10" placeholder="Homework"></textarea>
+                    </div>
+                    <button>Add</button>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+    <script src="../../static/js/lesson_plan/script.js"></script>
+{% endblock %}

@@ -131,6 +131,12 @@ html {
   padding: 0.2rem;
   cursor: pointer;
 }
+.change .lesson_plan {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.2rem;
+  cursor: pointer;
+}
 
 .edit {
   height: 75%;

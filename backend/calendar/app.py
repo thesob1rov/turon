@@ -3,6 +3,7 @@ from backend.settings.settings import *
 import calendar
 from datetime import datetime
 from backend.teacher.teacher_salarys import *
+
 list_days = []
 
 
@@ -65,12 +66,12 @@ def get_calendar(current_year, next_year):
 
 @app.route('/calendar_year')
 def calendar_year():
-    calculate_teacher_salary()
     get_calendar(datetime.now().year, datetime.now().year + 1)
+    calculate_teacher_salary()
     error = check_session()
-    # if error:
-    #     return redirect(url_for('home'))
-    user = User.query.filter(User.id == 1).first()
+    if error:
+        return redirect(url_for('home'))
+    user = current_user()
     about_id = 0
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()
@@ -144,8 +145,9 @@ def change_type():
     Day.query.filter(Day.id == day_id).update({
         'type_id': type_id
     })
-    color = TypeDay.query.filter(TypeDay.id == type_id).first().color
     db.session.commit()
+    color = TypeDay.query.filter(TypeDay.id == type_id).first().color
+
     return jsonify({
         'color': color
     })

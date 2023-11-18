@@ -6,6 +6,7 @@ let salary = document.querySelector('.salary'),
     reason = document.querySelector('.reason'),
     delete_btn = document.querySelectorAll('.fa-trash'),
     salary_main = document.querySelector('.salary_main');
+
 icon.addEventListener('click', () => {
     salary.style.display = "flex"
 })
@@ -18,16 +19,16 @@ salary.addEventListener('click', (event) => {
 send_salary.addEventListener("click", () => {
     info = {
         money: salary_money.value,
-        teacher_salary_id: send_salary.dataset.id,
-        reason: reason.value,
-        account_type_id: "",
+        worker_salary_id: send_salary.dataset.id,
+        reason: reason.value
+        // account_type_id: "",
     }
-    radio.forEach(item => {
-        if (item.checked) {
-            info.account_type_id = item.dataset.id
-        }
-    })
-    fetch('/given_teacher_salary', {
+    // radio.forEach(item => {
+    //     if (item.checked) {
+    //         info.account_type_id = item.dataset.id
+    //     }
+    // })
+    fetch('/given_worker_salary', {
         method: "POST", body: JSON.stringify({
             "info": info
         }), headers: {

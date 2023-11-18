@@ -53,16 +53,44 @@ def worker_profile(worker_id):
 @app.route('/worker_salary/<int:worker_id>', methods=["POST", "GET"])
 def worker_salary(worker_id):
     worker = Worker.query.filter(Worker.id == worker_id).first()
-    salaries = WorkerSalary.queryfilter(WorkerSalary.worker_id == worker_id).order_by(WorkerSalary.id).all()
+    salaries = WorkerSalary.query.filter(WorkerSalary.worker_id == worker_id).order_by(WorkerSalary.id).all()
     return render_template("worker_salary/salary.html", salaries=salaries, worker=worker)
 
 
 @app.route('/worker_salaries_in_month/<int:worker_salary_id>', methods=["POST", "GET"])
 def worker_salaries_in_month(worker_salary_id):
-    worker_salary = TeacherSalary.query.filter(TeacherSalary.id == worker_salary_id).first()
+    worker_salary = WorkerSalary.query.filter(WorkerSalary.id == worker_salary_id).first()
     account_types = AccountType.query.all()
     return render_template("worker_salary/add.html", worker_salary=worker_salary,
                            account_types=account_types)
+
+
+@app.route('/given_worker_salary', methods=["POST", "GET"])
+def given_worker_salary():
+    info = request.get_json()["info"]
+    worker_salary_id = info["worker_salary_id"]
+    # account_type_id = info["account_type_id"]
+    money = info["money"]
+    reason = info["reason"]
+
+    # today = datetime.today()
+    # year = Years.query.filter(Years.year == int(today.year)).first()
+    # month = Month.query.filter(Month.month_number == today.month, Month.years_id == year.id).first()
+    # day = Day.query.filter(Day.year_id == year.id, Day.month_id == month.id, Day.day_number == int(today.day)).first()
+
+    add = WorkerSalaryInDay(salary=money, reason=reason, worker_salary_id=worker_salary_id)
+    add.add()
+    worker_salary = WorkerSalary.query.filter(WorkerSalary.id == worker_salary_id).first()
+    old_given_salary = 0
+    for salary in worker_salary.worker_salary_in_days:
+        old_given_salary += int(salary.salary)
+    calc_salary = float(worker_salary.salary) - float(old_given_salary)
+    WorkerSalary.query.filter(WorkerSalary.id == worker_salary_id).update({
+        "rest_salary": round(calc_salary),
+        "give_salary": old_given_salary
+    })
+    db.session.commit()
+    return jsonify()
 
 
 @app.route('/register_worker', methods=["POST", "GET"])

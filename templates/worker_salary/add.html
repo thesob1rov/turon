@@ -26,12 +26,14 @@
             </tr>
             </thead>
             <tbody>
-            {% for salary in teacher_salary.given_salaries_in_month %}
+            {% for salary in worker_salary.worker_salary_in_days %}
                 <tr>
-                    <td>{{ salary.years.year }}-{{ salary.month.month_number }}-{{ salary.day.day_number }}</td>
-                    <td>{{ salary.given_salary }}</td>
+                    <td>d</td>
+                    {#                    <td>{{ salary.years.year }}-{{ salary.month.month_number }}-{{ salary.day.day_number }}</td>#}
+                    <td>{{ salary.salary }}</td>
                     <td>{{ salary.reason }}</td>
-                    <td>{{ salary.account_type.name }}</td>
+                    {#                    <td>{{ salary.account_type.name }}</td>#}
+                    <td>d</td>
                     <td><i class="fa-solid fa-trash" style="color: red; font-size: 20px" data-id="{{ salary.id }}"></i>
                     </td>
                 </tr>
@@ -58,7 +60,7 @@
             </div>
             <input type="text" class="input salary_money" placeholder="Summa">
             <input type="text" class="input reason" placeholder="Sabab">
-            <button class="salary_btn" data-id="{{ teacher_salary.id }}">Add</button>
+            <button class="salary_btn" data-id="{{ worker_salary.id }}">Add</button>
         </div>
     </div>
 </section>

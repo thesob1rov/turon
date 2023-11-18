@@ -18,12 +18,13 @@
                         <a href="{{ url_for("old_student") }}">
                             <button style="background-color: #c4c4c4; color: #001b61" class="btn">Student</button>
                         </a>
-                        <a href="{{ url_for("worker") }} ">
-                            <button style="background-color: #c4c4c4; color: #001b61; border-radius: 0" class="btn">
-                                Workers
-                            </button>
+                        <button style="background-color: #001b61; color: white; border-radius: 0" class="btn">
+                            Workers
+                        </button>
+                        <a href="{{ url_for("teacher") }} ">
+                            <button style="background-color: #c4c4c4; color: #001b61" class="add_btn">Teacher</button>
                         </a>
-                        <button style="background-color: #001b61; color: white" class="add_btn">Teacher</button>
+
                     </div>
                 </div>
                 <div class="filter">
@@ -49,35 +50,35 @@
                     </thead>
 
                     <tbody class="tbody">
-                    {% for teacher in teachers %}
+                    {% for worker in workers %}
                         <tr>
                             <td></td>
-                            <td><a href="{{ url_for("teacher_profile_info", teacher_id=teacher.user.id) }}"><img
-                                    src="{{ teacher.user.image }}" alt=""></a></td>
-                            <td>{{ teacher.user.name }}</td>
-                            <td>{{ teacher.user.surname }}</td>
-                            <td>{{ teacher.user.age }}</td>
-                            <td>{{ teacher.user.number }}</td>
+                            <td><a href="{{ url_for("teacher_profile_info", worker_id=worker.user.id) }}"><img
+                                    src="{{ worker.user.image }}" alt=""></a></td>
+                            <td>{{ worker.user.name }}</td>
+                            <td>{{ worker.user.surname }}</td>
+                            <td>{{ worker.user.age }}</td>
+                            <td>{{ worker.user.number }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
-            {% if teacher_count >= 50 %}
-                <div class="next">
-                    <button {% if not pages.has_prev %}class="disabled" {% endif %}><a
-                            {% if not pages.has_prev %}class="disabled" {% endif %}
-                            href="teacher?page={{ pages.prev_num }}"><i
-                            class="fa-solid fa-chevron-left"></i></a></button>
-                    {% for page in pages.iter_pages() %}
-                        <button><a href="teacher?page={{ page }}">{{ page }}</a></button>
-                    {% endfor %}
-                    <button {% if not pages.has_prev %}class="disabled" {% endif %}><a
-                            {% if not pages.has_prev %}class="disabled" {% endif %}
-                            href="teacher?page={{ pages.next_num }}"><i class="fa-solid fa-chevron-right"></i></a>
-                    </button>
-                </div>
-            {% endif %}
+            {#            {% if teacher_count >= 50 %}#}
+            {#                <div class="next">#}
+            {#                    <button {% if not pages.has_prev %}class="disabled" {% endif %}><a#}
+            {#                            {% if not pages.has_prev %}class="disabled" {% endif %}#}
+            {#                            href="teacher?page={{ pages.prev_num }}"><i#}
+            {#                            class="fa-solid fa-chevron-left"></i></a></button>#}
+            {#                    {% for page in pages.iter_pages() %}#}
+            {#                        <button><a href="teacher?page={{ page }}">{{ page }}</a></button>#}
+            {#                    {% endfor %}#}
+            {#                    <button {% if not pages.has_prev %}class="disabled" {% endif %}><a#}
+            {#                            {% if not pages.has_prev %}class="disabled" {% endif %}#}
+            {#                            href="teacher?page={{ pages.next_num }}"><i class="fa-solid fa-chevron-right"></i></a>#}
+            {#                    </button>#}
+            {#                </div>#}
+            {#            {% endif %}#}
         </div>
 
 

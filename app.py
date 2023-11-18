@@ -33,6 +33,7 @@ def check_session():
 
 from backend.base_route.views import *
 from backend.lesson_plan.views import *
+from backend.worker_salary.views import *
 from backend.calendar.app import *
 from backend.about_us_jobs.views import *
 from backend.news.views import *

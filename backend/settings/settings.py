@@ -22,7 +22,7 @@ def create_menu():
     admin = User.query.filter(User.username == "admin", User.name == "admin", User.surname == "admin").first()
     if not admin:
         admin = User(username="admin", name="admin", surname="admin",
-                     password=generate_password_hash("admin1234", method='sha256'), role="admin")
+                     password=generate_password_hash("admin1234", method='scrypt'), role="admin")
         db.session.add(admin)
         db.session.commit()
 
@@ -30,6 +30,6 @@ def create_menu():
                                  User.surname == "director").first()
     if not director:
         director = User(username="director", name="director", surname="director",
-                        password=generate_password_hash("max1234", method='sha256'), role="director")
+                        password=generate_password_hash("max1234", method='scrypt'), role="director")
         db.session.add(director)
         db.session.commit()

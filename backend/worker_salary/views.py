@@ -1,5 +1,6 @@
 from app import *
 from backend.settings.settings import *
+from datetime import datetime
 
 
 @app.route('/worker', methods=["POST", "GET"])
@@ -53,9 +54,15 @@ def worker_profile(worker_id):
 def worker_salary(worker_id):
     worker = Worker.query.filter(Worker.id == worker_id).first()
     salaries = WorkerSalary.query.all()
-    teacher_salary_types = None
-    return render_template("worker_salary/salary.html", salaries=salaries, worker=worker,
-                           teacher_salary_types=teacher_salary_types)
+    return render_template("worker_salary/salary.html", salaries=salaries, worker=worker)
+
+
+@app.route('/worker_salaries_in_month/<int:worker_salary_id>', methods=["POST", "GET"])
+def worker_salaries_in_month(worker_salary_id):
+    teacher_salary = TeacherSalary.query.filter(TeacherSalary.id == worker_salary_id).first()
+    account_types = AccountType.query.all()
+    return render_template("worker_salary/add.html", teacher_salary=teacher_salary,
+                           account_types=account_types)
 
 
 @app.route('/register_worker', methods=["POST", "GET"])
@@ -79,14 +86,32 @@ def register_worker():
         password = request.form.get("password")
         work_id = request.form.get("work_id")
         number = request.form.get("number")
-        hashed = generate_password_hash(password=password, method="sha256")
+        hashed = generate_password_hash(password=password, method="scrypt")
 
         datetime_str = f'{year}-{month}-{day}'
         datetime_object = datetime.strptime(datetime_str, '%Y-%m-%d')
         add = User(name=name, username=username, surname=surname, parent_name=parent_name, birth_date=datetime_object,
                    password=hashed, number=number)
         add.add()
-        worker = Worker(user_id=add.id, job_id=job.id)
+        worker = Worker(user_id=add.id, job_id=work_id)
         worker.add()
         return redirect(url_for('register'))
     return render_template("worker_register/index.html", works=works)
+
+
+@app.route('/set_worker_salary', methods=["POST", "GET"])
+def set_worker_salary():
+    info = request.get_json()["info"]
+    worker_id = info["worker_id"]
+    salary = info["new_salary_money"]
+    date = datetime.today()
+    this_month = date.strftime("%m")
+    month = Month.query.filter(Month.month_number == this_month).first()
+    print(month)
+    add = WorkerSalary(worker_id=worker_id, salary=salary, month_id=month.id)
+    add.add()
+    Worker.query.filter(Worker.id == worker_id).update({
+        "salary": salary
+    })
+    db.session.commit()
+    return jsonify()

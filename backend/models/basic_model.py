@@ -498,6 +498,7 @@ class Month(db.Model):
     years_id = Column(Integer, ForeignKey('years.id'))
     day = db.relationship('Day', backref='month', order_by='Day.id')
     teacher_salary = db.relationship('TeacherSalary', backref='month', order_by='TeacherSalary.id')
+    worker_salary = db.relationship('WorkerSalary', backref='month', order_by='WorkerSalary.id')
     teacher_attendance = db.relationship('TeacherAttendance', backref='month', order_by='TeacherAttendance.id')
     given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='month',
                                               order_by='GivenSalariesInMonth.id')

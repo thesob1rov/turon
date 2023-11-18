@@ -60,11 +60,13 @@
             </div>
             <div class="block_info">
                 <div class="block_info_item">Works</div>
-                <select name="work_id" id="">
+                   <select name="work_id" id="">
+{% for work in works %}
+ <option value="{{ work.id }}">{{ work.name }}</option>
+{% endfor %}
+                   </select>
 
-                    <option value="Farrosh">Farrosh</option>
 
-                </select>
             </div>
             <h1>Tug'ilgan sana</h1>
 

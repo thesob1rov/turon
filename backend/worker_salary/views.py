@@ -53,15 +53,15 @@ def worker_profile(worker_id):
 @app.route('/worker_salary/<int:worker_id>', methods=["POST", "GET"])
 def worker_salary(worker_id):
     worker = Worker.query.filter(Worker.id == worker_id).first()
-    salaries = WorkerSalary.query.all()
+    salaries = WorkerSalary.queryfilter(WorkerSalary.worker_id == worker_id).order_by(WorkerSalary.id).all()
     return render_template("worker_salary/salary.html", salaries=salaries, worker=worker)
 
 
 @app.route('/worker_salaries_in_month/<int:worker_salary_id>', methods=["POST", "GET"])
 def worker_salaries_in_month(worker_salary_id):
-    teacher_salary = TeacherSalary.query.filter(TeacherSalary.id == worker_salary_id).first()
+    worker_salary = TeacherSalary.query.filter(TeacherSalary.id == worker_salary_id).first()
     account_types = AccountType.query.all()
-    return render_template("worker_salary/add.html", teacher_salary=teacher_salary,
+    return render_template("worker_salary/add.html", worker_salary=worker_salary,
                            account_types=account_types)
 
 

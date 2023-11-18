@@ -13,7 +13,7 @@
      <link rel="icon" href="/static/img/school_logo.png">
 </head>
 <body>
-<form action="{{ url_for("register_teacher") }}" method="post">
+<form action="{{ url_for("register_worker") }}" method="post">
     <section class="block">
 
         <div class="block_box">
@@ -59,11 +59,11 @@
                 <input type="text" class="input" placeholder="Parol" name="password">
             </div>
             <div class="block_info">
-                <div class="block_info_item">Subject</div>
-                <select name="subject_id" id="">
-                    {% for subject in subjects %}
-                        <option value="{{ subject.id }}">{{ subject.name }}</option>
-                    {% endfor %}
+                <div class="block_info_item">Works</div>
+                   <select name="work_id" id="">
+
+                        <option value="Farrosh">Farrosh</option>
+
                 </select>
             </div>
             <h1>Tug'ilgan sana</h1>

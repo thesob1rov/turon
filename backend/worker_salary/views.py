@@ -72,7 +72,7 @@ def register_worker():
     error = check_session()
     if error:
         return redirect(url_for('home'))
-    subjects = Subject.query.all()
+    works = Subject.query.all()
     if request.method == "POST":
         username = request.form.get("username")
         name = request.form.get("name")
@@ -82,7 +82,7 @@ def register_worker():
         month = request.form.get("month")
         year = request.form.get("year")
         password = request.form.get("password")
-        # work_id = request.form.get("work_id")
+        work_id = request.form.get("work_id")
         number = request.form.get("number")
         hashed = generate_password_hash(password=password, method="sha256")
 
@@ -91,7 +91,11 @@ def register_worker():
         add = User(name=name, username=username, surname=surname, parent_name=parent_name, birth_date=datetime_object,
                    password=hashed, number=number)
         add.add()
-        worker = Worker(user_id=add.id)
+        job = Job(nane=work_id)
+        job.add()
+        worker =Worker(user_id=add.id,job_id=job.id)
         worker.add()
+
+
         return redirect(url_for('register'))
-    return render_template("worker_register/index.html", subjects=subjects)
+    return render_template("worker_register/index.html", works=works)

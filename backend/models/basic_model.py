@@ -66,8 +66,20 @@ class Worker(db.Model):
     __tablename__ = "worker"
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("user.id"))
+    job_id = Column(Integer, ForeignKey("job.id"))
     worker_salary = relationship("WorkerSalary", backref="worker", order_by="WorkerSalary.id")
     salary = Column(String)
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class Job(db.Model):
+    __tablename__ = "job"
+    id = Column(Integer, primary_key=True)
+    nane = Column(String)
+    workers = relationship("Worker", backref="job", order_by="Worker.id")
 
     def add(self):
         db.session.add(self)

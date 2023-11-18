@@ -58,7 +58,7 @@ def register_worker():
     error = check_session()
     if error:
         return redirect(url_for('home'))
-    works = Subject.query.all()
+    works = Job.query.all()
     if request.method == "POST":
         username = request.form.get("username")
         name = request.form.get("name")
@@ -70,16 +70,14 @@ def register_worker():
         password = request.form.get("password")
         work_id = request.form.get("work_id")
         number = request.form.get("number")
-        hashed = generate_password_hash(password=password, method="sha256")
+        hashed = generate_password_hash(password=password, method="scrypt")
 
         datetime_str = f'{year}-{month}-{day}'
         datetime_object = datetime.strptime(datetime_str, '%Y-%m-%d')
         add = User(name=name, username=username, surname=surname, parent_name=parent_name, birth_date=datetime_object,
                    password=hashed, number=number)
         add.add()
-        job = Job(nane=work_id)
-        job.add()
-        worker =Worker(user_id=add.id,job_id=job.id)
+        worker =Worker(user_id=add.id,job_id=work_id)
         worker.add()
 
 

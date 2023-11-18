@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../../static/css/teacher_salary/oylik.min.css">
+</head>
+<body>
+<section class="oylik">
+    <div class="oylik_box">
+        <div class="item"></div>
+        <div class="icons">
+            <i class="fa-solid fa-gear setting"></i>
+        </div>
+    </div>
+    <div class="oylik_table">
+        <table class="oylik_table">
+            <thead>
+            <tr>
+                <th>Oy</th>
+                <th>Oylik</th>
+                <th>Berilgan oylik</th>
+                <th>Qolgan oylik</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for salary in salaries %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.month.years.year }}-{{ salary.month.month_number }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.salary }}</a>
+                    </td>
+                    {% if salary.give_salary %}
+                        <td>
+                            <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}"> {{ salary.give_salary }}</a>
+                        </td>
+                    {% else %}
+                        <td><a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">0</a></td>
+                    {% endif %}
+                    {% if salary.rest_salary %}
+                        <td>
+                            <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.rest_salary }}</a>
+                        </td>
+                    {% else %}
+                        <td>
+                            <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.salary }}</a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="new">
+        <div class="new_box">
+            <h1>Oylik turini kirgazish</h1>
+            <div class="new_radios">
+                <div class="radio_item">
+                    <input class="radio_new" type="radio" name="status">
+                    <div>Yangi</div>
+                </div>
+                <div class="radio_item">
+                    <input class="radio_old" type="radio" name="status">
+                    <div>Eski</div>
+                </div>
+            </div>
+            <div class="new_salary_type">
+                <input type="text" placeholder="Nomi" class="new_salary_name">
+                <input type="number" placeholder="Summa" class="new_salary_money">
+                <button>Add</button>
+            </div>
+            <div class="select_salary_type">
+{#                <select name="" id="">#}
+{#                    {% for teacher_salary_type in teacher_salary_types %}#}
+{#                        <option value="{{ teacher_salary_type.id }}">{{ teacher_salary_type.type_name }}</option>#}
+{#                    {% endfor %}#}
+{#                </select>#}
+                <button data-id="{{ worker.id }}">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <!--    <div class="old_box">-->
+    <!--        <select name="" id="">-->
+    <!--            <option value="">Nomi</option>-->
+    <!--        </select>-->
+    <!--    </div>-->
+    <div class="new_date">
+        <div class="new_date_main">
+            <h1>Oy</h1>
+            <div class="new_date_inputs">
+                <input type="text" class="days" placeholder="Kun">
+                <select name="" class="month_id">
+                    {% for salary in salaries %}
+                        <option value="{{ salary.id }}">{{ salary.month.month_number }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="send_worked_days" data-id="{{ worker.id }}">Add</button>
+        </div>
+    </div>
+</section>
+<script src="../../static/js/teacher_salary/oylik.js"></script>
+</body>
+</html>

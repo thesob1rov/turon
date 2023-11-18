@@ -49,6 +49,15 @@ def worker_profile(worker_id):
     return render_template('worker_profile/index.html', worker=worker)
 
 
+@app.route('/worker_salary/<int:worker_id>', methods=["POST", "GET"])
+def worker_salary(worker_id):
+    worker = Worker.query.filter(Worker.id == worker_id).first()
+    salaries = WorkerSalary.query.all()
+    teacher_salary_types = None
+    return render_template("worker_salary/salary.html", salaries=salaries, worker=worker,
+                           teacher_salary_types=teacher_salary_types)
+
+
 @app.route('/register_worker', methods=["POST", "GET"])
 def register_worker():
     """

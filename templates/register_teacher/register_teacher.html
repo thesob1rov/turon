@@ -24,6 +24,11 @@
                         Student
                     </div>
                 </a>
+                        <a href="{{ url_for("register_worker") }}">
+                    <div class="link">
+                        Worker
+                    </div>
+                </a>
                 <div class="link" style="background-color: white; color: #001b61; border: #001b61 3px solid">
                     Teacher
                 </div>
@@ -55,11 +60,11 @@
                 <input type="text" class="input" placeholder="Parol" name="password">
             </div>
             <div class="block_info">
-                <div class="block_info_item">Work</div>
-                <select name="work_id" id="">
-
-                        <option value=""></option>
-
+                <div class="block_info_item">Subjects</div>
+              <select name="subject_id" id="">
+                    {% for subject in subjects %}
+                        <option value="{{ subject.id }}">{{ subject.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <h1>Tug'ilgan sana</h1>

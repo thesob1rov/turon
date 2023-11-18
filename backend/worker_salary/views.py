@@ -10,8 +10,8 @@ def worker():
     :return:
     """
     error = check_session()
-    # if error:
-    #     return redirect(url_for('home'))
+    if error:
+        return redirect(url_for('home'))
     user = current_user()
     about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
     about_id = 0
@@ -43,8 +43,8 @@ def worker_profile(worker_id):
     :return:
     """
     error = check_session()
-    # if error:
-    #     return redirect(url_for('home'))
+    if error:
+        return redirect(url_for('home'))
     user = current_user()
     worker = Worker.query.filter(Worker.id == worker_id).first()
     return render_template('worker_profile/index.html', worker=worker)
@@ -69,16 +69,16 @@ def worker_salaries_in_month(worker_salary_id):
 def given_worker_salary():
     info = request.get_json()["info"]
     worker_salary_id = info["worker_salary_id"]
-    # account_type_id = info["account_type_id"]
+    account_type_id = info["account_type_id"]
     money = info["money"]
     reason = info["reason"]
+    today = datetime.today()
+    year = Years.query.filter(Years.year == int(today.year)).first()
+    month = Month.query.filter(Month.month_number == today.month, Month.years_id == year.id).first()
+    day = Day.query.filter(Day.year_id == year.id, Day.month_id == month.id, Day.day_number == int(today.day)).first()
 
-    # today = datetime.today()
-    # year = Years.query.filter(Years.year == int(today.year)).first()
-    # month = Month.query.filter(Month.month_number == today.month, Month.years_id == year.id).first()
-    # day = Day.query.filter(Day.year_id == year.id, Day.month_id == month.id, Day.day_number == int(today.day)).first()
-
-    add = WorkerSalaryInDay(salary=money, reason=reason, worker_salary_id=worker_salary_id)
+    add = WorkerSalaryInDay(salary=money, reason=reason, worker_salary_id=worker_salary_id,
+                            account_type_id=account_type_id, day_id=day.id, year_id=year.id, month_id=month.id)
     add.add()
     worker_salary = WorkerSalary.query.filter(WorkerSalary.id == worker_salary_id).first()
     old_given_salary = 0

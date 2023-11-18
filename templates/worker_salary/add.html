@@ -28,12 +28,10 @@
             <tbody>
             {% for salary in worker_salary.worker_salary_in_days %}
                 <tr>
-                    <td>d</td>
-                    {#                    <td>{{ salary.years.year }}-{{ salary.month.month_number }}-{{ salary.day.day_number }}</td>#}
+                    <td>{{ salary.years.year }}-{{ salary.month.month_number }}-{{ salary.day.day_number }}</td>
                     <td>{{ salary.salary }}</td>
                     <td>{{ salary.reason }}</td>
-                    {#                    <td>{{ salary.account_type.name }}</td>#}
-                    <td>d</td>
+                    <td>{{ salary.account_type.name }}</td>
                     <td><i class="fa-solid fa-trash" style="color: red; font-size: 20px" data-id="{{ salary.id }}"></i>
                     </td>
                 </tr>

@@ -104,9 +104,12 @@ class WorkerSalary(db.Model):
 class WorkerSalaryInDay(db.Model):
     __tablename__ = "worker_salary_in_day"
     id = Column(Integer, primary_key=True)
-    worker_id = Column(Integer, ForeignKey("worker.id"))
     salary = Column(Integer)
     reason = Column(String)
+    account_type_id = Column(Integer, ForeignKey("account_type.id"))
+    year_id = Column(Integer, ForeignKey("years.id"))
+    month_id = Column(Integer, ForeignKey("month.id"))
+    day_id = Column(Integer, ForeignKey("day.id"))
     worker_salary_id = Column(Integer, ForeignKey("worker_salary.id"))
 
     def add(self):
@@ -160,6 +163,7 @@ class Info(db.Model):
     type_id = Column(Integer, ForeignKey('type_info.id'))
     date = Column(DateTime)
     vacations = relationship("Vacation", backref="info", order_by="Vacation.id")
+
     # workers = relationship("Worker", backref="info", order_by="Worker.id")
 
     def add(self):
@@ -294,6 +298,8 @@ class AccountType(db.Model):
                             order_by="Overhead.id")
     given_salaries_in_month = relationship("GivenSalariesInMonth", backref="account_type",
                                            order_by="GivenSalariesInMonth.id")
+    worker_salary_days = db.relationship('WorkerSalaryInDay', backref='account_type',
+                                         order_by='WorkerSalaryInDay.id')
     teacher_salary_day = relationship("Teacher_salary_day", backref="account_type",
                                       order_by="Teacher_salary_day.id")
 
@@ -476,6 +482,8 @@ class Years(db.Model):
     teacher_attendance = db.relationship('TeacherAttendance', backref='years', order_by='TeacherAttendance.id')
     given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='years',
                                               order_by='GivenSalariesInMonth.id')
+    worker_salary_days = db.relationship('WorkerSalaryInDay', backref='years',
+                                         order_by='WorkerSalaryInDay.id')
 
 
 class TeacherSalaryType(db.Model):
@@ -502,6 +510,8 @@ class Month(db.Model):
     teacher_attendance = db.relationship('TeacherAttendance', backref='month', order_by='TeacherAttendance.id')
     given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='month',
                                               order_by='GivenSalariesInMonth.id')
+    worker_salary_days = db.relationship('WorkerSalaryInDay', backref='month',
+                                         order_by='WorkerSalaryInDay.id')
 
     def add(self):
         db.session.add(self)
@@ -519,6 +529,8 @@ class Day(db.Model):
     type_id = Column(Integer, ForeignKey('type_day.id'))
     given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='day',
                                               order_by='GivenSalariesInMonth.id')
+    worker_salary_days = db.relationship('WorkerSalaryInDay', backref='day',
+                                         order_by='WorkerSalaryInDay.id')
     teacher_salary_day = db.relationship('Teacher_salary_day', backref='day', order_by='Teacher_salary_day.id')
     lesson_plans = db.relationship('Lesson_plan_day', backref='day', order_by='Lesson_plan_day.id')
 

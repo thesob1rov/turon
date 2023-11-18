@@ -30,84 +30,51 @@
             </tr>
             </thead>
             <tbody>
-            {% for salary in salaries %}
-                <tr>
-                    <td>
-                        <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.month.years.year }}-{{ salary.month.month_number }}</a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.salary }}</a>
-                    </td>
-                    {% if salary.give_salary %}
-                        <td>
-                            <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}"> {{ salary.give_salary }}</a>
-                        </td>
-                    {% else %}
-                        <td><a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">0</a></td>
-                    {% endif %}
-                    {% if salary.rest_salary %}
-                        <td>
-                            <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.rest_salary }}</a>
-                        </td>
-                    {% else %}
-                        <td>
-                            <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.salary }}</a>
-                        </td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
+{#            {% for salary in salaries %}#}
+{#                <tr>#}
+{#                    <td>#}
+{#                        <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.month.years.year }}-{{ salary.month.month_number }}</a>#}
+{#                    </td>#}
+{#                    <td>#}
+{#                        <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.salary }}</a>#}
+{#                    </td>#}
+{#                    {% if salary.give_salary %}#}
+{#                        <td>#}
+{#                            <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}"> {{ salary.give_salary }}</a>#}
+{#                        </td>#}
+{#                    {% else %}#}
+{#                        <td><a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">0</a></td>#}
+{#                    {% endif %}#}
+{#                    {% if salary.rest_salary %}#}
+{#                        <td>#}
+{#                            <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.rest_salary }}</a>#}
+{#                        </td>#}
+{#                    {% else %}#}
+{#                        <td>#}
+{#                            <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.salary }}</a>#}
+{#                        </td>#}
+{#                    {% endif %}#}
+{#                </tr>#}
+{#            {% endfor %}#}
             </tbody>
         </table>
     </div>
     <div class="new">
         <div class="new_box">
-            <h1>Oylik turini kirgazish</h1>
-            <div class="new_radios">
-                <div class="radio_item">
-                    <input class="radio_new" type="radio" name="status">
-                    <div>Yangi</div>
-                </div>
-                <div class="radio_item">
-                    <input class="radio_old" type="radio" name="status">
-                    <div>Eski</div>
-                </div>
-            </div>
+            <h1>Oylik  belgilash</h1>
             <div class="new_salary_type">
-                <input type="text" placeholder="Nomi" class="new_salary_name">
                 <input type="number" placeholder="Summa" class="new_salary_money">
-                <button>Add</button>
-            </div>
-            <div class="select_salary_type">
-{#                <select name="" id="">#}
-{#                    {% for teacher_salary_type in teacher_salary_types %}#}
-{#                        <option value="{{ teacher_salary_type.id }}">{{ teacher_salary_type.type_name }}</option>#}
-{#                    {% endfor %}#}
-{#                </select>#}
                 <button data-id="{{ worker.id }}">Add</button>
             </div>
         </div>
     </div>
 
-    <!--    <div class="old_box">-->
-    <!--        <select name="" id="">-->
-    <!--            <option value="">Nomi</option>-->
-    <!--        </select>-->
-    <!--    </div>-->
-    <div class="new_date">
-        <div class="new_date_main">
-            <h1>Oy</h1>
-            <div class="new_date_inputs">
-                <input type="text" class="days" placeholder="Kun">
-                <select name="" class="month_id">
-                    {% for salary in salaries %}
-                        <option value="{{ salary.id }}">{{ salary.month.month_number }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <button class="send_worked_days" data-id="{{ worker.id }}">Add</button>
-        </div>
-    </div>
+
 </section>
-<script src="../../static/js/teacher_salary/oylik.js"></script>
+
+
+
+<script src="../../static/js/worker_salary/oylik.js"></script>
+
 </body>
 </html>

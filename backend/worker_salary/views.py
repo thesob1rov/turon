@@ -1,5 +1,6 @@
 from app import *
 from backend.settings.settings import *
+from datetime import datetime
 
 
 @app.route('/worker', methods=["POST", "GET"])
@@ -90,3 +91,21 @@ def register_worker():
         worker.add()
         return redirect(url_for('register'))
     return render_template("worker_register/index.html", works=works)
+
+@app.route('/set_worker_salary', methods=["POST", "GET"])
+def set_worker_salary():
+
+    info = request.get_json()["info"]
+    worker_id = info["worker_id"]
+    salary = info["new_salary_money"]
+    date = datetime.today()
+    this_month = date.strftime("%m")
+    month = Month.query.filter(Month.month_number == this_month).first()
+    print(month)
+    add = WorkerSalary(worker_id=worker_id, salary=salary, month_id=month.id)
+    add.add()
+    Worker.query.filter(Worker.id == worker_id).update({
+        "salary": salary
+    })
+    db.session.commit()
+    return jsonify()

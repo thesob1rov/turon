@@ -78,7 +78,7 @@ class Worker(db.Model):
 class Job(db.Model):
     __tablename__ = "job"
     id = Column(Integer, primary_key=True)
-    nane = Column(String)
+    name = Column(String)
     workers = relationship("Worker", backref="job", order_by="Worker.id")
 
     def add(self):

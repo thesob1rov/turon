@@ -6,7 +6,8 @@ from werkzeug.security import *
 def current_user():
     get_user = None
     if 'username' in session:
-        get_user = User.query.filter(User.username == session['username']).first()
+        # get_user = User.query.filter(User.username == session['username']).first()
+        get_user = User.query.filter(User.id == 10).first()
     return get_user
 
 

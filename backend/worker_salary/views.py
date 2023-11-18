@@ -42,25 +42,11 @@ def worker_profile(worker_id):
     :return:
     """
     error = check_session()
-    if error:
-        return redirect(url_for('home'))
+    # if error:
+    #     return redirect(url_for('home'))
     user = current_user()
-    # teacher = Teacher.query.filter(Teacher.id == teacher_id).first()
-    teacher_birth_year = teacher.user.birth_date
-    current_year = datetime.now()
-
-    age = int(current_year.year) - int(teacher_birth_year.year)
-    about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
-    news = TypeInfo.query.filter(TypeInfo.id == 2).first()
-    jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
-    about = Info.query.filter(Info.type_id == about_us.id).order_by(Info.id).first()
-    about_id = 0
-    if about:
-        about_id = about.id
-    if about_us:
-        about_id = about_us.id
-    return render_template('worker_profile/index.html', teacher=teacher, age=age, about_us=about_us,
-                           news=news, jobs=jobs, about_id=about_id, user=user)
+    worker = Worker.query.filter(Worker.id == worker_id).first()
+    return render_template('worker_profile/index.html', worker=worker)
 
 
 @app.route('/register_worker', methods=["POST", "GET"])

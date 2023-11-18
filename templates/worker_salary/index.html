@@ -1,6 +1,6 @@
 {% extends 'admin/index.html' %}
 {% block css %}
-{#        <link rel="stylesheet" href="../../static/css/student/main.min.css">#}
+    {#        <link rel="stylesheet" href="../../static/css/student/main.min.css">#}
     <link rel="stylesheet" href="../../static/css/worker_salary/style.min.css">
 {% endblock %}
 {% block section %}
@@ -54,13 +54,13 @@
                     {% for worker in workers %}
                         <tr>
                             <td></td>
-                            <td><a href="{{ url_for("worker_profile", worker_id=worker.user.id) }}"><img
+                            <td><a href="{{ url_for("worker_profile", worker_id=worker.id) }}"><img
                                     src="{{ worker.user.image }}" alt=""></a></td>
                             <td>{{ worker.user.name }}</td>
                             <td>{{ worker.user.surname }}</td>
                             <td>{{ worker.user.age }}</td>
                             <td>{{ worker.user.number }}</td>
-                            <td>{{ worker.user.name }}</td>
+                            <td>{{ worker.job.name }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

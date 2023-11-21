@@ -3,12 +3,27 @@ from backend.settings.settings import *
 from datetime import datetime
 
 
+def get_worker_salary():
+    today = datetime.today()
+    year = Years.query.filter(Years.year == today.year).first()
+    month = Month.query.filter(Month.month_number == today.month, Month.years_id == year.id).first()
+    workers = Worker.query.all()
+    for worker in workers:
+        if worker.salary:
+            worker_salary = WorkerSalary.query.filter(WorkerSalary.worker_id == worker.id,
+                                                      WorkerSalary.month_id == month.id).first()
+            if not worker_salary:
+                add = WorkerSalary(worker_id=worker.id, salary=worker.salary, month_id=month.id)
+                add.add()
+
+
 @app.route('/worker', methods=["POST", "GET"])
 def worker():
     """
     worker list
     :return:
     """
+    get_worker_salary()
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -60,9 +75,28 @@ def worker_salary(worker_id):
 @app.route('/worker_salaries_in_month/<int:worker_salary_id>', methods=["POST", "GET"])
 def worker_salaries_in_month(worker_salary_id):
     worker_salary = WorkerSalary.query.filter(WorkerSalary.id == worker_salary_id).first()
+    worker_salary_inDay_all = WorkerSalaryInDay.query.filter(
+        WorkerSalaryInDay.worker_salary_id == worker_salary.id,
+        WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
+        WorkerSalaryInDay.id).all()
     account_types = AccountType.query.all()
     return render_template("worker_salary/add.html", worker_salary=worker_salary,
+                           worker_salary_inDay_all=worker_salary_inDay_all,
                            account_types=account_types)
+
+
+@app.route('/change_worker_salary_account_type', methods=["POST"])
+def change_worker_salary_account_type():
+    info = request.get_json()["info"]
+    worker_salary_inDay_id = info["worker_salary_inDay_id"]
+    account_type_id = info["account_type_id"]
+    print(worker_salary_inDay_id)
+    print(account_type_id)
+    WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id == worker_salary_inDay_id).update({
+        'account_type_id': account_type_id
+    })
+    db.session.commit()
+    return jsonify()
 
 
 @app.route('/given_worker_salary', methods=["POST", "GET"])
@@ -114,7 +148,7 @@ def register_worker():
         password = request.form.get("password")
         work_id = request.form.get("work_id")
         number = request.form.get("number")
-        hashed = generate_password_hash(password=password, method="scrypt")
+        hashed = generate_password_hash(password=password)
 
         datetime_str = f'{year}-{month}-{day}'
         datetime_object = datetime.strptime(datetime_str, '%Y-%m-%d')
@@ -137,8 +171,33 @@ def set_worker_salary():
     month = Month.query.filter(Month.month_number == this_month).first()
     add = WorkerSalary(worker_id=worker_id, salary=salary, month_id=month.id)
     add.add()
+    # date = datetime.today()
+    # this_month = date.strftime("%m")
+    # month = Month.query.filter(Month.month_number == this_month).first()
+    # add = WorkerSalary(worker_id=worker_id, salary=salary, month_id=month.id)
+    # add.add()
     Worker.query.filter(Worker.id == worker_id).update({
         "salary": salary
     })
+    db.session.commit()
+    return jsonify()
+
+
+@app.route('/delete_worker_given_salary', methods=["POST", "GET"])
+def delete_worker_given_salary():
+    info = request.get_json()["info"]
+    given_salary_id = info["given_salary_id"]
+    today = datetime.today()
+    date = datetime(today.year, today.month, today.day)
+    salary_worker = DeletedWorkerSalaryInDay(worker_salary_in_day_id=int(given_salary_id), date=date)
+    salary_worker.add()
+    deletes = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id == int(given_salary_id)).first()
+    give_salary = int(deletes.worker_salary.give_salary) - int(deletes.salary)
+    rest_salary = int(deletes.worker_salary.rest_salary) + int(deletes.salary)
+    WorkerSalary.query.filter(WorkerSalary.id == int(deletes.worker_salary_id)).update({
+        "give_salary": give_salary,
+        "rest_salary": rest_salary
+    })
+    salary_worker.add()
     db.session.commit()
     return jsonify()

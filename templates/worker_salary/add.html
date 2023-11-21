@@ -26,12 +26,12 @@
             </tr>
             </thead>
             <tbody>
-            {% for salary in worker_salary.worker_salary_in_days %}
+            {% for salary in worker_salary_inDay_all %}
                 <tr>
                     <td>{{ salary.years.year }}-{{ salary.month.month_number }}-{{ salary.day.day_number }}</td>
                     <td>{{ salary.salary }}</td>
                     <td>{{ salary.reason }}</td>
-                    <td>{{ salary.account_type.name }}</td>
+                    <td class="account_types" data-id="{{ salary.id }}">{{ salary.account_type.name }}</td>
                     <td><i class="fa-solid fa-trash" style="color: red; font-size: 20px" data-id="{{ salary.id }}"></i>
                     </td>
                 </tr>
@@ -61,6 +61,20 @@
             <button class="salary_btn" data-id="{{ worker_salary.id }}">Add</button>
         </div>
     </div>
+    <div id="salary">
+        <div class="salary_box_top top2">
+            <div class="salary_box_top_inputs">
+                {% for account_type in account_types %}
+                    <div class="salary_box_top_type">
+                        <input type="radio" data-id="{{ account_type.id }}" name="radio" class="radio2">
+                        <div>{{ account_type.name }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button>Add</button>
+        </div>
+    </div>
+
 </section>
 <script src="../../static/js/given_worker_salary/salary.js"></script>
 </body>

@@ -159,21 +159,29 @@ def calc(months, years, days):
                                                   Overhead.deleted_over_head == None).all()
     click_payments_in_cost = Overhead.query.filter(Overhead.account_type_id == 2,
                                                    Overhead.deleted_over_head == None).all()
-    payments_in_salary_teacher = Teacher_salary_day.query.order_by(Teacher_salary_day.id).all()
-    cash_payments_in_salary_teacher = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 3).order_by(
+    payments_in_salary_teacher = Teacher_salary_day.query.filter(
+        Teacher_salary_day.deleted_teacher_salary_inDay == None).order_by(Teacher_salary_day.id).all()
+    cash_payments_in_salary_teacher = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 3,
+                                                                      Teacher_salary_day.deleted_teacher_salary_inDay == None).order_by(
         Teacher_salary_day.id).all()
-    bank_payments_in_salary_teacher = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 1).order_by(
+    bank_payments_in_salary_teacher = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 1,
+                                                                      Teacher_salary_day.deleted_teacher_salary_inDay == None).order_by(
         Teacher_salary_day.id).all()
     click_payments_in_salary_teacher = Teacher_salary_day.query.filter(
-        Teacher_salary_day.account_type_id == 2).order_by(
+        Teacher_salary_day.account_type_id == 2, Teacher_salary_day.deleted_teacher_salary_inDay == None).order_by(
         Teacher_salary_day.id).all()
-    payments_in_salary_worker = WorkerSalaryInDay.query.order_by(WorkerSalaryInDay.id).all()
-    cash_payments_in_salary_worker = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == 3).order_by(
+    payments_in_salary_worker = WorkerSalaryInDay.query.filter(
+        WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(WorkerSalaryInDay.id).all()
+    cash_payments_in_salary_worker = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == 3,
+                                                                    WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
         WorkerSalaryInDay.id).all()
-    bank_payments_in_salary_worker = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == 1).order_by(
+
+    bank_payments_in_salary_worker = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == 1,
+                                                                    WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
         WorkerSalaryInDay.id).all()
+
     click_payments_in_salary_worker = WorkerSalaryInDay.query.filter(
-        WorkerSalaryInDay.account_type_id == 2).order_by(
+        WorkerSalaryInDay.account_type_id == 2, WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
         WorkerSalaryInDay.id).all()
 
     for payment in payments_in_pay:
@@ -277,15 +285,16 @@ def all_payments(type_request, page_num):
     if type_request == 'pay':
         payments = StudentPaymentsInMonth.query.paginate(per_page=5, page=page_num, error_out=True)
     elif type_request == 'cost':
-        del_cost = DeleteDOverhead.query.order_by(DeleteDOverhead.id).all()
         payments = Overhead.query.filter(
             Overhead.deleted_over_head == None).paginate(per_page=5, page=page_num, error_out=True)
     elif type_request == 'salary_teacher':
-        payments = Teacher_salary_day.query.paginate(per_page=5, page=page_num,
-                                                     error_out=True)
+        payments = Teacher_salary_day.query.filter(Teacher_salary_day.deleted_teacher_salary_inDay == None).paginate(
+            per_page=5, page=page_num,
+            error_out=True)
     elif type_request == 'salary_worker':
-        payments = WorkerSalaryInDay.query.paginate(per_page=5, page=page_num,
-                                                    error_out=True)
+        payments = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None).paginate(
+            per_page=5, page=page_num,
+            error_out=True)
     page_nex = page_num + 1
     page_prev = page_num - 1
     page_pres = page_num
@@ -473,6 +482,26 @@ def delete_cost():
     del_cost = Overhead.query.filter(Overhead.id == id).first()
     cost = DeleteDOverhead(over_head_id=id, date=date)
     cost.add()
+    return jsonify()
+
+
+@app.route('/delete_salary_worker', methods=["POST", "GET"])
+def delete_salary_worker():
+    id = request.get_json()["id"]
+    today = datetime.today()
+    date = datetime(today.year, today.month, today.day)
+    salary_worker = DeletedWorkerSalaryInDay(worker_salary_in_day_id=id, date=date)
+    salary_worker.add()
+    return jsonify()
+
+
+@app.route('/delete_salary_teacher', methods=["POST", "GET"])
+def delete_salary_teacher():
+    id = request.get_json()["id"]
+    today = datetime.today()
+    date = datetime(today.year, today.month, today.day)
+    salary_teacher = DeletedTeacherSalaryInDay(teacher_salary_day_id=id, date=date)
+    salary_teacher.add()
     return jsonify()
 
 

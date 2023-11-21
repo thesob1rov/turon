@@ -121,15 +121,19 @@
                                 Harajat nomi
                             {% elif type_request == 'salary_teacher' %}
                                 O'qituvchi
-                            {% elif type_request == 'salary_teacher' %}
-                                Ishchi
+                            {% elif type_request == 'salary_worker' %}
+                                Ishchi ismi
                             {% endif %}
-
                         </th>
+                        {% if type_request == 'salary_worker' %}
+                            <th>
+                                Ishchi kasbi
+                            </th>
+                        {% endif %}
                         {% if type_request == 'pay' %}
                             <th>Familya</th>
                         {% elif type_request == 'salary_teacher' or type_request == 'salary_worker' %}
-                            <th>To'lov nomi</th>
+                            <th>To'lov sababi</th>
                         {% endif %}
                         <th>
                             {% if type_request == 'pay' %}
@@ -175,18 +179,19 @@
                                 <td>{{ page.salary }}</td>
                                 <td>{{ page.account_type.name }}</td>
                                 <td>{{ page.day.years.year }}-{{ page.day.month.month_number }}-{{ page.day.day_number }}</td>
-                                <td><i class="fa-solid fa-trash delButtonCost" style="color: red"
+                                <td><i class="fa-solid fa-trash delButtonSalaryTeacher" style="color: red"
                                        data-id="{{ page.id }}"></i></td>
                             </tr>
                         {% elif type_request == 'salary_worker' %}
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ page.worker_salary.worker.user.name }}</td>
+                                <td>{{ page.worker_salary.worker.job.name }}</td>
                                 <td>{{ page.reason }}</td>
                                 <td>{{ page.salary }}</td>
                                 <td>{{ page.account_type.name }}</td>
                                 <td>{{ page.day.years.year }}-{{ page.day.month.month_number }}-{{ page.day.day_number }}</td>
-                                <td><i class="fa-solid fa-trash delButtonCost" style="color: red"
+                                <td><i class="fa-solid fa-trash delButtonSalaryWorker" style="color: red"
                                        data-id="{{ page.id }}"></i></td>
                             </tr>
                         {% endif %}

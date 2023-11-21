@@ -159,13 +159,22 @@ def calc(months, years, days):
                                                   Overhead.deleted_over_head == None).all()
     click_payments_in_cost = Overhead.query.filter(Overhead.account_type_id == 2,
                                                    Overhead.deleted_over_head == None).all()
-    payments_in_salary = Teacher_salary_day.query.order_by(Teacher_salary_day.id).all()
-    cash_payments_in_salary = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 3).order_by(
+    payments_in_salary_teacher = Teacher_salary_day.query.order_by(Teacher_salary_day.id).all()
+    cash_payments_in_salary_teacher = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 3).order_by(
         Teacher_salary_day.id).all()
-    bank_payments_in_salary = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 1).order_by(
+    bank_payments_in_salary_teacher = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 1).order_by(
         Teacher_salary_day.id).all()
-    click_payments_in_salary = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 2).order_by(
+    click_payments_in_salary_teacher = Teacher_salary_day.query.filter(
+        Teacher_salary_day.account_type_id == 2).order_by(
         Teacher_salary_day.id).all()
+    payments_in_salary_worker = WorkerSalaryInDay.query.order_by(WorkerSalaryInDay.id).all()
+    cash_payments_in_salary_worker = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == 3).order_by(
+        WorkerSalaryInDay.id).all()
+    bank_payments_in_salary_worker = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == 1).order_by(
+        WorkerSalaryInDay.id).all()
+    click_payments_in_salary_worker = WorkerSalaryInDay.query.filter(
+        WorkerSalaryInDay.account_type_id == 2).order_by(
+        WorkerSalaryInDay.id).all()
 
     for payment in payments_in_pay:
         balance += int(payment.payed)
@@ -185,13 +194,22 @@ def calc(months, years, days):
     for click_payment in click_payments_in_cost:
         click -= int(click_payment.payed)
 
-    for payment in payments_in_salary:
+    for payment in payments_in_salary_teacher:
         balance -= int(payment.salary)
-    for cash_payment in cash_payments_in_salary:
+    for cash_payment in cash_payments_in_salary_teacher:
         cash -= int(cash_payment.salary)
-    for bank_payment in bank_payments_in_salary:
+    for bank_payment in bank_payments_in_salary_teacher:
         bank -= int(bank_payment.salary)
-    for click_payment in click_payments_in_salary:
+    for click_payment in click_payments_in_salary_teacher:
+        click -= int(click_payment.salary)
+
+    for payment in payments_in_salary_worker:
+        balance -= int(payment.salary)
+    for cash_payment in cash_payments_in_salary_worker:
+        cash -= int(cash_payment.salary)
+    for bank_payment in bank_payments_in_salary_worker:
+        bank -= int(bank_payment.salary)
+    for click_payment in click_payments_in_salary_worker:
         click -= int(click_payment.salary)
 
     for payment in payments_in_pay:
@@ -262,9 +280,12 @@ def all_payments(type_request, page_num):
         del_cost = DeleteDOverhead.query.order_by(DeleteDOverhead.id).all()
         payments = Overhead.query.filter(
             Overhead.deleted_over_head == None).paginate(per_page=5, page=page_num, error_out=True)
-    elif type_request == 'salary':
+    elif type_request == 'salary_teacher':
         payments = Teacher_salary_day.query.paginate(per_page=5, page=page_num,
                                                      error_out=True)
+    elif type_request == 'salary_worker':
+        payments = WorkerSalaryInDay.query.paginate(per_page=5, page=page_num,
+                                                    error_out=True)
     page_nex = page_num + 1
     page_prev = page_num - 1
     page_pres = page_num
@@ -507,18 +528,33 @@ def search_cost():
 @app.route('/filter_salary', methods=["POST", "GET"])
 def filter_salary():
     button_id = request.get_json()["button_id"]
-    salary_all = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == button_id).order_by(
-        Teacher_salary_day.id).all()
+    type_r = request.get_json()["type"]
     filtered_salary = []
-    for salary in salary_all:
-        info = {
-            'teacher_name': salary.teacher.user.name,
-            'reason': salary.reason,
-            'salary': salary.salary,
-            'account_type': salary.account_type.name,
-            'date': f' {salary.day.years.year} - {salary.day.month.month_number} - {salary.day.day_number} '
-        }
-        filtered_salary.append(info)
+
+    if type_r == 'salary_teacher':
+        salary_all = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == button_id).order_by(
+            Teacher_salary_day.id).all()
+        for salary in salary_all:
+            info = {
+                'teacher_name': salary.teacher.user.name,
+                'reason': salary.reason,
+                'salary': salary.salary,
+                'account_type': salary.account_type.name,
+                'date': f' {salary.day.years.year} - {salary.day.month.month_number} - {salary.day.day_number} '
+            }
+            filtered_salary.append(info)
+    else:
+        salary_all = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == button_id).order_by(
+            WorkerSalaryInDay.id).all()
+        for salary in salary_all:
+            info = {
+                'worker_name': salary.worker_salary.worker.user.name,
+                'reason': salary.reason,
+                'salary': salary.salary,
+                'account_type': salary.account_type.name,
+                'date': f' {salary.day.years.year} - {salary.day.month.month_number} - {salary.day.day_number} '
+            }
+            filtered_salary.append(info)
     return jsonify({
         'filtered_salary': filtered_salary
     })
@@ -529,54 +565,97 @@ def filter_date():
     year = request.get_json()["year"]
     month = request.get_json()["month"]
     day = request.get_json()["day"]
-    print(year)
-    print(month)
-    print(day)
-    if year:
-        print(True)
-        salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-            contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year).order_by(
-            Teacher_salary_day.id).all()
-
-        if month:
-            print(month)
+    type_r = request.get_json()["type"]
+    filtered_salary = []
+    if type_r == 'salary_teacher':
+        if year:
             salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-                contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year, Day.month_id == month).order_by(
+                contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year).order_by(
                 Teacher_salary_day.id).all()
 
-            if day:
-                print(day)
+            if month:
                 salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-                    contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year, Day.month_id == month,
-                                                                   Day.id == day).order_by(
+                    contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year, Day.month_id == month).order_by(
                     Teacher_salary_day.id).all()
-    elif not year and month and day:
-        salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-            contains_eager(Teacher_salary_day.day)).filter(Day.month_id == month, Day.id == day).order_by(
-            Teacher_salary_day.id).all()
-    elif year and not month and day:
-        salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-            contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year, Day.id == day).order_by(
-            Teacher_salary_day.id).all()
-    elif not year and not day and month:
-        salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-            contains_eager(Teacher_salary_day.day)).filter(Day.month_id == month).order_by(
-            Teacher_salary_day.id).all()
-    elif not year and not month and day:
-        salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-            contains_eager(Teacher_salary_day.day)).filter(Day.id == day).order_by(
-            Teacher_salary_day.id).all()
 
-    filtered_salary = []
-    for salary in salary_all:
-        info = {
-            'teacher_name': salary.teacher.user.name,
-            'reason': salary.reason,
-            'salary': salary.salary,
-            'account_type': salary.account_type.name,
-            'date': f' {salary.day.years.year} - {salary.day.month.month_number} - {salary.day.day_number} '
-        }
-        filtered_salary.append(info)
+                if day:
+                    salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
+                        contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year, Day.month_id == month,
+                                                                       Day.id == day).order_by(
+                        Teacher_salary_day.id).all()
+        elif not year and month and day:
+            salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
+                contains_eager(Teacher_salary_day.day)).filter(Day.month_id == month, Day.id == day).order_by(
+                Teacher_salary_day.id).all()
+        elif year and not month and day:
+            salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
+                contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year, Day.id == day).order_by(
+                Teacher_salary_day.id).all()
+        elif not year and not day and month:
+            salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
+                contains_eager(Teacher_salary_day.day)).filter(Day.month_id == month).order_by(
+                Teacher_salary_day.id).all()
+        elif not year and not month and day:
+            salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
+                contains_eager(Teacher_salary_day.day)).filter(Day.id == day).order_by(
+                Teacher_salary_day.id).all()
+        else:
+            salary_all = []
+
+        for salary in salary_all:
+            info = {
+                'teacher_name': salary.teacher.user.name,
+                'reason': salary.reason,
+                'salary': salary.salary,
+                'account_type': salary.account_type.name,
+                'date': f' {salary.day.years.year} - {salary.day.month.month_number} - {salary.day.day_number} '
+            }
+            filtered_salary.append(info)
+    else:
+        if year:
+            salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
+                contains_eager(WorkerSalaryInDay.day)).filter(Day.year_id == year).order_by(
+                WorkerSalaryInDay.id).all()
+
+            if month:
+                salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
+                    contains_eager(WorkerSalaryInDay.day)).filter(Day.year_id == year, Day.month_id == month).order_by(
+                    WorkerSalaryInDay.id).all()
+
+                if day:
+                    salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
+                        contains_eager(WorkerSalaryInDay.day)).filter(Day.year_id == year, Day.month_id == month,
+                                                                      Day.id == day).order_by(
+                        WorkerSalaryInDay.id).all()
+        elif not year and month and day:
+            salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
+                contains_eager(WorkerSalaryInDay.day)).filter(Day.month_id == month, Day.id == day).order_by(
+                WorkerSalaryInDay.id).all()
+        elif year and not month and day:
+            salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
+                contains_eager(WorkerSalaryInDay.day)).filter(Day.year_id == year, Day.id == day).order_by(
+                WorkerSalaryInDay.id).all()
+        elif not year and not day and month:
+            salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
+                contains_eager(WorkerSalaryInDay.day)).filter(Day.month_id == month).order_by(
+                WorkerSalaryInDay.id).all()
+        elif not year and not month and day:
+            salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
+                contains_eager(WorkerSalaryInDay.day)).filter(Day.id == day).order_by(
+                WorkerSalaryInDay.id).all()
+        else:
+            salary_all = []
+
+        for salary in salary_all:
+            info = {
+                'worker_name': salary.worker_salary.worker.user.name,
+                'reason': salary.reason,
+                'salary': salary.salary,
+                'account_type': salary.account_type.name,
+                'date': f' {salary.day.years.year} - {salary.day.month.month_number} - {salary.day.day_number} '
+            }
+            filtered_salary.append(info)
+
     return jsonify({
         'filtered_salary': filtered_salary
     })

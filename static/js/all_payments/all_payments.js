@@ -13,12 +13,15 @@ let filter_btn = document.querySelector('.pay_filter_btn'), filter_form = docume
     select_day = document.getElementById('select_day'), salary_btn = document.querySelectorAll('.salary_btn'),
     select_date = document.querySelectorAll('.select_date');
 
-if (section.dataset.type === 'salary') {
+if (section.dataset.type === 'salary_teacher' || section.dataset.type === 'salary_worker') {
     select_date.forEach(item => {
         item.addEventListener('change', () => {
             fetch('/filter_date', {
                 method: "POST", body: JSON.stringify({
-                    'year': select_year.value, 'month': select_month.value, 'day': select_day.value
+                    'year': select_year.value,
+                    'month': select_month.value,
+                    'day': select_day.value,
+                    'type': section.dataset.type
                 }), headers: {
                     'Content-type': 'application/json'
                 }
@@ -27,6 +30,55 @@ if (section.dataset.type === 'salary') {
                 .then(resp => {
                     paginate.classList.remove('active_paginate')
                     tbody.innerHTML = ''
+                    if (section.dataset.type === 'salary_teacher') {
+                        for (let i = 0; i < resp['filtered_salary'].length; i++) {
+                            tbody.innerHTML += `<tr>
+                                <td>${i + 1}</td>
+                                <td>${resp['filtered_salary'][i].teacher_name}</td>
+                                <td>${resp['filtered_salary'][i].reason}</td>
+                                <td>${resp['filtered_salary'][i].salary}</td>
+                                <td>${resp['filtered_salary'][i].account_type}</td>
+                                <td>${resp['filtered_salary'][i].date}</td>
+                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                       data-id="${resp['filtered_salary'][i].id}"></i></td>
+                            </tr>`
+                        }
+                    } else {
+                        for (let i = 0; i < resp['filtered_salary'].length; i++) {
+                            tbody.innerHTML += `<tr>
+                                <td>${i + 1}</td>
+                                <td>${resp['filtered_salary'][i].worker_name}</td>
+                                <td>${resp['filtered_salary'][i].reason}</td>
+                                <td>${resp['filtered_salary'][i].salary}</td>
+                                <td>${resp['filtered_salary'][i].account_type}</td>
+                                <td>${resp['filtered_salary'][i].date}</td>
+                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                       data-id="${resp['filtered_salary'][i].id}"></i></td>
+                            </tr>`
+                        }
+                    }
+
+                })
+        })
+    })
+
+}
+
+
+salary_btn.forEach(item => {
+    item.addEventListener('click', () => {
+        fetch('/filter_salary', {
+            method: "POST", body: JSON.stringify({
+                "button_id": item.dataset.id, 'type': section.dataset.type
+            }), headers: {
+                'Content-type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(resp => {
+                paginate.classList.remove('active_paginate')
+                tbody.innerHTML = ''
+                if (section.dataset.type === 'salary_teacher') {
                     for (let i = 0; i < resp['filtered_salary'].length; i++) {
                         tbody.innerHTML += `<tr>
                                 <td>${i + 1}</td>
@@ -39,28 +91,11 @@ if (section.dataset.type === 'salary') {
                                        data-id="${resp['filtered_salary'][i].id}"></i></td>
                             </tr>`
                     }
-                })
-        })
-    })
-
-}
-salary_btn.forEach(item => {
-    item.addEventListener('click', () => {
-        fetch('/filter_salary', {
-            method: "POST", body: JSON.stringify({
-                "button_id": item.dataset.id
-            }), headers: {
-                'Content-type': 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(resp => {
-                paginate.classList.remove('active_paginate')
-                tbody.innerHTML = ''
-                for (let i = 0; i < resp['filtered_salary'].length; i++) {
-                    tbody.innerHTML += `<tr>
+                } else {
+                    for (let i = 0; i < resp['filtered_salary'].length; i++) {
+                        tbody.innerHTML += `<tr>
                                 <td>${i + 1}</td>
-                                <td>${resp['filtered_salary'][i].teacher_name}</td>
+                                <td>${resp['filtered_salary'][i].worker_name}</td>
                                 <td>${resp['filtered_salary'][i].reason}</td>
                                 <td>${resp['filtered_salary'][i].salary}</td>
                                 <td>${resp['filtered_salary'][i].account_type}</td>
@@ -68,6 +103,7 @@ salary_btn.forEach(item => {
                                 <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
                                        data-id="${resp['filtered_salary'][i].id}"></i></td>
                             </tr>`
+                    }
                 }
             })
     })
@@ -154,8 +190,10 @@ select.addEventListener('change', () => {
         window.location.href = '/all_payments/pay/1';
     } else if (select.value === 'costOption') {
         window.location.href = '/all_payments/cost/1';
-    } else if (select.value === 'salaryOption') {
-        window.location.href = '/all_payments/salary/1';
+    } else if (select.value === 'salaryTeacherOption') {
+        window.location.href = '/all_payments/salary_teacher/1';
+    } else if (select.value === 'salaryWorkerOption') {
+        window.location.href = '/all_payments/salary_worker/1';
     }
 })
 

@@ -135,7 +135,6 @@ def set_worker_salary():
     date = datetime.today()
     this_month = date.strftime("%m")
     month = Month.query.filter(Month.month_number == this_month).first()
-    print(month)
     add = WorkerSalary(worker_id=worker_id, salary=salary, month_id=month.id)
     add.add()
     Worker.query.filter(Worker.id == worker_id).update({

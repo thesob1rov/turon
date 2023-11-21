@@ -1,11 +1,8 @@
 let create = document.querySelector('.create'), x = document.querySelector('.x'),
     filter_btn = document.querySelector('.filter_btn'), double = document.querySelector('.double'),
-    filter = document.querySelector('.filter'),
-    add = document.querySelector('.add'),
-    next = document.querySelector('.next'),
-    filter_form = document.querySelector('.form_filter'),
-    class_number = document.querySelector('.class_number'),
-    select = document.querySelector('.select'),
+    filter = document.querySelector('.filter'), add = document.querySelector('.add'),
+    next = document.querySelector('.next'), filter_form = document.querySelector('.form_filter'),
+    class_number = document.querySelector('.class_number'), select = document.querySelector('.select'),
     tbody = document.querySelector('.tbody')
 
 
@@ -25,8 +22,7 @@ filter_btn.addEventListener('click', () => {
 
 filter_form.addEventListener('click', () => {
     const info = {
-        subject_id: select.value,
-        search: search.value
+        subject_id: select.value, search: search.value
     }
     fetch('/filter_teacher', {
         method: "POST", body: JSON.stringify({

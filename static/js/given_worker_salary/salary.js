@@ -40,15 +40,14 @@ delete_btn.forEach(item => {
         }
         const question = confirm("Berilgan oylikni ochirmoqchimisiz ?")
         if (question === true) {
-            console.log(info)
-            fetch('/delete_teacher_given_salary', {
+            fetch('/delete_worker_given_salary', {
                 method: "POST", body: JSON.stringify({
                     "info": info
                 }), headers: {
                     'Content-type': 'application/json'
                 }
             })
-            window.location.reload()
+        window.location.reload()
         }
     })
 })

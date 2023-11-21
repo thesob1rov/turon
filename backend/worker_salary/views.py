@@ -2,6 +2,20 @@ from app import *
 from backend.settings.settings import *
 from datetime import datetime
 
+def get_worker_salary():
+    today = datetime.today()
+    year=Years.query.filter(Years.year ==today.year).first()
+    month=Month.query.filter(Month.month_number == today.month and Month.years_id == year.id).first()
+    workers= Worker.query.all()
+    for worker in workers:
+        worker_salary =WorkerSalary.query.filter(WorkerSalary.worker_id ==worker.id and WorkerSalary.month_id == month.id).first()
+        if worker_salary:
+            pass
+        elif not worker_salary and worker.salary:
+            add = WorkerSalary(worker_id=worker.id, salary=worker.salary, month_id=month.id)
+            add.add()
+
+
 
 @app.route('/worker', methods=["POST", "GET"])
 def worker():
@@ -9,6 +23,7 @@ def worker():
     worker list
     :return:
     """
+    get_worker_salary()
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -132,14 +147,29 @@ def set_worker_salary():
     info = request.get_json()["info"]
     worker_id = info["worker_id"]
     salary = info["new_salary_money"]
-    date = datetime.today()
-    this_month = date.strftime("%m")
-    month = Month.query.filter(Month.month_number == this_month).first()
-    print(month)
-    add = WorkerSalary(worker_id=worker_id, salary=salary, month_id=month.id)
-    add.add()
+    # date = datetime.today()
+    # this_month = date.strftime("%m")
+    # month = Month.query.filter(Month.month_number == this_month).first()
+    # add = WorkerSalary(worker_id=worker_id, salary=salary, month_id=month.id)
+    # add.add()
     Worker.query.filter(Worker.id == worker_id).update({
         "salary": salary
     })
     db.session.commit()
+    return jsonify()
+@app.route('/delete_worker_given_salary', methods=["POST", "GET"])
+def delete_worker_given_salary():
+    info = request.get_json()["info"]
+    given_salary_id = info["given_salary_id"]
+    deletes = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id == int(given_salary_id)).first()
+    give_salary =int(deletes.worker_salary.give_salary)-int(deletes.salary)
+    rest_salary =int(deletes.worker_salary.rest_salary)+int(deletes.salary)
+    WorkerSalary.query.filter(WorkerSalary.id ==int(deletes.worker_salary_id)).update({
+        "give_salary": give_salary,
+        "rest_salary":rest_salary
+    })
+    db.session.commit()
+    db.session.delete(deletes)
+    db.session.commit()
+
     return jsonify()

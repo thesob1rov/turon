@@ -124,6 +124,13 @@ def student_payment_list(student_id):
                            jobs=jobs, about=about, pages=student_payments, student=student)
 
 
+@app.route('/excess_delete_payment_in_list/<int:payment_id>/<int:student_id>', methods=["POST", "GET"])
+def excess_delete_payment_in_list(payment_id, student_id):
+    StudentMonthPayments.query.filter(StudentMonthPayments.id == payment_id).delete()
+    db.session.commit()
+    return redirect(url_for("student_payment_list", student_id=student_id))
+
+
 @app.route('/student_payment_in_month/<int:month_payment_id>', methods=["POST", "GET"])
 def student_payment_in_month(month_payment_id):
     error = check_session()

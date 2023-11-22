@@ -7,7 +7,32 @@ from backend.teacher.teacher_salarys import *
 list_days = []
 
 
+def add_type_day():
+    types = [
+        {
+            "type": "rest",
+            "color": "#DE0001"
+        },
+        {
+            "type": "work",
+            "color": "#C8DF52"
+        },
+        {
+            "type": "holiday",
+            "color": "#FEDA15"
+        },
+    ]
+
+    for type in types:
+        filter_type = TypeDay.query.filter(TypeDay.type == type["type"]).first()
+        if not filter_type:
+            add = TypeDay(type=type["type"], color=type["color"])
+            db.session.add(add)
+            db.session.commit()
+
+
 def get_calendar(current_year, next_year):
+    add_type_day()
     calculate_teacher_salary()
     for year in range(current_year, next_year + 1):
         for month in range(1, 13):
@@ -67,7 +92,7 @@ def get_calendar(current_year, next_year):
 @app.route('/calendar_year')
 def calendar_year():
     get_calendar(datetime.now().year, datetime.now().year + 1)
-    calculate_teacher_salary()
+    # calculate_teacher_salary()
     error = check_session()
     if error:
         return redirect(url_for('home'))

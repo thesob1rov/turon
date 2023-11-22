@@ -25,7 +25,8 @@
                 </div>
                 <div class="link_for_delete_students" style="width: 100px; display: flex;justify-content: space-around">
                     <a href=""><i class="fa-solid fa-user" style="font-size: 30px; color: #001b61"></i></a>
-                    <a href="{{ url_for("deleted_students") }}"><i class="fa-solid fa-user-slash" style="font-size: 30px; color: red"></i></a>
+                    <a href="{{ url_for("deleted_students") }}"><i class="fa-solid fa-user-slash"
+                                                                   style="font-size: 30px; color: red"></i></a>
                 </div>
                 <div class="filter">
                     <select name="language_type" id="" class="language_type">
@@ -127,7 +128,10 @@
                     </select>
                     <select name="" id="" class="teacher_id">
                         {% for teacher in teachers %}
-                            <option value="{{ teacher.id }}">{{ teacher.user.name }}</option>
+                            {% for foo in group.teacher %}
+                                <option value="{{ foo.id }}">{{ foo.user.name }}</option>
+                            {% endfor %}
+                            <option value="{{ teacher.id }}">{{ teacher.user.name }} {{ teacher.user.surname }}</option>
                         {% endfor %}
                     </select>
                     <select name="" id="" class="color">

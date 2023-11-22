@@ -10,6 +10,13 @@
           integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="../../static/css/given_teacher_salary/salary.min.css">
+    <style>
+        a {
+            text-decoration: none;
+            font-size: 17px;
+            color: black;
+        }
+    </style>
 </head>
 <body>
 <section class="salary_main">
@@ -27,16 +34,17 @@
             </thead>
             <tbody>
             {% for salary in teacher_salary.given_salaries_in_month %}
-                <tr>
-                    <td>{{ salary.years.year }}-{{ salary.month.month_number }}-{{ salary.day.day_number }}</td>
-                    <td>{{ salary.given_salary }}</td>
-                    <td>{{ salary.reason }}</td>
-                    <td>{{ salary.account_type.name }}</td>
-                    <td><i class="fa-solid fa-trash" style="color: red; font-size: 20px" data-id="{{ salary.id }}"></i></td>
-                </tr>
+                {% if not salary.deleted_given_salaries_in_month %}
+                    <tr>
+                        <td>{{ salary.years.year }}-{{ salary.month.month_number }}-{{ salary.day.day_number }}</td>
+                        <td>{{ salary.given_salary }}</td>
+                        <td>{{ salary.reason }}</td>
+                        <td>{{ salary.account_type.name }}</td>
+                        <td><i class="fa-solid fa-trash" style="color: red; font-size: 20px"
+                               data-id="{{ salary.id }}"></i></td>
+                    </tr>
+                {% endif %}
             {% endfor %}
-
-
             </tbody>
 
         </table>

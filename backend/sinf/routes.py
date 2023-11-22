@@ -203,7 +203,7 @@ def class_profile(class_id):
     user = current_user()
     classs = Class.query.filter(Class.id == class_id).first()
     students = len(classs.student)
-    teachers = Teacher.query.filter(Teacher.classes == None).all()
+    teachers = Teacher.query.all()
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()
     jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()

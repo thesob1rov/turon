@@ -41,7 +41,8 @@ send_salary.addEventListener("click", () => {
 delete_btn.forEach(item => {
     item.addEventListener("click", () => {
         info = {
-            given_salary_id: item.dataset.id
+            given_salary_id: item.dataset.id,
+            teacher_salary_id: send_salary.dataset.id,
         }
         const question = confirm("Berilgan oylikni ochirmoqchimisiz ?")
         if (question === true) {

@@ -1,7 +1,8 @@
 from app import *
 from backend.settings.settings import *
 
-from datetime import datetime
+from datetime import datetime as dt
+import datetime
 
 
 def pdf_folder():
@@ -70,6 +71,10 @@ def add_lesson_time():
 
 def add_class_type():
     class_types = [
+        {
+            "class_number": 0,
+            "price": 2500000
+        },
         {
             "class_number": 1,
             "price": 3500000
@@ -183,12 +188,57 @@ def add_time_table_day():
             db.session.commit()
 
 
+def add_class_type_for_old_students():
+    students = Student.query.filter(Student.student_month_payments == None, Student.classes).all()
+    for student in students:
+        print(student.classes)
+        # if student.classes:
+        for classs in student.classes:
+            print(classs.class_number)
+            class_type = ClassType.query.filter(ClassType.class_number == classs.class_number).first()
+            Student.query.filter(Student.id == student.id).update({
+                "class_number": class_type.id
+            })
+            db.session.commit()
+        filter_student = Student.query.filter(Student.user_id == student.user_id).first()
+        today = dt.today()
+        print(filter_student.class_type)
+
+        month_list = []
+        if today.month == 1:
+            start = datetime.date(today.year, 9, today.day)
+            end = datetime.date(today.year, 5, 1)
+            for delta in range((end - start).days + 1):
+                result_date = start + datetime.timedelta(days=delta)
+                months = f'{result_date.month}-1-{result_date.year}'
+                if not months in month_list:
+                    month_list.append(months)
+        else:
+            start = datetime.date(today.year, 9, today.day)
+            next_year = today.year + 1
+            end = datetime.date(next_year, 5, 1)
+            for delta in range((end - start).days + 1):
+                result_date = start + datetime.timedelta(days=delta)
+                months = f'{result_date.month}-1-{result_date.year}'
+                if not months in month_list:
+                    month_list.append(months)
+        for month in month_list:
+            data_object = datetime.datetime.strptime(month, '%m-%d-%Y')
+            add = StudentMonthPayments(student_id=filter_student.id, month=data_object,
+                                       class_price=filter_student.class_type.price,
+                                       payed=0, another=filter_student.class_type.price,
+                                       real_price=filter_student.class_type.price)
+            db.session.add(add)
+            db.session.commit()
+
+
 @app.route('/student', methods=["POST", "GET"])
 def student():
     """
     studentlani spiska page
     :return:
     """
+    add_class_type_for_old_students()
     add_lesson_time()
     discount_type()
     add_class_type()
@@ -204,7 +254,7 @@ def student():
     filter_info = []
     if about_us:
         about_id = about_us.id
-    teachers = Teacher.query.filter(Teacher.classes == None).all()
+    teachers = Teacher.query.all()
     page = request.args.get('page')
     if page and page.isdigit():
         page = int(page)
@@ -244,7 +294,7 @@ def filter_student():
                 for student in students:
                     users = User.query.filter(User.id == student.user_id).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -266,7 +316,7 @@ def filter_student():
                 for student in students:
                     users = User.query.filter(User.id == student.user_id).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -290,7 +340,7 @@ def filter_student():
                 for student in students:
                     users = User.query.filter(User.id == student.user_id).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -313,7 +363,7 @@ def filter_student():
                 for student in students:
                     users = User.query.filter(User.id == student.user_id).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -339,7 +389,7 @@ def filter_student():
                                               or_(User.name.like('%' + info['search'] + '%'),
                                                   User.surname.like('%' + info['search'] + '%'))).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -363,7 +413,7 @@ def filter_student():
                                               or_(User.name.like('%' + info['search'] + '%'),
                                                   User.surname.like('%' + info['search'] + '%'))).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -390,7 +440,7 @@ def filter_student():
                                               or_(User.name.like('%' + info['search'] + '%'),
                                                   User.surname.like('%' + info['search'] + '%'))).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -415,7 +465,7 @@ def filter_student():
                                               or_(User.name.like('%' + info['search'] + '%'),
                                                   User.surname.like('%' + info['search'] + '%'))).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -452,7 +502,7 @@ def filter_student_old():
                 for student in students:
                     users = User.query.filter(User.id == student.user_id).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -473,7 +523,7 @@ def filter_student_old():
                 for student in students:
                     users = User.query.filter(User.id == student.user_id).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -497,7 +547,7 @@ def filter_student_old():
                 for student in students:
                     users = User.query.filter(User.id == student.user_id).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -519,7 +569,7 @@ def filter_student_old():
                 for student in students:
                     users = User.query.filter(User.id == student.user_id).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -545,7 +595,7 @@ def filter_student_old():
                                               or_(User.name.like('%' + info['search'] + '%'),
                                                   User.surname.like('%' + info['search'] + '%'))).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -568,7 +618,7 @@ def filter_student_old():
                                               or_(User.name.like('%' + info['search'] + '%'),
                                                   User.surname.like('%' + info['search'] + '%'))).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -594,7 +644,7 @@ def filter_student_old():
                                               or_(User.name.like('%' + info['search'] + '%'),
                                                   User.surname.like('%' + info['search'] + '%'))).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -618,7 +668,7 @@ def filter_student_old():
                                               or_(User.name.like('%' + info['search'] + '%'),
                                                   User.surname.like('%' + info['search'] + '%'))).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -652,7 +702,7 @@ def get_students():
     for student in students:
         users = User.query.filter(User.id == student.user_id).all()
         birth_year = student.user.birth_date
-        current_year = datetime.now()
+        current_year = dt.now()
         age = int(current_year.year) - int(birth_year.year)
         for user in users:
             filtered = {
@@ -1035,7 +1085,7 @@ def filter_delete_student():
                 for student in students:
                     users = User.query.filter(User.id == student.user_id).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -1061,7 +1111,7 @@ def filter_delete_student():
                 for student in students:
                     users = User.query.filter(User.id == student.user_id).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -1085,7 +1135,7 @@ def filter_delete_student():
                 for student in students:
                     users = User.query.filter(User.id == student.user_id).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -1112,7 +1162,7 @@ def filter_delete_student():
                                               or_(User.name.like('%' + info['search'] + '%'),
                                                   User.surname.like('%' + info['search'] + '%'))).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -1137,7 +1187,7 @@ def filter_delete_student():
                                               or_(User.name.like('%' + info['search'] + '%'),
                                                   User.surname.like('%' + info['search'] + '%'))).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -1165,7 +1215,7 @@ def filter_delete_student():
                                               or_(User.name.like('%' + info['search'] + '%'),
                                                   User.surname.like('%' + info['search'] + '%'))).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
@@ -1191,7 +1241,7 @@ def filter_delete_student():
                                               or_(User.name.like('%' + info['search'] + '%'),
                                                   User.surname.like('%' + info['search'] + '%'))).all()
                     birth_year = student.user.birth_date
-                    current_year = datetime.now()
+                    current_year = dt.now()
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):

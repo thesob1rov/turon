@@ -31,6 +31,7 @@
                         <th>Qolgan</th>
                         <th>Sana</th>
                         <th>skidka foizi</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -55,17 +56,12 @@
                             {% else %}
                                 <td>0%</td>
                             {% endif %}
+                            <td><a href="{{ url_for("excess_delete_payment_in_list", payment_id=page.id, student_id=student.id) }}"><i style="color: red" class="fa-solid fa-trash"></i></a></td>
                         </tr>
-
                     {% endfor %}
-
-
                     </tbody>
                 </table>
-
             </div>
-
         </div>
-
     </section>
 {% endblock %}

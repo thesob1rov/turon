@@ -10,6 +10,13 @@
           integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="../../static/css/teacher_salary/oylik.min.css">
+    <style>
+        a {
+            text-decoration: none;
+            font-size: 17px;
+            color: black;
+        }
+    </style>
 </head>
 <body>
 <section class="oylik">
@@ -36,7 +43,9 @@
                     <td>
                         <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.month.years.year }}-{{ salary.month.month_number }}</a>
                     </td>
-                    <td> <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.salary }}</a></td>
+                    <td>
+                        <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}">{{ salary.salary }}</a>
+                    </td>
                     {% if salary.give_salary %}
                         <td>
                             <a href="{{ url_for("teacher_salaries_in_month", teacher_salary_id=salary.id) }}"> {{ salary.give_salary }}</a>
@@ -78,6 +87,7 @@
             </div>
             <div class="select_salary_type">
                 <select name="" id="">
+                    <option value="{{ teacher.teacher_salary_type.id }}">{{ teacher.teacher_salary_type.type_name }}</option>
                     {% for teacher_salary_type in teacher_salary_types %}
                         <option value="{{ teacher_salary_type.id }}">{{ teacher_salary_type.type_name }}</option>
                     {% endfor %}

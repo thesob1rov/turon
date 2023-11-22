@@ -14,15 +14,20 @@ def check_teacher_timetable(teacher_id, day_id, lesson_time_id, room_id, subject
     :param lesson_id: dars id si toldirilmagan darslik bosa oshani id si keladi
     :return: agar teacher etilgan payt bosh bosa kegin check_room_timetable funksiyasigi yuvoradi u funksiya room ni tekshiradi
     """
+    status = True
     teacher = Teacher.query.filter(Teacher.id == teacher_id).first()
     if teacher.daily_table:
+        print(teacher.daily_table)
         for daily_table in teacher.daily_table:
+            print(daily_table.day_id, int(day_id), daily_table.lesson_time, int(lesson_time_id))
             if daily_table.day_id == int(day_id) and daily_table.lesson_time == int(lesson_time_id):
+
                 if lesson_id == "":
                     message = {
                         "text": 'bu voxta darsi teacherni',
                         "color": "red"
                     }
+                    status = False
                     return message
                 else:
                     filter_lesson = DailyTable.query.filter(DailyTable.id == lesson_id).first()
@@ -35,11 +40,17 @@ def check_teacher_timetable(teacher_id, day_id, lesson_time_id, room_id, subject
                             "text": 'bu voxta darsi teacherni',
                             "color": "red"
                         }
+                        status = False
                         return message
-            else:
-                return check_room_timetable(teacher_id=teacher_id, day_id=day_id,
-                                            lesson_time_id=lesson_time_id, room_id=room_id,
-                                            subject_id=subject_id, class_id=class_id, lesson_id=lesson_id)
+            # else:
+            #     return check_room_timetable(teacher_id=teacher_id, day_id=day_id,
+            #                                 lesson_time_id=lesson_time_id, room_id=room_id,
+            #                                 subject_id=subject_id, class_id=class_id, lesson_id=lesson_id)
+        if status == True:
+            return check_room_timetable(teacher_id=teacher_id, day_id=day_id,
+                                        lesson_time_id=lesson_time_id, room_id=room_id,
+                                        subject_id=subject_id, class_id=class_id, lesson_id=lesson_id)
+
     else:
         return check_room_timetable(teacher_id=teacher_id, day_id=day_id,
                                     lesson_time_id=lesson_time_id, room_id=room_id,
@@ -94,7 +105,6 @@ def check_room_timetable(teacher_id, day_id, lesson_time_id, room_id, subject_id
                                            lesson_time_id=lesson_time_id, room_id=room_id,
                                            subject_id=subject_id, class_id=class_id, lesson_id=lesson_id)
             else:
-
                 return update_old_time_table(teacher_id=teacher_id, day_id=day_id,
                                              lesson_time_id=lesson_time_id, room_id=room_id,
                                              subject_id=subject_id, class_id=class_id, lesson_id=lesson_id)

@@ -56,10 +56,9 @@ class Teacher(db.Model):
     teacher_salaries = relationship("TeacherSalary", backref="teacher", order_by="TeacherSalary.id")
     lesson_plan = db.relationship('Lesson_plan_day', backref='teacher', order_by='Lesson_plan_day.id')
 
-
-def add(self):
-    db.session.add(self)
-    db.session.commit()
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
 
 
 class Student(db.Model):
@@ -425,6 +424,10 @@ class Years(db.Model):
     given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='years',
                                               order_by='GivenSalariesInMonth.id')
 
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
 
 class TeacherSalaryType(db.Model):
     id = Column(Integer, primary_key=True)
@@ -505,6 +508,18 @@ class GivenSalariesInMonth(db.Model):
     day_id = Column(Integer, ForeignKey("day.id"))
     reason = Column(String)
     account_type_id = Column(Integer, ForeignKey("account_type.id"))
+    deleted_given_salaries_in_month = db.relationship('DeletedGivenSalaryInMonth', backref='given_salaries_in_month',
+                                                      order_by='DeletedGivenSalaryInMonth.id')
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class DeletedGivenSalaryInMonth(db.Model):
+    __tablename__ = "deleted_given_salaries_in_month"
+    id = Column(Integer, primary_key=True)
+    given_salary_in_month_id = Column(Integer, ForeignKey("given_salaries_in_month.id"))
 
     def add(self):
         db.session.add(self)

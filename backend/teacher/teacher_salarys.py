@@ -38,19 +38,28 @@ def create_teacher_salary_type():
         "salary_type": add.id
     })
     db.session.commit()
+    # old_given_salary = 0
+    # for salary in teacher_salary.given_salaries_in_month:
+    #     if not salary.deleted_given_salaries_in_month:
+    #         old_given_salary += int(salary.given_salary)
+    # calc_salary = float(teacher_salary.salary) - float(old_given_salary)
+    # TeacherSalary.query.filter(TeacherSalary.id == teacher_salary_id).update({
+    #     "rest_salary": round(calc_salary),
+    #     "give_salary": old_given_salary
+    # })
+    # db.session.commit()
     calculate_teacher_salary()
     return jsonify()
 
 
-@app.route('/add_teacher_salary_percentage/<int:teacher_id>', methods=["POST", "GET"])
-def add_teacher_salary_percentage(teacher_id):
-    if request.method == "POST":
-        salary_percentage = request.form.get("salary_percentage")
-        Teacher.query.filter(Teacher.id == teacher_id).update({
-            "salary_percentage": salary_percentage
-        })
-        db.session.commit()
-        return redirect(url_for(""))
+def add_teacher_salary_percentage():
+    teachers = Teacher.query.all()
+    for teacher in teachers:
+        if not teacher.salary_percentage:
+            Teacher.query.filter(Teacher.id == teacher.id).update({
+                "salary_percentage": 50
+            })
+            db.session.commit()
     return True
 
 
@@ -61,7 +70,6 @@ def given_teacher_salary():
     account_type_id = info["account_type_id"]
     money = info["money"]
     reason = info["reason"]
-
     today = datetime.today()
     year = Years.query.filter(Years.year == int(today.year)).first()
     month = Month.query.filter(Month.month_number == today.month, Month.years_id == year.id).first()
@@ -72,7 +80,8 @@ def given_teacher_salary():
     teacher_salary = TeacherSalary.query.filter(TeacherSalary.id == teacher_salary_id).first()
     old_given_salary = 0
     for salary in teacher_salary.given_salaries_in_month:
-        old_given_salary += int(salary.given_salary)
+        if not salary.deleted_given_salaries_in_month:
+            old_given_salary += int(salary.given_salary)
     calc_salary = float(teacher_salary.salary) - float(old_given_salary)
     TeacherSalary.query.filter(TeacherSalary.id == teacher_salary_id).update({
         "rest_salary": round(calc_salary),
@@ -87,8 +96,22 @@ def delete_teacher_given_salary():
     info = request.get_json()["info"]
     print(info)
     given_salary_id = info["given_salary_id"]
-
-    GivenSalariesInMonth.query.filter(GivenSalariesInMonth.id == int(given_salary_id)).delete()
+    teacher_salary_id = info["teacher_salary_id"]
+    # GivenSalariesInMonth.query.filter(GivenSalariesInMonth.id == int(given_salary_id)).delete()
+    db.session.commit()
+    add = DeletedGivenSalaryInMonth(given_salary_in_month_id=given_salary_id)
+    db.session.add(add)
+    db.session.commit()
+    teacher_salary = TeacherSalary.query.filter(TeacherSalary.id == teacher_salary_id).first()
+    old_given_salary = 0
+    for salary in teacher_salary.given_salaries_in_month:
+        if not salary.deleted_given_salaries_in_month:
+            old_given_salary += int(salary.given_salary)
+    calc_salary = float(teacher_salary.salary) - float(old_given_salary)
+    TeacherSalary.query.filter(TeacherSalary.id == teacher_salary_id).update({
+        "rest_salary": round(calc_salary),
+        "give_salary": old_given_salary
+    })
     db.session.commit()
     return jsonify()
 
@@ -115,17 +138,31 @@ def enter_teacher_worked_days():
     return jsonify()
 
 
+def add_teacher_salary_type():
+    teachers = Teacher.query.all()
+    for teacher in teachers:
+        Teacher.query.filter(Teacher.id == teacher.id, Teacher.salary_type == None).update({
+            "salary_type": 1
+        })
+        db.session.commit()
+
+
 def calculate_teacher_salary():
+    add_teacher_salary_type()
+    add_teacher_salary_percentage()
     teachers = Teacher.query.all()
     today = datetime.today()
     calc_salary = 0
     result_calc = 0
     year = Years.query.filter(Years.year == int(today.year)).first()
-    month = Month.query.filter(Month.month_number == today.month, Month.years_id == year.id).first()
+    print(year)
+    years = Years.query.all()
+    print(years)
+    month = Month.query.filter(Month.month_number == int(today.month), Month.years_id == year.id).first()
     overal = 0
     working_days = 0
     for day in month.day:
-        working_day = Day.query.filter(Day.id == day.id, Day.type_id == 1).first()
+        working_day = Day.query.filter(Day.id == day.id, Day.type_id == 2).first()
         if working_day:
             working_days += 1
     for teacher in teachers:
@@ -144,11 +181,33 @@ def calculate_teacher_salary():
                         "salary": round(overal)
                     })
                     db.session.commit()
+                    teacher_salary = TeacherSalary.query.filter(TeacherSalary.id == salary.id).first()
+                    old_given_salary = 0
+                    for salaryy in teacher_salary.given_salaries_in_month:
+                        if not salaryy.deleted_given_salaries_in_month:
+                            old_given_salary += int(salaryy.given_salary)
+                    calc_salary = float(teacher_salary.salary) - float(old_given_salary)
+                    TeacherSalary.query.filter(TeacherSalary.id == salary.id).update({
+                        "rest_salary": round(calc_salary),
+                        "give_salary": old_given_salary
+                    })
+                    db.session.commit()
                 else:
                     overal = (calc_salary + percentage_result)
                     TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id,
                                                TeacherSalary.month_id == month.id).update({
                         "salary": round(overal)
+                    })
+                    db.session.commit()
+                    teacher_salary = TeacherSalary.query.filter(TeacherSalary.id == salary.id).first()
+                    old_given_salary = 0
+                    for salaryy in teacher_salary.given_salaries_in_month:
+                        if not salaryy.deleted_given_salaries_in_month:
+                            old_given_salary += int(salaryy.given_salary)
+                    calc_salary = float(teacher_salary.salary) - float(old_given_salary)
+                    TeacherSalary.query.filter(TeacherSalary.id == salary.id).update({
+                        "rest_salary": round(calc_salary),
+                        "give_salary": old_given_salary
                     })
                     db.session.commit()
             else:
@@ -160,64 +219,5 @@ def calculate_teacher_salary():
                 "salary": overal
             })
             db.session.commit()
-    for teacher in teachers:
-        if teacher.daily_table:
-            teacher_lesson_count = len(teacher.daily_table)
-            salary_percentage = teacher.salary_percentage
-            print(teacher_lesson_count)
-            # ustama foizidan ciqqan summa
 
-            # xaftasiga dars soati / 20 * oylik
-            calc_salary = ((teacher_lesson_count / 20) * teacher.teacher_salary_type.salary)
-            percentage_result = (calc_salary * salary_percentage) / 100
-            print(calc_salary)
-            print(percentage_result)
-            # kemagan kunlari
-            attendance_count = TeacherAttendance.query.filter(TeacherAttendance.teacher_id == teacher.id,
-                                                              TeacherAttendance.month_id == month.id,
-                                                              TeacherAttendance.status == False).count()
-            # dars bor kunlaridan kemagan kunlari ayriladi
-            print(working_days, attendance_count)
-            if attendance_count == 0:
-                worked_count = working_days
-            else:
-                worked_count = working_days - attendance_count
-            # oyligiga + ustama summasi
-            overal = (calc_salary + percentage_result) * (worked_count / working_days)
-            # ishlagan kunlari oylikdan bolib tashaladi
-            print(worked_count)
-            print(overal)
-            if worked_count == 0:
-                result = overal
-            else:
-                result = overal / worked_count
-            salaries = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id).all()
-            if salaries:
-                for salary in salaries:
-                    if salary.month_id == month.id:
-                        TeacherSalary.query.filter(TeacherSalary.id == salary.id,
-                                                   TeacherSalary.teacher_id == teacher.id).update({
-                            "salary": result
-                        })
-                        db.session.commit()
-                    else:
-                        add = TeacherSalary(teacher_id=teacher.id, salary=result, month_id=month.id)
-                        add.add()
-            else:
-                add = TeacherSalary(teacher_id=teacher.id, salary=result, month_id=month.id)
-                add.add()
-        else:
-            if teacher.teacher_attendance:
-                attendance_count = TeacherAttendance.query.filter(TeacherAttendance.teacher_id == teacher.id,
-                                                                  TeacherAttendance.month_id == month.id,
-                                                                  TeacherAttendance.status == False).count()
-            salaries = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id).all()
-            if salaries:
-                for salary in salaries:
-                    if salary.month_id == month.id:
-                        TeacherSalary.query.filter(TeacherSalary.id == salary.id,
-                                                   TeacherSalary.teacher_id == teacher.id).update({
-                            "salary": result
-                        })
-                        db.session.commit()
     return "hello"

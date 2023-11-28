@@ -18,10 +18,14 @@
                         <a href="{{ url_for("old_student") }}">
                             <button style="background-color: #c4c4c4; color: #001b61" class="btn">Student</button>
                         </a>
-                        <a href="{{ url_for("teacher") }}">
-                            <button style="background-color: #001b61; color: white" class="add_btn">Teacher</button>
+                        <a href="{{ url_for("worker") }} ">
+                            <button style="background-color: #c4c4c4; color: #001b61; border-radius: 0" class="btn">
+                                Workers
+                            </button>
                         </a>
+                        <button style="background-color: #001b61; color: white" class="add_btn">Teacher</button>
                     </div>
+
                 </div>
                 <div class="filter">
                     <select name="subject_id" class="select">
@@ -32,29 +36,44 @@
                     <button class="form_filter">Search</button>
                 </div>
             </div>
+            <a style="align-self: flex-end" href="{{ url_for("deleted_teachers") }}">
+                <div class="deleted_teacher_container">
+                    <h2 style="color: red">Deleted Teachers</h2>
+                    <i class="fa-solid fa-user-slash" style="color: red"></i>
+                </div>
+            </a>
             <div class="names_list">
                 <table>
                     <thead>
                     <tr>
                         <th>No</th>
                         <th></th>
-                        <th>Ismi</th>
-                        <th>Familya</th>
-                        <th>Yosh</th>
-                        <th>Telefon raqam</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Age</th>
+                        <th>Phone number</th>
                     </tr>
                     </thead>
 
                     <tbody class="tbody">
                     {% for teacher in teachers %}
                         <tr>
-                            <td></td>
+                            <td>{{ loop.index }}</td>
                             <td><a href="{{ url_for("teacher_profile_info", teacher_id=teacher.user.id) }}"><img
                                     src="{{ teacher.user.image }}" alt=""></a></td>
                             <td>{{ teacher.user.name }}</td>
                             <td>{{ teacher.user.surname }}</td>
                             <td>{{ teacher.user.age }}</td>
                             <td>{{ teacher.user.number }}</td>
+                            {% if teacher.classes %}
+                                <td></td>
+                            {% else %}
+                                <td>
+                                    <a href="{{ url_for("delete_teacher", teacher_id=teacher.id) }}">
+                                        <i class="fa-solid fa-trash" style="color: red"></i>
+                                    </a>
+                                </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -133,7 +152,7 @@
                 <input type="text">
                 <input type="text">
                 <input type="text">
-                <button class="class">O'zgartirish</button>
+                <button class="class">Edit</button>
             </div>
         </div>
     </section>

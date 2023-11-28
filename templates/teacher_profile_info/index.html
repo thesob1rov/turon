@@ -25,32 +25,41 @@
                         <a href="{{ url_for("edit_profile", user_id=teacher.user.id) }}">
                             <div class="container_change">
                                 <i class="fa-solid fa-pen "></i>
-                                <div>Ma'lumotlarni o'zgartirish</div>
+                                <div>Edit</div>
                             </div>
                         </a>
                         <a href="{{ url_for("teacher_salary", teacher_id=teacher.id) }}">
                             <div class="container_change">
                                 <i class="fa-solid fa-pen "></i>
-                                <div>Oylik</div>
+                                <div>Salary</div>
                             </div>
                         </a>
+                        {% if not teacher.classes %}
+                            <a href="{{ url_for("delete_teacher", teacher_id=teacher.id) }}">
+                                <div class="container_change">
+                                    <i class="fa-solid fa-trash" style="color: red"></i>
+                                    <div>Delete Teacher</div>
+                                </div>
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
             <div class="information">
-                <div class="main_box_information">Ismi: <span>{{ teacher.user.name }}</span></div>
-                <div class="main_box_information">Familyasi: <span>{{ teacher.user.surname }}</span></div>
-                <div class="main_box_information">Otasining ismi: <span>{{ teacher.user.parent_name }}</span></div>
-                <div class="main_box_information">Tug'ilgan kuni: <span>{{ teacher.user.birth_date }}</span></div>
-                <div class="main_box_information">Telefon raqami: <span>{{ teacher.user.number }}</span></div>
-                <div class="main_box_information">Yashash joyi: <span>{{ teacher.user.address }}</span></div>
-                <div class="main_box_information">Elektron pochta: <span>{{ teacher.user.email }}</span></div>
+                <div class="main_box_information">Subject: <span>{{ teacher.subject.name }}</span></div>
+                <div class="main_box_information">Name: <span>{{ teacher.user.name }}</span></div>
+                <div class="main_box_information">Surname: <span>{{ teacher.user.surname }}</span></div>
+                <div class="main_box_information">Parent name: <span>{{ teacher.user.parent_name }}</span></div>
+                <div class="main_box_information">birth day: <span>{{ teacher.user.birth_date }}</span></div>
+                <div class="main_box_information">Phone number: <span>{{ teacher.user.number }}</span></div>
+                <div class="main_box_information">Address: <span>{{ teacher.user.address }}</span></div>
+                <div class="main_box_information">Email: <span>{{ teacher.user.email }}</span></div>
             </div>
         </div>
         <div class="main_left">
             <div class="top">
                 <div class="user"><i class="fa-solid fa-user"></i></div>
-                <div>Student</div>
+                <div>Teacher</div>
             </div>
             {% for class in teacher.classes %}
                 <a href="{{ url_for('class_profile', class_id=class.id) }}">
@@ -61,9 +70,9 @@
                         </div>
                         <div class="class">
                             {% for cl in class.teacher %}
-                                <div>O'qituvchi: <span>{{ cl.user.name }}</span></div>
+                                <div>Teacher: <span>{{ cl.user.name }}</span></div>
                             {% endfor %}
-                            <div>O’quvchi soni: <span>{{ students }}</span></div>
+                            <div>Student count: <span>{{ students }}</span></div>
                         </div>
                     </div>
                 </a>

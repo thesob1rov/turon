@@ -33,6 +33,7 @@ class User(db.Model):
     age = Column(String)
     teacher = db.relationship("Teacher", backref="user", order_by="Teacher.id")
     student = db.relationship("Student", backref="user", order_by="Student.id")
+    worker = db.relationship("Worker", backref="user", order_by="Worker.id")
     pdf_contract = relationship("PdfContract", backref="user", order_by="PdfContract.id")
 
     def add(self):
@@ -55,6 +56,102 @@ class Teacher(db.Model):
     teacher_attendance = db.relationship('TeacherAttendance', backref='teacher', order_by='TeacherAttendance.id')
     teacher_salaries = relationship("TeacherSalary", backref="teacher", order_by="TeacherSalary.id")
     lesson_plan = db.relationship('Lesson_plan_day', backref='teacher', order_by='Lesson_plan_day.id')
+    deleted_teacher = relationship("DeletedTeacher", backref="teacher", order_by="DeletedTeacher.id")
+    # teacher_classes_history = relationship("TeacherClassesHistory", backref="teacher",
+    #                                        order_by="TeacherClassesHistory.id")
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+# class TeacherClassesHistory(db.Model):
+#     __tablename__ = "teacher_classes_history"
+#     id = Column(Integer, primary_key=True)
+#     teacher_id = Column(Integer, ForeignKey("teacher.id"))
+#     class_id = Column(Integer, ForeignKey("class.id"))
+#
+# db.Table('teacher_class',
+#          db.Column('class_id', db.Integer, db.ForeignKey('class.id')),
+#          db.Column('teacher_id', db.Integer, db.ForeignKey('teacher.id'))
+#          )
+
+
+
+
+
+class DeletedTeacher(db.Model):
+    __tablename__ = "deleted_teacher"
+    id = Column(Integer, primary_key=True)
+    teacher_id = Column(Integer, ForeignKey("teacher.id"))
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class Worker(db.Model):
+    __tablename__ = "worker"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    job_id = Column(Integer, ForeignKey("job.id"))
+    worker_salary = relationship("WorkerSalary", backref="worker", order_by="WorkerSalary.id")
+    salary = Column(String)
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class Job(db.Model):
+    __tablename__ = "job"
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    workers = relationship("Worker", backref="job", order_by="Worker.id")
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class WorkerSalary(db.Model):
+    __tablename__ = "worker_salary"
+    id = Column(Integer, primary_key=True)
+    worker_id = Column(Integer, ForeignKey("worker.id"))
+    salary = Column(String)
+    give_salary = Column(String)
+    rest_salary = Column(String)
+    month_id = Column(Integer, ForeignKey("month.id"))
+    worker_salary_in_days = relationship("WorkerSalaryInDay", backref="worker_salary", order_by="WorkerSalaryInDay.id")
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class WorkerSalaryInDay(db.Model):
+    __tablename__ = "worker_salary_in_day"
+    id = Column(Integer, primary_key=True)
+    salary = Column(Integer)
+    reason = Column(String)
+    account_type_id = Column(Integer, ForeignKey("account_type.id"))
+    year_id = Column(Integer, ForeignKey("years.id"))
+    month_id = Column(Integer, ForeignKey("month.id"))
+    day_id = Column(Integer, ForeignKey("day.id"))
+    worker_salary_id = Column(Integer, ForeignKey("worker_salary.id"))
+    deleted_worker_salary_inDay = relationship("DeletedWorkerSalaryInDay", backref="worker_salary_in_day",
+                                               order_by="DeletedWorkerSalaryInDay.id")
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class DeletedWorkerSalaryInDay(db.Model):
+    __tablename__ = "deleted_worker_salary_inDay"
+    id = Column(Integer, primary_key=True)
+    worker_salary_in_day_id = Column(Integer, ForeignKey("worker_salary_in_day.id"))
+    date = Column(DateTime)
 
     def add(self):
         db.session.add(self)
@@ -107,7 +204,8 @@ class Info(db.Model):
     type_id = Column(Integer, ForeignKey('type_info.id'))
     date = Column(DateTime)
     vacations = relationship("Vacation", backref="info", order_by="Vacation.id")
-    workers = relationship("Worker", backref="info", order_by="Worker.id")
+
+    # workers = relationship("Worker", backref="info", order_by="Worker.id")
 
     def add(self):
         db.session.add(self)
@@ -126,18 +224,18 @@ class Vacation(db.Model):
         db.session.commit()
 
 
-class Worker(db.Model):
-    __tablename__ = "worker"
-    id = Column(Integer, primary_key=True)
-    info_id = Column(Integer, ForeignKey('info.id'))
-    name = Column(String)
-    surname = Column(String)
-    img = Column(String)
-    text = Column(String)
-
-    def add(self):
-        db.session.add(self)
-        db.session.commit()
+# class Worker(db.Model):
+#     __tablename__ = "worker"
+#     id = Column(Integer, primary_key=True)
+#     info_id = Column(Integer, ForeignKey('info.id'))
+#     name = Column(String)
+#     surname = Column(String)
+#     img = Column(String)
+#     text = Column(String)
+#
+#     def add(self):
+#         db.session.add(self)
+#         db.session.commit()
 
 
 class Gallery(db.Model):
@@ -189,6 +287,8 @@ class Class(db.Model):
     subjects = relationship("Subject", backref="class", secondary="class_subjects",
                             order_by="Subject.id")
     daily_table = relationship("DailyTable", backref="class", order_by="DailyTable.id")
+    # teacher_classes_history = relationship("TeacherClassesHistory", backref="class",
+    #                                        order_by="TeacherClassesHistory.id")
 
     def add(self):
         db.session.add(self)
@@ -241,6 +341,8 @@ class AccountType(db.Model):
                             order_by="Overhead.id")
     given_salaries_in_month = relationship("GivenSalariesInMonth", backref="account_type",
                                            order_by="GivenSalariesInMonth.id")
+    worker_salary_days = db.relationship('WorkerSalaryInDay', backref='account_type',
+                                         order_by='WorkerSalaryInDay.id')
     teacher_salary_day = relationship("Teacher_salary_day", backref="account_type",
                                       order_by="Teacher_salary_day.id")
 
@@ -423,6 +525,8 @@ class Years(db.Model):
     teacher_attendance = db.relationship('TeacherAttendance', backref='years', order_by='TeacherAttendance.id')
     given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='years',
                                               order_by='GivenSalariesInMonth.id')
+    worker_salary_days = db.relationship('WorkerSalaryInDay', backref='years',
+                                         order_by='WorkerSalaryInDay.id')
 
     def add(self):
         db.session.add(self)
@@ -449,9 +553,12 @@ class Month(db.Model):
     years_id = Column(Integer, ForeignKey('years.id'))
     day = db.relationship('Day', backref='month', order_by='Day.id')
     teacher_salary = db.relationship('TeacherSalary', backref='month', order_by='TeacherSalary.id')
+    worker_salary = db.relationship('WorkerSalary', backref='month', order_by='WorkerSalary.id')
     teacher_attendance = db.relationship('TeacherAttendance', backref='month', order_by='TeacherAttendance.id')
     given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='month',
                                               order_by='GivenSalariesInMonth.id')
+    worker_salary_days = db.relationship('WorkerSalaryInDay', backref='month',
+                                         order_by='WorkerSalaryInDay.id')
 
     def add(self):
         db.session.add(self)
@@ -469,6 +576,8 @@ class Day(db.Model):
     type_id = Column(Integer, ForeignKey('type_day.id'))
     given_salaries_in_month = db.relationship('GivenSalariesInMonth', backref='day',
                                               order_by='GivenSalariesInMonth.id')
+    worker_salary_days = db.relationship('WorkerSalaryInDay', backref='day',
+                                         order_by='WorkerSalaryInDay.id')
     teacher_salary_day = db.relationship('Teacher_salary_day', backref='day', order_by='Teacher_salary_day.id')
     lesson_plans = db.relationship('Lesson_plan_day', backref='day', order_by='Lesson_plan_day.id')
 
@@ -561,6 +670,19 @@ class Teacher_salary_day(db.Model):
     day_id = Column(Integer, ForeignKey("day.id"))
     teacher_id = Column(Integer, ForeignKey("teacher.id"))
     teacher_salary_id = Column(Integer, ForeignKey("teacher_salary.id"))
+    deleted_teacher_salary_inDay = db.relationship('DeletedTeacherSalaryInDay', backref='teacher_salary_day',
+                                                   order_by='DeletedTeacherSalaryInDay.id')
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class DeletedTeacherSalaryInDay(db.Model):
+    __tablename__ = "deleted_teacher_salary_inDay"
+    id = Column(Integer, primary_key=True)
+    teacher_salary_day_id = Column(Integer, ForeignKey("teacher_salary_day.id"))
+    date = Column(DateTime)
 
     def add(self):
         db.session.add(self)

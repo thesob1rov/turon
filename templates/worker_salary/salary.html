@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../../static/css/teacher_salary/oylik.min.css">
+</head>
+<body>
+<section class="oylik">
+    <div class="oylik_box">
+        <div class="item"></div>
+        <div class="icons">
+            <i class="fa-solid fa-gear setting"></i>
+        </div>
+    </div>
+    <div class="oylik_table">
+        <table class="oylik_table">
+            <thead>
+            <tr>
+                <th>Month</th>
+                <th>Salary</th>
+                <th>Given salary</th>
+                <th>Rest salary</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for salary in salaries %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for("worker_salaries_in_month", worker_salary_id=salary.id) }}">{{ salary.month.years.year }}-{{ salary.month.month_number }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for("worker_salaries_in_month", worker_salary_id=salary.id) }}">{{ salary.salary }}</a>
+                    </td>
+                    {% if salary.give_salary %}
+                        <td>
+                            <a href="{{ url_for("worker_salaries_in_month", worker_salary_id=salary.id) }}"> {{ salary.give_salary }}</a>
+                        </td>
+                    {% else %}
+                        <td><a href="{{ url_for("worker_salaries_in_month", worker_salary_id=salary.id) }}">0</a></td>
+                    {% endif %}
+                    {% if salary.rest_salary %}
+                        <td>
+                            <a href="{{ url_for("worker_salaries_in_month", worker_salary_id=salary.id) }}">{{ salary.rest_salary }}</a>
+                        </td>
+                    {% else %}
+                        <td>
+                            <a href="{{ url_for("worker_salaries_in_month", worker_salary_id=salary.id) }}">{{ salary.salary }}</a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="new">
+        <div class="new_box">
+            <h1>Salary designation</h1>
+            <div class="new_salary_type">
+                <input type="number" placeholder="Summa" class="new_salary_money">
+                <button data-id="{{ worker.id }}">Add</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+
+<script src="../../static/js/worker_salary/oylik.js"></script>
+
+</body>
+</html>

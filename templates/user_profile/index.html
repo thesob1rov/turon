@@ -18,7 +18,7 @@
                             <a href="{{ url_for("edit_profile", user_id=student.user.id) }}">
                                 <div class="container_change">
                                     <i class="fa-solid fa-pen "></i>
-                                    <div>Ma'lumotlarni o'zgartirish</div>
+                                    <div>Edit</div>
                                 </div>
                             </a>
 {#                            <a href="{{ url_for("pdf_contract", student_id=student.user.id) }}">#}
@@ -30,7 +30,7 @@
                             <a href="{{ url_for("create_contract", student_id=student.user.id) }}">
                                 <div class="container_change">
                                     <i class="fa-solid fa-pen "></i>
-                                    <div>Shartnoma</div>
+                                    <div>Agreement</div>
                                 </div>
                             </a>
                             <a href="{{ url_for("add_payment", student_id=student.id) }}">
@@ -56,13 +56,13 @@
 
                 </div>
                 <div class="information">
-                    <div class="main_box_information">Ismi: <span>{{ student.user.name }}</span></div>
-                    <div class="main_box_information">Familyasi: <span>{{ student.user.surname }}</span></div>
-                    <div class="main_box_information">Otasining ismi: <span>{{ student.user.parent_name }}</span></div>
-                    <div class="main_box_information">Tug'ilgan kuni: <span>{{ student.user.birth_date }}</span></div>
-                    <div class="main_box_information">Telefon raqami: <span>{{ student.user.number }}</span></div>
-                    <div class="main_box_information">Yashash joyi: <span>{{ student.user.address }}</span></div>
-                    <div class="main_box_information">Elektron pochta: <span>{{ student.user.email }}</span></div>
+                    <div class="main_box_information">Name: <span>{{ student.user.name }}</span></div>
+                    <div class="main_box_information">Surname: <span>{{ student.user.surname }}</span></div>
+                    <div class="main_box_information">Parent name: <span>{{ student.user.parent_name }}</span></div>
+                    <div class="main_box_information">Birth day: <span>{{ student.user.birth_date }}</span></div>
+                    <div class="main_box_information">Phone number: <span>{{ student.user.number }}</span></div>
+                    <div class="main_box_information">Adress: <span>{{ student.user.address }}</span></div>
+                    <div class="main_box_information">Email: <span>{{ student.user.email }}</span></div>
                 </div>
             </div>
             <div class="main_left">

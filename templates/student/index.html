@@ -61,11 +61,11 @@
                     <tr>
                         <th>No</th>
                         <th></th>
-                        <th>Ismi</th>
-                        <th>Familya</th>
-                        <th>Yosh</th>
-                        <th>Telefon raqam</th>
-                        <th>Til</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Age</th>
+                        <th>Phone number</th>
+                        <th>Language</th>
                     </tr>
                     </thead>
 
@@ -128,9 +128,7 @@
                     </select>
                     <select name="" id="" class="teacher_id">
                         {% for teacher in teachers %}
-                            {% for foo in group.teacher %}
-                                <option value="{{ foo.id }}">{{ foo.user.name }}</option>
-                            {% endfor %}
+
                             <option value="{{ teacher.id }}">{{ teacher.user.name }} {{ teacher.user.surname }}</option>
                         {% endfor %}
                     </select>

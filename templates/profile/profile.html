@@ -24,7 +24,7 @@
                         <div class="change_all">
                             <div class="change_edit">
                                 <i class="fa-solid fa-pen"></i>
-                                <div>Ma'lumotlarni o'zgartirish</div>
+                                <div>Edit</div>
                             </div>
                             <div class="lesson_plan">
                                 <a href="{{ url_for('lesson_plan', teacher_id=user.id) }}"><h3>Dars reja</h3></a>
@@ -32,7 +32,7 @@
                             <a href="{{ url_for("logout") }}">
                                 <div class="change_exit">
                                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                                    <div>Chiqish</div>
+                                    <div>Logaut</div>
                                 </div>
                             </a>
 
@@ -42,34 +42,40 @@
             </div>
             <div class="main_about">
                 <div class="div">
-                    <div class="main_about_information">Ismi: <span>{{ user.name }}</span></div>
-                    <div class="main_about_information">Ismi: <span>{{ user.username }}</span></div>
-                    <div class="main_about_information">Familyasi: <span>{{ user.surname }}</span></div>
-                    <div class="main_about_information">Otasining ismi: <span>{% if user.parent_name %}
+                    <div class="main_about_information">Name: <span>{{ user.name }}</span></div>
+                    <div class="main_about_information">Username: <span>{{ user.username }}</span></div>
+                    <div class="main_about_information">Surname: <span>{{ user.surname }}</span></div>
+                    <div class="main_about_information">Parent name: <span>{% if user.parent_name %}
                         {{ user.parent_name }}
                     {% else %}
-                        Kiritilmagan
+
+                        Not included
                     {% endif %} </span></div>
-                    <div class="main_about_information">Tug'ilgan kuni: <span>{% if user.birth_date %}
+                    <div class="main_about_information">Birthday: <span>{% if user.birth_date %}
                         {{ user.birth_date }}
                     {% else %}
-                        Kiritilmagan
+
+                        Not included
                     {% endif %} </span></div>
                 </div>
                 <div class="div">
-                    <div class="main_about_information">Telefon raqami: <span>{% if user.number %}
-                        {{ user.number }}{% else %}Kiritilmagan{% endif %} </span></div>
-                    <div class="main_about_information">Yashash joyi: <span>{% if user.address %}
-                        {{ user.address }}{% else %}Kiritilmagan
+                    <div class="main_about_information">Phone number: <span>{% if user.number %}
+                        {{ user.number }}{% else %}
+                        Not included{% endif %} </span></div>
+                    <div class="main_about_information">Adress: <span>{% if user.address %}
+                        {{ user.address }}{% else %}
+                        Not included
                     {% endif %} </span></div>
-                    <div class="main_about_information">Elektron pochta: <span>{% if user.email %}{{ user.email }}
+                    <div class="main_about_information">Email: <span>{% if user.email %}{{ user.email }}
                     {% else %}
-                        Kiritilmagan
+
+                        Not included
                     {% endif %} </span></div>
-                    <div class="main_about_information">Yosh: <span>{% if user.age %}
+                    <div class="main_about_information">Age: <span>{% if user.age %}
                         {{ user.age }}
                     {% else %}
-                        Kiritilmagan
+
+                        Not included
                     {% endif %} </span></div>
                 </div>
             </div>

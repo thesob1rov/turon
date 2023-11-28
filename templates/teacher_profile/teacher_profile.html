@@ -72,7 +72,7 @@
                     <div class="box">
                         <i class="fa-solid fa-user-tie"></i>
                         <div class="box_mini">
-                            <h1>Vakansiya</h1>
+                            <h1>Vacancy</h1>
 
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                     <div class="box">
                         <i class="fa-solid fa-image"></i>
                         <div class="box_mini">
-                            <h1>Rasmlar</h1>
+                            <h1>Images</h1>
 
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                         <div class="box">
                             <i class="fa-solid fa-comment"></i>
                             <div class="box_mini">
-                                <h1>Izohlar</h1>
+                                <h1>Comments</h1>
                             </div>
                         </div>
                     </a>
@@ -126,7 +126,7 @@
                     <div class="box">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <div class="box_mini">
-                            <h1>Chiqish</h1>
+                            <h1>Logaut</h1>
                         </div>
                     </div>
                 </a>
@@ -148,18 +148,19 @@
                 </div>
                 <div class="main_about">
                     <div class="div">
-                        <div class="main_about_information">Ismi: <span>{{ teacher.user.name }}</span></div>
-                        <div class="main_about_information">Familyasi: <span>{{ teacher.user.surname }}</span></div>
-                        <div class="main_about_information">Otasining ismi: <span>{{ teacher.user.parent_name }}</span>
+                        <div class="main_about_information">Subject: <span>{{ teacher.subject   }}</span></div>
+                        <div class="main_about_information">Name: <span>{{ teacher.user.name }}</span></div>
+                        <div class="main_about_information">Surname: <span>{{ teacher.user.surname }}</span></div>
+                        <div class="main_about_information">Parent name: <span>{{ teacher.user.parent_name }}</span>
                         </div>
-                        <div class="main_about_information">Tug'ilgan kuni: <span>{{ teacher.user.birth_date }}</span>
+                        <div class="main_about_information">Birth date: <span>{{ teacher.user.birth_date }}</span>
                         </div>
                     </div>
                     <div class="div">
-                        <div class="main_about_information">Telefon raqami: <span>{{ teacher.user.number }}</span></div>
-                        <div class="main_about_information">Yashash joyi: <span>{{ teacher.user.address }}</span></div>
-                        <div class="main_about_information">Elektron pochta: <span>{{ teacher.user.email }}</span></div>
-                        <div class="main_about_information">Yosh: <span>{{ age }}</span></div>
+                        <div class="main_about_information">Phone number: <span>{{ teacher.user.number }}</span></div>
+                        <div class="main_about_information">Adress: <span>{{ teacher.user.address }}</span></div>
+                        <div class="main_about_information">Email: <span>{{ teacher.user.email }}</span></div>
+                        <div class="main_about_information">Age: <span>{{ age }}</span></div>
                     </div>
                 </div>
             </div>

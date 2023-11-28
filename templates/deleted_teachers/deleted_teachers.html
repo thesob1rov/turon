@@ -1,0 +1,158 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="stylesheet" href="../../static/css/student/main.min.css">
+    <link rel="stylesheet" href="../../static/css/student/index.min.css">
+{% endblock %}
+{% block section %}
+    <section class="index">
+        <div class="names">
+            <div class="names_buttons">
+
+                <button class="filter_btn">Filter</button>
+                <div class="double">
+                    <div class="names_search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Qidiruv" class="search">
+                    </div>
+                    <div class="div">
+                        <a href="{{ url_for("old_student") }}">
+                            <button style="background-color: #c4c4c4; color: #001b61" class="btn">Student</button>
+                        </a>
+                        <a href="{{ url_for("worker") }} ">
+                            <button style="background-color: #c4c4c4; color: #001b61; border-radius: 0" class="btn">
+                                Workers
+                            </button>
+                        </a>
+                        <a href="{{ url_for("teacher") }}">
+                            <button style="background-color: #001b61; color: white" class="add_btn">Teacher</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="filter">
+                    <select name="subject_id" class="select">
+                        {% for subject in subjects %}
+                            <option value="{{ subject.id }}">{{ subject.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="form_filter">Search</button>
+                </div>
+            </div>
+            <div style="padding: 10px; box-shadow: 0 0 10px 2px red; border-radius: 8px"
+                 class="deleted_teacher_container">
+                <h2 style="color: red">Deleted Teachers</h2>
+                <i class="fa-solid fa-user-slash" style="color: red"></i>
+            </div>
+
+
+            <div class="names_list">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Age</th>
+                        <th>Phone number</th>
+                        <th>Return</th>
+                    </tr>
+                    </thead>
+                    <tbody class="tbody">
+                    {% for teacher in teachers %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="{{ url_for("teacher_profile_info", teacher_id=teacher.user.id) }}"><img
+                                    src="{{ teacher.user.image }}" alt=""></a></td>
+                            <td>{{ teacher.user.name }}</td>
+                            <td>{{ teacher.user.surname }}</td>
+                            <td>{{ teacher.user.age }}</td>
+                            <td>{{ teacher.user.number }}</td>
+                            <td>
+                                <a href="{{ url_for("return_teacher", teacher_id=teacher.id) }}">
+                                    <i class="fa-solid fa-user-slash" style="color: red"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if teacher_count >= 50 %}
+                <div class="next">
+                    <button {% if not pages.has_prev %}class="disabled" {% endif %}><a
+                            {% if not pages.has_prev %}class="disabled" {% endif %}
+                            href="deleted_teachers?page={{ pages.prev_num }}"><i
+                            class="fa-solid fa-chevron-left"></i></a></button>
+                    {% for page in pages.iter_pages() %}
+                        <button><a href="deleted_teachers?page={{ page }}">{{ page }}</a></button>
+                    {% endfor %}
+                    <button {% if not pages.has_prev %}class="disabled" {% endif %}><a
+                            {% if not pages.has_prev %}class="disabled" {% endif %}
+                            href="deleted_teachers?page={{ pages.next_num }}"><i class="fa-solid fa-chevron-right"></i></a>
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+        <div class="create">
+            <div class="create_name">
+                <h1>Create class</h1>
+                <form action="">
+                    <div class="create_info">
+                        <div class="create_info_item">Name</div>
+                        <input type="text" class="input" placeholder="Enter your name">
+                    </div>
+                    <div class="create_info">
+                        <div class="create_info_item">Familya</div>
+                        <input type="text" class="input" placeholder="Enter your surname">
+                    </div>
+                </form>
+            </div>
+
+            <div class="create_age">
+                <div class="create_date">
+                    <div class="create_item">Age</div>
+                    <input type="text" placeholder="16">
+                </div>
+                <div class="create_selects">
+
+                    <div class="create_date">
+                        <div class="create_item">Birthday</div>
+                        <select name="" id="" class="yil">
+                            <option value="">2000</option>
+                            <option value="">16</option>
+                            <option value="">16</option>
+                        </select>
+                    </div>
+
+
+                    <select name="" class="oy">
+                        <option value="">03</option>
+                        <option value="">16</option>
+                        <option value="">16</option>
+                    </select>
+
+                    <select name="" class="kun">
+                        <option value="">12</option>
+                        <option value="">16</option>
+                        <option value="">16</option>
+                    </select>
+                </div>
+                <div class="create_date">
+                    <div class="create_item">Number</div>
+                    <input type="text" placeholder="+99890000000">
+                </div>
+            </div>
+
+            <div class="create_inputs">
+                <i class="fa-solid fa-x x"></i>
+                <input type="text">
+                <input type="text">
+                <input type="text">
+                <button class="class">O'zgartirish</button>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+    <script src="../../static/js/deleted_teachers/deleted_teachers.js"></script>
+{% endblock %}

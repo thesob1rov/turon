@@ -14,14 +14,11 @@ def workers():
         surname = request.form.get('surname')
         job_id = request.form.get('job_id')
         text = request.form.get('text')
-
         img = request.files['img']
-
         if img:
             filename = secure_filename(img.filename)
             img_url = "/static/img/workers/" + filename
             app.config['UPLOADED_FOLDER'] = "static/img/workers"
-
             img.save(os.path.join(app.config['UPLOADED_FOLDER'], img.filename))
             add_info = Worker(name=name, info_id=job_id, text=text, img=img_url, surname=surname)
             add_info.add()
@@ -37,7 +34,7 @@ def workers():
     if about:
         about_id = about.id
     return render_template('workers/index.html', workers_list=workers_list, jobs=jobs, jobs_list=jobs_list,
-                           about_us=about_us, about_id=about_id, news=news,user=user)
+                           about_us=about_us, about_id=about_id, news=news, user=user)
 
 
 @app.route('/edit_worker/<int:worker_id>', methods=['POST'])

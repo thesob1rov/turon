@@ -81,10 +81,14 @@ def infos(type_id):
 
             img.save(os.path.join(app.config['UPLOADED_FOLDER'], img.filename))
             add_info = Info(title=title, text=text, img=img_url, type_id=type_id)
+            add_worker = Job(name=title)
+            add_worker.add()
             add_info.add()
         else:
             add_info = Info(title=title, text=text, type_id=type_id)
             add_info.add()
+            add_worker = Job(name=title)
+            add_worker.add()
         return redirect(url_for('infos', type_id=type_id))
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()

@@ -1,0 +1,109 @@
+html
+  font-size: 10px
+
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+  font-family: "Inter", sans-serif
+
+.salary_main
+  width: 100%
+  height: 100vh
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  gap: 3rem
+  padding: 20rem
+  position: relative
+
+  i
+    align-self: flex-end
+    font-size: 3rem
+    color: green
+
+  &_table
+    border-collapse: collapse
+    width: 50rem
+    border: 1px solid black
+
+    th
+      border: 1px solid black
+      padding: 1rem 0
+      font-size: 1.8rem
+      color: #111f4c
+
+    td
+      border: 1px solid black
+      padding: 1rem
+
+.salary, #salary
+  width: 100%
+  height: 100vh
+  display: none
+  align-items: center
+  justify-content: center
+  flex-direction: column
+  position: absolute
+  top: 0
+  left: 0
+  z-index: 1
+  background-color: rgba(121, 116, 116, 0.55)
+  gap: 2rem
+  font-family: "Inter", sans-serif
+
+  h1
+    font-size: 3rem
+
+  &_box
+    width: 40rem
+    height: 48rem
+    box-shadow: 0 0 1rem 0 #525151
+    display: flex
+    align-items: center
+    flex-direction: column
+    gap: 5rem
+    background-color: white
+
+
+    &_top
+      width: 100%
+      height: 30%
+      background-color: #001B61
+      color: white
+      font-size: 1.6rem
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: center
+      gap: 2rem
+
+      &_inputs
+        width: 100%
+        display: flex
+        align-items: center
+        justify-content: space-around
+
+      &_type
+        display: flex
+        gap: 1rem
+
+  &_btn
+    width: 14rem
+    height: 4rem
+    background-color: #001B61
+    color: white
+    font-size: 1.7rem
+    border: none
+    outline: none
+
+.input
+  width: 30rem
+  height: 4rem
+  padding-left: 1rem
+  outline: none
+
+.top2
+  width: 250px
+  height: 200px

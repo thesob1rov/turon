@@ -49,14 +49,12 @@
                     <tr>
                         <th>No</th>
                         <th></th>
-                        <th>Ismi</th>
-                        <th>Familya</th>
-                        <th>Yosh</th>
-                        <th>Izoh</th>
-                        <th>Telefon raqam</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Age</th>
+                        <th>Phone number</th>
                     </tr>
                     </thead>
-
                     <tbody>
                     {% for student in student_list %}
                         <tr>
@@ -66,7 +64,6 @@
                             <td>{{ student.user.name }}</td>
                             <td>{{ student.user.surname }}</td>
                             <td>16</td>
-                            <td>class</td>
                             <td>{{ student.user.number }}</td>
                             <td><input class="checkbox" type="checkbox" data-id="{{ student.id }}"></td>
                         </tr>
@@ -110,9 +107,9 @@
                         <tr>
                             <th>No</th>
                             <th></th>
-                            <th>Nomi</th>
-                            <th>Sinf rahbar</th>
-                            <th>O'quvchilar</th>
+                            <th>Name</th>
+                            <th>Teacher</th>
+                            <th>Students</th>
                             <th></th>
                         </tr>
                         </thead>

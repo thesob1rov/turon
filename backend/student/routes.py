@@ -254,7 +254,7 @@ def student():
     filter_info = []
     if about_us:
         about_id = about_us.id
-    teachers = Teacher.query.all()
+    teachers = Teacher.query.filter(Teacher.deleted_teacher == None).all()
     page = request.args.get('page')
     if page and page.isdigit():
         page = int(page)

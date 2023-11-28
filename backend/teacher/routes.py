@@ -48,7 +48,7 @@ def teacher():
     user = current_user()
     about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
     about_id = 0
-    teachers = Teacher.query.all()
+    teachers = Teacher.query.filter(Teacher.deleted_teacher == None).all()
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()
     jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
@@ -82,7 +82,6 @@ def teacher_profile(teacher_id):
     teacher = Teacher.query.filter(Teacher.id == teacher_id).first()
     teacher_birth_year = teacher.user.birth_date
     current_year = datetime.now()
-
     age = int(current_year.year) - int(teacher_birth_year.year)
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()
@@ -97,6 +96,53 @@ def teacher_profile(teacher_id):
                            news=news, jobs=jobs, about_id=about_id, user=user)
 
 
+@app.route('/delete_teacher/<int:teacher_id>', methods=["POST", "GET"])
+def delete_teacher(teacher_id):
+    teacher = Teacher.query.filter(Teacher.id == teacher_id).first()
+    add_delete_teacher = DeletedTeacher(teacher_id=teacher.id)
+    add_delete_teacher.add()
+    return redirect(url_for("teacher"))
+
+
+@app.route('/deleted_teachers', methods=["POST", "GET"])
+def deleted_teachers():
+    """
+    udalit qilingan teacherlani listi
+    :return:
+    """
+    error = check_session()
+    if error:
+        return redirect(url_for('home'))
+    user = current_user()
+    about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
+    about_id = 0
+    teachers = Teacher.query.filter(Teacher.deleted_teacher).all()
+    about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
+    news = TypeInfo.query.filter(TypeInfo.id == 2).first()
+    jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
+    about = Info.query.filter(Info.type_id == about_us.id).order_by(Info.id).first()
+    about_id = 0
+    if about:
+        about_id = about.id
+    if about_us:
+        about_id = about_us.id
+    page = request.args.get('page')
+    teaches = Teacher.query.filter(Teacher.deleted_teacher)
+    pages = teaches.paginate(page=page, per_page=50)
+    teacher_count = Teacher.query.count()
+    subjects = Subject.query.all()
+    return render_template('deleted_teachers/deleted_teachers.html', teachers=teachers, user=user, news=news, jobs=jobs,
+                           about_us=about_us, about_id=about_id, pages=pages, teacher_count=teacher_count,
+                           subjects=subjects)
+
+
+@app.route('/return_teacher/<int:teacher_id>', methods=["POST", "GET"])
+def return_teacher(teacher_id):
+    DeletedTeacher.query.filter(DeletedTeacher.teacher_id == teacher_id).delete()
+    db.session.commit()
+    return redirect(url_for("deleted_teachers"))
+
+
 @app.route('/filter_teacher', methods=["POST", "GET"])
 def filter_teacher():
     """
@@ -107,7 +153,7 @@ def filter_teacher():
     info = request.get_json()["info"]
     filtered_teachers = []
     if info["search"] == "":
-        teachers = Teacher.query.filter(Teacher.subject_id == info["subject_id"]).all()
+        teachers = Teacher.query.filter(Teacher.subject_id == info["subject_id"], Teacher.deleted_teacher == None).all()
         for teacher in teachers:
             birth_year = teacher.user.birth_date
             current_year = datetime.now()
@@ -126,11 +172,84 @@ def filter_teacher():
         if teachers == None:
             filtered_teachers = []
     else:
-        teachers = Teacher.query.filter(Teacher.subject_id == info["subject_id"]).all()
+        teachers = Teacher.query.filter(Teacher.subject_id == info["subject_id"], Teacher.deleted_teacher == None).all()
 
         for teacher in teachers:
             users = User.query.filter(User.id == teacher.user_id, or_(User.name.like('%' + info["search"] + '%'),
-                                                                     User.surname.like('%' + info["search"] + '%')))
+                                                                      User.surname.like('%' + info["search"] + '%')))
+            birth_year = teacher.user.birth_date
+            current_year = datetime.now()
+            age = int(current_year.year) - int(birth_year.year)
+            for user in users:
+                if teacher.classes:
+                    filtered = {
+                        "id": user.id,
+                        "teacher_id": teacher.id,
+                        "username": user.username,
+                        "name": user.name,
+                        "birth_date": user.birth_date,
+                        "number": user.number,
+                        "image": user.image,
+                        "surname": user.surname,
+                        "age": age,
+                        "classes": "true"
+                    }
+                    filtered_teachers.append(filtered)
+                else:
+                    filtered = {
+                        "id": user.id,
+                        "teacher_id": teacher.id,
+                        "username": user.username,
+                        "name": user.name,
+                        "birth_date": user.birth_date,
+                        "number": user.number,
+                        "image": user.image,
+                        "surname": user.surname,
+                        "age": age,
+                        "classes": "false"
+                    }
+                    filtered_teachers.append(filtered)
+        if teachers == None:
+            filtered_teachers = []
+    return jsonify({
+        "filtered_teachers": filtered_teachers
+    })
+
+
+@app.route('/filter_deleted_teacher', methods=["POST", "GET"])
+def filter_deleted_teacher():
+    """
+    teavherlani filterlash
+    :return:
+    """
+
+    info = request.get_json()["info"]
+    filtered_teachers = []
+    if info["search"] == "":
+        teachers = Teacher.query.filter(Teacher.subject_id == info["subject_id"], Teacher.deleted_teacher).all()
+        for teacher in teachers:
+            birth_year = teacher.user.birth_date
+            current_year = datetime.now()
+            age = int(current_year.year) - int(birth_year.year)
+            filtered = {
+                "id": teacher.user.id,
+                "username": teacher.user.username,
+                "name": teacher.user.name,
+                "birth_date": teacher.user.birth_date,
+                "number": teacher.user.number,
+                "image": teacher.user.image,
+                "surname": teacher.user.surname,
+                "age": age
+            }
+            filtered_teachers.append(filtered)
+        if teachers == None:
+            filtered_teachers = []
+    else:
+        teachers = Teacher.query.filter(Teacher.subject_id == info["subject_id"], Teacher.deleted_teacher).all()
+
+        for teacher in teachers:
+            users = User.query.filter(User.id == teacher.user_id, or_(User.name.like('%' + info["search"] + '%'),
+                                                                      User.surname.like('%' + info["search"] + '%')))
             birth_year = teacher.user.birth_date
             current_year = datetime.now()
             age = int(current_year.year) - int(birth_year.year)
@@ -272,14 +391,57 @@ def search_teacher():
     for user in users:
         if user.teacher:
             for filtered in user.teacher:
-                if filtered.classes:
+                if not filtered.deleted_teacher:
+                    if filtered.classes:
+                        info = {
+                            "id": user.id,
+                            "name": user.name,
+                            "surname": user.surname,
+                            "age": user.age,
+                            "number": user.number,
+                            "image": user.image,
+                            "classes": "true"
+                        }
+                        filtered_users.append(info)
+                    else:
+                        info = {
+                            "id": user.id,
+                            "teacher_id": filtered.id,
+                            "name": user.name,
+                            "surname": user.surname,
+                            "age": user.age,
+                            "number": user.number,
+                            "image": user.image,
+                            "classes": "false"
+                        }
+                        filtered_users.append(info)
+    return jsonify({
+        "filtered_users": filtered_users
+    })
+
+
+@app.route('/search_deleted_teacher', methods=["POST", "GET"])
+def search_deleted_teacher():
+    """
+    oquvchilani qidirish
+    :return:
+    """
+    search = request.get_json()["search"]
+    users = User.query
+    users = users.filter(or_(User.name.like('%' + search + '%'), User.surname.like('%' + search + '%')))
+    users = users.order_by(User.name)
+    filtered_users = []
+    for user in users:
+        if user.teacher:
+            for filtered in user.teacher:
+                if filtered.deleted_teacher:
                     info = {
                         "id": user.id,
                         "name": user.name,
                         "surname": user.surname,
                         "age": user.age,
                         "number": user.number,
-                        "image": user.image
+                        "image": user.image,
                     }
                     filtered_users.append(info)
     return jsonify({

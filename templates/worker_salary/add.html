@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../../static/css/given_worker_salary/salary.min.css">
+</head>
+<body>
+<section class="salary_main">
+    <i class="fa-solid fa-money-check-dollar money"></i>
+    {#    <div>35468976543234</div>#}
+    <div class="salary_table">
+        <table class="salary_main_table">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Salary</th>
+                <th>Rest</th>
+                <th>Summ type</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for salary in worker_salary_inDay_all %}
+                <tr>
+                    <td>{{ salary.years.year }}-{{ salary.month.month_number }}-{{ salary.day.day_number }}</td>
+                    <td>{{ salary.salary }}</td>
+                    <td>{{ salary.reason }}</td>
+                    <td class="account_types" data-id="{{ salary.id }}">{{ salary.account_type.name }}</td>
+                    <td><i class="fa-solid fa-trash" style="color: red; font-size: 20px" data-id="{{ salary.id }}"></i>
+                    </td>
+                </tr>
+            {% endfor %}
+
+
+            </tbody>
+
+        </table>
+    </div>
+
+    <div class="salary">
+        <h1>Give salary</h1>
+        <div class="salary_box">
+            <div class="salary_box_top">
+                <div class="salary_box_top_inputs">
+                    {% for account_type in account_types %}
+                        <div class="salary_box_top_type">
+                            <input type="radio" data-id="{{ account_type.id }}" name="radio" class="radio">
+                            <div>{{ account_type.name }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <input type="text" class="input salary_money" placeholder="Summa">
+            <input type="text" class="input reason" placeholder="Sabab">
+            <button class="salary_btn" data-id="{{ worker_salary.id }}">Add</button>
+        </div>
+    </div>
+    <div id="salary">
+        <div class="salary_box_top top2">
+            <div class="salary_box_top_inputs">
+                {% for account_type in account_types %}
+                    <div class="salary_box_top_type">
+                        <input type="radio" data-id="{{ account_type.id }}" name="radio" class="radio2">
+                        <div>{{ account_type.name }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button>Add</button>
+        </div>
+    </div>
+
+</section>
+<script src="../../static/js/given_worker_salary/salary.js"></script>
+</body>
+</html>

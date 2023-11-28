@@ -6,7 +6,6 @@ import datetime
 
 @app.route('/classes', methods=["POST", "GET"])
 def classes():
-
     """
     xamma siniflar chiqib turadigan page
     :return:
@@ -38,6 +37,40 @@ def classes():
     student_count = Class.query.count()
     languages = LanguageType.query.all()
     return render_template('classes/classes.html', user=user, about_us=about_us, about_id=about_id, teachers=teachers,
+                           page=page, pages=pages, news=news, jobs=jobs, student_count=student_count,
+                           languages=languages)
+
+
+@app.route('/deleted_classes', methods=["POST", "GET"])
+def deleted_classes():
+    error = check_session()
+    if error:
+        return redirect(url_for('home'))
+    user = current_user()
+    about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
+    about_id = 0
+    filter_info = []
+    if about_us:
+        about_id = about_us.id
+    teachers = Teacher.query.all()
+    page = request.args.get('page')
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+    about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
+    news = TypeInfo.query.filter(TypeInfo.id == 2).first()
+    jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
+    about = Info.query.filter(Info.type_id == about_us.id).order_by(Info.id).first()
+    about_id = 0
+    if about:
+        about_id = about.id
+    students = Class.query.filter(Class.deleted_classes)
+    pages = students.paginate(page=page, per_page=50)
+    student_count = Class.query.count()
+    languages = LanguageType.query.all()
+    return render_template("deleted_classes/deleted_classes.html", user=user, about_us=about_us, about_id=about_id,
+                           teachers=teachers,
                            page=page, pages=pages, news=news, jobs=jobs, student_count=student_count,
                            languages=languages)
 
@@ -157,6 +190,217 @@ def filter_classes():
     })
 
 
+@app.route('/filter_deleted_classes', methods=["POST", "GET"])
+def filter_deleted_classes():
+    info = request.get_json()["info"]
+    filter_classes = []
+    if info['language_type'] == "all":
+        if info['class_number'] == 'sinflar':
+            classes = Class.query.filter(Class.deleted_classes).all()
+            for group in classes:
+                if info['color'] == "all":
+                    if group.teacher:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": group.teacher[0].user.name,
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+                    else:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": "",
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+                if info['color'] == group.color:
+                    if group.teacher:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": group.teacher[0].user.name,
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+                    else:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": "",
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+        else:
+            classes = Class.query.filter(Class.class_number == info['class_number'],
+                                         Class.deleted_classes).all()
+            for group in classes:
+                if info['color'] == "all":
+                    if group.teacher:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": group.teacher[0].user.name,
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+                    else:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": "",
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+                if info['color'] == group.color:
+                    if group.teacher:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": group.teacher[0].user.name,
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+                    else:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": "",
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+    else:
+        if info['class_number'] == 'sinflar':
+            classes = Class.query.filter(Class.language_type == info['language_type'],
+                                         Class.deleted_classes).all()
+            for group in classes:
+                if info['color'] == "all":
+                    if group.teacher:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": group.teacher[0].user.name,
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+                    else:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": "",
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+                if info['color'] == group.color:
+                    if group.teacher:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": group.teacher[0].user.name,
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+                    else:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": "",
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+        else:
+            classes = Class.query.filter(Class.class_number == info['class_number'],
+                                         Class.language_type == info['language_type'],
+                                         Class.deleted_classes).all()
+            for group in classes:
+                if info['color'] == "all":
+                    if group.teacher:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": group.teacher[0].user.name,
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+                    else:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": "",
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+                if info['color'] == group.color:
+                    if group.teacher:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": group.teacher[0].user.name,
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+                    else:
+                        filtered = {
+                            "id": group.id,
+                            "name": group.name,
+                            "teacher": "",
+                            "student_number": len(group.student),
+                            "class_number": group.class_number,
+                            "color": group.color,
+                            "language": group.language.name
+                        }
+                        filter_classes.append(filtered)
+    return jsonify({
+        "filter_classes": filter_classes
+    })
+
+
 @app.route('/creat_class', methods=["POST", "GET"])
 def creat_class():
     """
@@ -203,7 +447,7 @@ def class_profile(class_id):
     user = current_user()
     classs = Class.query.filter(Class.id == class_id).first()
     students = len(classs.student)
-    teachers = Teacher.query.all()
+    teachers = Teacher.query.filter(Teacher.deleted_teacher == None).all()
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()
     jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
@@ -466,8 +710,6 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -490,7 +732,6 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -515,8 +756,6 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -540,7 +779,6 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -567,8 +805,6 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -593,7 +829,6 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -621,8 +856,6 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,
@@ -648,7 +881,6 @@ def filter_student_for_flow():
                     age = int(current_year.year) - int(birth_year.year)
                     for user in users:
                         if age >= int(info['from']) and age <= int(info['to']):
-
                             filtered = {
                                 "id": user.id,
                                 "username": user.username,

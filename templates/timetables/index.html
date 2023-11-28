@@ -21,7 +21,7 @@
                         {% else %}
                      style="background-color: blue"
                         {% endif %}
-                >{{ class.class_number }}-sinf
+                >{{ class.class_number }}-{{ class.color }}
                 </div>
             {% endfor %}
         </div>
@@ -85,13 +85,13 @@
                                         {% for time in times %}
                                             <th>
                                                 {% if classs.class_number <= 4 %}
-                                                    {% if classs.class_number <= 4 and time.start == "13:10" %}
+                                                    {% if classs.class_number <= 4 and time.start == "12:15" %}
                                                         lunch
                                                     {% else %}
                                                         {{ time.lesson_count }}
                                                     {% endif %}
                                                 {% else %}
-                                                    {% if classs.class_number >= 5 and time.start == "12:14" %}
+                                                    {% if classs.class_number >= 5 and time.start == "13:10" %}
                                                         lunch
                                                     {% else %}
                                                         {{ time.lesson_count }}
@@ -110,14 +110,14 @@
                                                 <tr>
                                                 <td data-id="{{ new_day["day_id"] }}">{{ new_day["name"] }}</td>
                                                 {% for lesson in new_day["lessons"] %}
-                                                    {% if classs.class_number <= 4 and lesson["start"] == "13:10" %}
+                                                    {% if classs.class_number <= 4 and lesson["start"] == "12:15" %}
                                                         <td data-timeId="{{ lesson["time_id"] }}"
                                                             data-dayId="{{ new_day["day_id"] }}"
                                                             data-classId="{{ classs.id }} " class=""
                                                             style="background-color: rgba(0,0,0,0.09)">
                                                         </td>
                                                     {% else %}
-                                                        {% if classs.class_number >= 5 and lesson["start"] == "12:15" %}
+                                                        {% if classs.class_number >= 5 and lesson["start"] == "13:10" %}
                                                             <td data-timeId="{{ lesson["time_id"] }}"
                                                                 data-dayId="{{ new_day["day_id"] }}"
                                                                 data-classId="{{ classs.id }} " class=""

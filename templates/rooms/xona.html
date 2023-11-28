@@ -15,7 +15,8 @@
                     <a href="{{ url_for("room_profile", room_id=room.id) }}">
                         <div class="room_block_box">
                             <img src="{{ room.image }}" alt="">
-                            <div>O'quvchilar soni: {{ room.chair_count }}</div>
+                            <h3>Chair count: {{ room.chair_count }}</h3>
+                            <h2>Teacher: {{ room.teacher.user.name }} {{ room.teacher.user.surname }}</h2>
                         </div>
                     </a>
 

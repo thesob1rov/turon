@@ -22,10 +22,12 @@ html
   background-color: rgba(255, 255, 255, 0.6)
   backdrop-filter: blur(5px)
   z-index: 5
+
   &_header
     display: flex
     justify-content: space-between
     align-items: center
+
   &_delete
 
 
@@ -34,6 +36,7 @@ html
     background-color: red
     padding: 10px
     cursor: pointer
+
     i
       color: white
       font-size: 20px
@@ -94,14 +97,16 @@ html
     height: 35rem
     position: relative
 
-    input,select
+    input, select
       width: 30rem
       height: 3.5rem
       border: .2rem solid rgba(96, 96, 96, 0.55)
       outline: none
       padding: 10px
+
     select
       height: auto
+
     textarea
       width: 100%
       height: 17.6rem
@@ -155,6 +160,7 @@ html
 
       &:active
         transform: scale(0.8)
+
     a
       display: flex
       align-items: center
@@ -164,6 +170,7 @@ html
 
       text-decoration: none
       color: white
+
       &:hover
         background-color: transparent
         color: red
@@ -171,9 +178,17 @@ html
 
       &:active
         transform: scale(0.8)
+
 .register_active
   display: flex
 
 
 .non_active
   visibility: hidden
+.deleted_teacher_container
+  display: flex
+  align-items: center
+  align-self: flex-end
+  margin-right: 20px
+  i
+    font-size: 20px

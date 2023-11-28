@@ -2,23 +2,23 @@
 
     <ul>
         <a href="{{ url_for("get_about_profile", type_id=about_us.id,info_id=about_id) }}">
-            <li>Biz haqimizda</li>
+            <li>About us</li>
         </a>
         <a href="{{ url_for("vacation") }}">
-            <li>Vakansiya</li>
+            <li>Vacancy</li>
         </a>
         <a href="{{ url_for('calendar_info',type_id=news.id) }}">
-            <li>Yangiliklar</li>
+            <li>News</li>
         </a>
         <a href="{{ url_for('infos',type_id=jobs.id) }}">
-            <li>Lavozimlar</li>
+            <li>Positions</li>
         </a>
 
         <a href="{{ url_for("gallery") }}">
-            <li>Rasmlar</li>
+            <li>Images</li>
         </a>
         <a href="{{ url_for('partners') }}">
-            <li>Hamkorlar</li>
+            <li>Partners</li>
         </a>
     </ul>
 </div>

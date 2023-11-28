@@ -4,6 +4,7 @@ from datetime import datetime
 import calendar
 from backend.teacher.teacher_salarys import *
 
+
 @app.route('/teacher_attendance', methods=["POST", "GET"])
 def teacher_attendance():
     info = request.get_json()["info"]

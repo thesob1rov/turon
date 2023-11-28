@@ -9,7 +9,7 @@
         <div class="overflow">
             <div class="shartnoma_box">
                 <form action="{{ url_for("create_contract", student_id=student.id) }}" method="post">
-                    <h1>Shartnoma yaratish</h1>
+                    <h1>Creat Agreement</h1>
                     <input type="text" placeholder="Vakil(a) Ismi" name="name">
                     <input type="text" placeholder="Vakil(a) Familya" name="surname">
                     <input type="text" placeholder="Vakil(a) Otasining ismi" name="parent_name">
@@ -21,19 +21,19 @@
                     <input type="date" name="from">
                     <div class="text">Gacha</div>
                     <input type="date" name="to">
-                    <button>Jo'natish</button>
+                    <button>Send</button>
                 </form>
-
             </div>
             <div class="shartnoma_box2">
-                <form action="{{ url_for("pdf_contract", student_id=student.id) }}" method="post" enctype="multipart/form-data">
-                    <h1 style="margin: 20px">Shartnoma kiritish</h1>
+                <form action="{{ url_for("pdf_contract", student_id=student.id) }}" method="post"
+                      enctype="multipart/form-data">
+                    <h1 style="margin: 20px">Send Agreement</h1>
 
                     <div class="file">
-                        PDF faylni kiriting
+                        Enter the PDF file
                         <input class="input_file" hidden type="file" name="pdf">
                     </div>
-                    <button class="enter_btn">Kiritish</button>
+                    <button class="enter_btn">Send</button>
                 </form>
             </div>
         </div>

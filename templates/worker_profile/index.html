@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../../static/user_profile/index.min.css">
+</head>
+<body>
+
+<section class="main">
+    <div class="main_block">
+        <div class="main_box">
+            <div class="main_box_img">
+                <i class="fa-solid fa-ellipsis ellipsis"></i>
+                <div class="main_box_name">
+                    <img src="{{ worker.user.image }}" alt="">
+                    <div>{{ worker.user.username }}</div>
+                    <div class="change">
+                        <a href="">
+                            <div class="container_change">
+                                <i class="fa-solid fa-pen "></i>
+                                <div>Ma'lumotlarni o'zgartirish</div>
+                            </div>
+                        </a>
+                        <a href="{{ url_for("worker_salary", worker_id=worker.id) }}">
+                            <div class="container_change">
+                                <i class="fa-solid fa-pen "></i>
+                                <div>Salary</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="information">
+                <div class="main_box_information">Name: <span>{{ worker.user.name }}</span></div>
+                <div class="main_box_information">Surname: <span>{{ worker.user.surname }}</span></div>
+                <div class="main_box_information">Parent name: <span>{{ worker.user.parent_name }}</span></div>
+                <div class="main_box_information">Birthday: <span>{{ worker.user.birth_date }}</span></div>
+                <div class="main_box_information">Phone number: <span>{{ worker.user.number }}</span></div>
+                <div class="main_box_information">Address: <span>{{ worker.user.address }}</span></div>
+                <div class="main_box_information">Email: <span>{{ worker.user.email }}</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="../../static/js/user_profiel/script.js"></script>
+</body>
+</html>

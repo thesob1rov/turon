@@ -19,6 +19,11 @@
                     </div>
                     <div class="div">
                         <button class="btn">Student</button>
+                        <a href="{{ url_for("worker") }}">
+                            <button style="background-color: #c4c4c4; color: #001b61; border-radius: 0" class="btn">
+                                Workers
+                            </button>
+                        </a>
                         <a href="{{ url_for("teacher") }}">
                             <button class="add_btn">Teacher</button>
                         </a>
@@ -56,11 +61,11 @@
                     <tr>
                         <th>No</th>
                         <th></th>
-                        <th>Ismi</th>
-                        <th>Familya</th>
-                        <th>Yosh</th>
-                        <th>Telefon raqam</th>
-                        <th>Til</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Age</th>
+                        <th>Phone number</th>
+                        <th>Language</th>
                     </tr>
                     </thead>
 

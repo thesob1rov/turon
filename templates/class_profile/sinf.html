@@ -1,10 +1,8 @@
 {% extends 'admin/index.html' %}
 {% block title %}sinf{% endblock %}
 {% block css %}
-
     <link rel="stylesheet" href="../../static/css/class_profile/sinf.min.css">
 {% endblock %}
-
 {% block section %}
     <section class="main">
         <div class="main_box">
@@ -20,16 +18,16 @@
             </div>
             <div class="main_about">
                 <div class="div">
-                    <div class="main_about_information">Nomi: <span>{{ classs.name }}</span></div>
-                    <div class="main_about_information">O’quvchi soni: <span>{{ students }}</span></div>
+                    <div class="main_about_information">Name: <span>{{ classs.name }}</span></div>
+                    <div class="main_about_information">Student count: <span>{{ students }}</span></div>
                     {% for cl in classs.teacher %}
-                        <div class="main_about_information">O’qituvchi:
+                        <div class="main_about_information">Teacher:
                             <span>{{ cl.user.name }} {{ cl.user.surname }}</span></div>
-                        <div class="main_about_information">Tug'ilgan kuni: <span>{{ cl.user.birth_date }}</span></div>
+                        <div class="main_about_information">Birth day: <span>{{ cl.user.birth_date }}</span></div>
                     {% endfor %}
                 </div>
                 <div class="main_table">
-                    <div><span>O'quvchilar ro'yhati</span></div>
+                    <div><span>List of students</span></div>
                     <table>
                         {% for cl in classs.student %}
                             <tr>
@@ -65,6 +63,9 @@
                         <form action="{{ url_for("edit_class", class_id=classs.id) }}" method="post">
                             <input type="text" value="{{ classs.name }}" name="name">
                             <select name="teacher">
+                                {% for teach in classs.teacher %}
+                                    <option value="{{ teach.id }}">{{ teach.user.name }} {{ teach.user.surname }} </option>
+                                {% endfor %}
                                 {% for teacher in teachers %}
                                     <option value="{{ teacher.id }}">{{ teacher.user.name }} {{ teacher.user.surname }} </option>
                                 {% endfor %}
@@ -89,7 +90,7 @@
                     </div>
                     <div class="change_table">
                         <div class="index">
-                            <div class="title">O'quvchilar ro'yxati</div>
+                            <div class="title">List of students</div>
                             <div>
                                 <div class="delete_btn"><i class="fa-solid fa-trash"></i></div>
                                 <div class="exchange"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
@@ -133,9 +134,9 @@
                             <tr>
                                 <th>No</th>
                                 <th></th>
-                                <th>Nomi</th>
-                                <th>Sinf rahbar</th>
-                                <th>O'quvchilar</th>
+                                <th>Name</th>
+                                <th>Teacher</th>
+                                <th>Students</th>
                                 <th></th>
                             </tr>
                             </thead>

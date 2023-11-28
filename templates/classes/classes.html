@@ -46,6 +46,12 @@
                     </select>
                     <button class="form_filter">Search</button>
                 </div>
+                <a style="align-self: flex-end" href="{{ url_for("deleted_classes") }}">
+                    <div class="deleted_teacher_container">
+                        <h2 style="color: red">Deleted Classes</h2>
+                        <i class="fa-solid fa-user-slash" style="color: red"></i>
+                    </div>
+                </a>
             </div>
             <div class="names_list">
                 <table>
@@ -77,13 +83,16 @@
                             {% else %}
                                 <td>kiritilmagan</td>
                             {% endif %}
-                            {% for teach in page.teacher %}
-
-                                <td>{% if not teach %}kiritilmagan{% else %}{{ teach.user.name }} {{ teach.user.surname }}{% endif %}</td>
-
-
-
-                            {% endfor %}
+                            {% if not page.teacher %}
+                                <td>kiritilmagan</td>
+                            {% else %}
+                                <td>
+                                    {% for teach in page.teacher %}
+                                        {{ teach.user.name }}
+                                        {{ teach.user.surname }}
+                                    {% endfor %}
+                                </td>
+                            {% endif %}
                             <td>{{ page.student|length }}</td>
                             {% if page.class_number %}
                                 <td>{{ page.class_number }}</td>

@@ -48,6 +48,7 @@ if (section.dataset.type === 'salary_teacher' || section.dataset.type === 'salar
                             tbody.innerHTML += `<tr>
                                 <td>${i + 1}</td>
                                 <td>${resp['filtered_salary'][i].worker_name}</td>
+                                <td>${resp['filtered_salary'][i].worker_job}</td>
                                 <td>${resp['filtered_salary'][i].reason}</td>
                                 <td>${resp['filtered_salary'][i].salary}</td>
                                 <td>${resp['filtered_salary'][i].account_type}</td>
@@ -96,6 +97,7 @@ salary_btn.forEach(item => {
                         tbody.innerHTML += `<tr>
                                 <td>${i + 1}</td>
                                 <td>${resp['filtered_salary'][i].worker_name}</td>
+                                <td>${resp['filtered_salary'][i].worker_job}</td>
                                 <td>${resp['filtered_salary'][i].reason}</td>
                                 <td>${resp['filtered_salary'][i].salary}</td>
                                 <td>${resp['filtered_salary'][i].account_type}</td>

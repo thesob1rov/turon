@@ -561,7 +561,8 @@ def filter_salary():
     filtered_salary = []
 
     if type_r == 'salary_teacher':
-        salary_all = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == button_id).order_by(
+        salary_all = Teacher_salary_day.query.filter(Teacher_salary_day.deleted_teacher_salary_inDay == None,
+                                                     Teacher_salary_day.account_type_id == button_id).order_by(
             Teacher_salary_day.id).all()
         for salary in salary_all:
             info = {
@@ -573,11 +574,13 @@ def filter_salary():
             }
             filtered_salary.append(info)
     else:
-        salary_all = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == button_id).order_by(
+        salary_all = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == button_id,
+                                                    WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
             WorkerSalaryInDay.id).all()
         for salary in salary_all:
             info = {
                 'worker_name': salary.worker_salary.worker.user.name,
+                'worker_job': salary.worker_salary.worker.job.name,
                 'reason': salary.reason,
                 'salary': salary.salary,
                 'account_type': salary.account_type.name,
@@ -599,34 +602,43 @@ def filter_date():
     if type_r == 'salary_teacher':
         if year:
             salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-                contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year).order_by(
+                contains_eager(Teacher_salary_day.day)).filter(Teacher_salary_day.deleted_teacher_salary_inDay == None,
+                                                               Day.year_id == year).order_by(
                 Teacher_salary_day.id).all()
 
             if month:
                 salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-                    contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year, Day.month_id == month).order_by(
+                    contains_eager(Teacher_salary_day.day)).filter(
+                    Teacher_salary_day.deleted_teacher_salary_inDay == None, Day.year_id == year,
+                    Day.month_id == month).order_by(
                     Teacher_salary_day.id).all()
 
                 if day:
                     salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-                        contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year, Day.month_id == month,
-                                                                       Day.id == day).order_by(
+                        contains_eager(Teacher_salary_day.day)).filter(
+                        Teacher_salary_day.deleted_teacher_salary_inDay == None, Day.year_id == year,
+                        Day.month_id == month,
+                        Day.id == day).order_by(
                         Teacher_salary_day.id).all()
         elif not year and month and day:
             salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-                contains_eager(Teacher_salary_day.day)).filter(Day.month_id == month, Day.id == day).order_by(
+                contains_eager(Teacher_salary_day.day)).filter(Teacher_salary_day.deleted_teacher_salary_inDay == None,
+                                                               Day.month_id == month, Day.id == day).order_by(
                 Teacher_salary_day.id).all()
         elif year and not month and day:
             salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-                contains_eager(Teacher_salary_day.day)).filter(Day.year_id == year, Day.id == day).order_by(
+                contains_eager(Teacher_salary_day.day)).filter(Teacher_salary_day.deleted_teacher_salary_inDay == None,
+                                                               Day.year_id == year, Day.id == day).order_by(
                 Teacher_salary_day.id).all()
         elif not year and not day and month:
             salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-                contains_eager(Teacher_salary_day.day)).filter(Day.month_id == month).order_by(
+                contains_eager(Teacher_salary_day.day)).filter(Teacher_salary_day.deleted_teacher_salary_inDay == None,
+                                                               Day.month_id == month).order_by(
                 Teacher_salary_day.id).all()
         elif not year and not month and day:
             salary_all = db.session.query(Teacher_salary_day).join(Teacher_salary_day.day).options(
-                contains_eager(Teacher_salary_day.day)).filter(Day.id == day).order_by(
+                contains_eager(Teacher_salary_day.day)).filter(Teacher_salary_day.deleted_teacher_salary_inDay == None,
+                                                               Day.id == day).order_by(
                 Teacher_salary_day.id).all()
         else:
             salary_all = []
@@ -643,34 +655,42 @@ def filter_date():
     else:
         if year:
             salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
-                contains_eager(WorkerSalaryInDay.day)).filter(Day.year_id == year).order_by(
+                contains_eager(WorkerSalaryInDay.day)).filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None,
+                                                              Day.year_id == year).order_by(
                 WorkerSalaryInDay.id).all()
 
             if month:
                 salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
-                    contains_eager(WorkerSalaryInDay.day)).filter(Day.year_id == year, Day.month_id == month).order_by(
+                    contains_eager(WorkerSalaryInDay.day)).filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None,
+                                                                  Day.year_id == year, Day.month_id == month).order_by(
                     WorkerSalaryInDay.id).all()
 
                 if day:
                     salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
-                        contains_eager(WorkerSalaryInDay.day)).filter(Day.year_id == year, Day.month_id == month,
-                                                                      Day.id == day).order_by(
+                        contains_eager(WorkerSalaryInDay.day)).filter(
+                        WorkerSalaryInDay.deleted_worker_salary_inDay == None, Day.year_id == year,
+                        Day.month_id == month,
+                        Day.id == day).order_by(
                         WorkerSalaryInDay.id).all()
         elif not year and month and day:
             salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
-                contains_eager(WorkerSalaryInDay.day)).filter(Day.month_id == month, Day.id == day).order_by(
+                contains_eager(WorkerSalaryInDay.day)).filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None,
+                                                              Day.month_id == month, Day.id == day).order_by(
                 WorkerSalaryInDay.id).all()
         elif year and not month and day:
             salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
-                contains_eager(WorkerSalaryInDay.day)).filter(Day.year_id == year, Day.id == day).order_by(
+                contains_eager(WorkerSalaryInDay.day)).filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None,
+                                                              Day.year_id == year, Day.id == day).order_by(
                 WorkerSalaryInDay.id).all()
         elif not year and not day and month:
             salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
-                contains_eager(WorkerSalaryInDay.day)).filter(Day.month_id == month).order_by(
+                contains_eager(WorkerSalaryInDay.day)).filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None,
+                                                              Day.month_id == month).order_by(
                 WorkerSalaryInDay.id).all()
         elif not year and not month and day:
             salary_all = db.session.query(WorkerSalaryInDay).join(WorkerSalaryInDay.day).options(
-                contains_eager(WorkerSalaryInDay.day)).filter(Day.id == day).order_by(
+                contains_eager(WorkerSalaryInDay.day)).filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None,
+                                                              Day.id == day).order_by(
                 WorkerSalaryInDay.id).all()
         else:
             salary_all = []
@@ -678,6 +698,7 @@ def filter_date():
         for salary in salary_all:
             info = {
                 'worker_name': salary.worker_salary.worker.user.name,
+                'worker_job': salary.worker_salary.worker.job.name,
                 'reason': salary.reason,
                 'salary': salary.salary,
                 'account_type': salary.account_type.name,

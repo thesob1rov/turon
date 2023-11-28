@@ -90,8 +90,6 @@ def change_worker_salary_account_type():
     info = request.get_json()["info"]
     worker_salary_inDay_id = info["worker_salary_inDay_id"]
     account_type_id = info["account_type_id"]
-    print(worker_salary_inDay_id)
-    print(account_type_id)
     WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id == worker_salary_inDay_id).update({
         'account_type_id': account_type_id
     })

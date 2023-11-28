@@ -119,8 +119,9 @@ def given_worker_salary():
     worker_salary = WorkerSalary.query.filter(WorkerSalary.id == worker_salary_id).first()
     old_given_salary = 0
     for salary in worker_salary.worker_salary_in_days:
-        check =WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id ==salary.id,WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
-        WorkerSalaryInDay.id).first()
+        check = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id == salary.id,
+                                               WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
+            WorkerSalaryInDay.id).first()
         if check:
             old_given_salary += int(salary.salary)
             calc_salary = float(worker_salary.salary) - float(old_given_salary)
@@ -193,14 +194,15 @@ def delete_worker_given_salary():
     worker_salary = WorkerSalary.query.filter(WorkerSalary.id == deletes.worker_salary_id).first()
     old_deleted_salary = int(worker_salary.give_salary)
     rest_deleted_salary = int(worker_salary.rest_salary)
-    check =WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id ==int(given_salary_id),WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
+    check = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id == int(given_salary_id),
+                                           WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
         WorkerSalaryInDay.id).first()
     if check:
         old_deleted_salary -= int(check.salary)
         calc_salary = float(check.salary) + float(rest_deleted_salary)
         WorkerSalary.query.filter(WorkerSalary.id == deletes.worker_salary_id).update({
-                "rest_salary": round(calc_salary),
-                "give_salary": old_deleted_salary
+            "rest_salary": round(calc_salary),
+            "give_salary": old_deleted_salary
         })
     salary_worker = DeletedWorkerSalaryInDay(worker_salary_in_day_id=int(given_salary_id), date=date)
     salary_worker.add()

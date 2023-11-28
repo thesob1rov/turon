@@ -4,6 +4,10 @@ from datetime import datetime
 
 
 def get_worker_salary():
+    """
+    har oy workerlaga oylik yaratib beradi oyligiga qarab worker routega otganda avto yaratib quyadi
+    :return:
+    """
     today = datetime.today()
     year = Years.query.filter(Years.year == today.year).first()
     month = Month.query.filter(Month.month_number == today.month, Month.years_id == year.id).first()
@@ -115,13 +119,17 @@ def given_worker_salary():
     worker_salary = WorkerSalary.query.filter(WorkerSalary.id == worker_salary_id).first()
     old_given_salary = 0
     for salary in worker_salary.worker_salary_in_days:
-        old_given_salary += int(salary.salary)
-    calc_salary = float(worker_salary.salary) - float(old_given_salary)
-    WorkerSalary.query.filter(WorkerSalary.id == worker_salary_id).update({
-        "rest_salary": round(calc_salary),
-        "give_salary": old_given_salary
-    })
-    db.session.commit()
+        check =WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id ==salary.id,WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
+        WorkerSalaryInDay.id).first()
+        if check:
+            old_given_salary += int(salary.salary)
+            calc_salary = float(worker_salary.salary) - float(old_given_salary)
+            WorkerSalary.query.filter(WorkerSalary.id == worker_salary_id).update({
+                "rest_salary": round(calc_salary),
+                "give_salary": old_given_salary
+            })
+            db.session.commit()
+
     return jsonify()
 
 
@@ -161,19 +169,13 @@ def register_worker():
 
 @app.route('/set_worker_salary', methods=["POST", "GET"])
 def set_worker_salary():
+    '''
+    workerga oylik belgilash yoki oylik qiymatini uzgartirish
+    :return:
+    '''
     info = request.get_json()["info"]
     worker_id = info["worker_id"]
     salary = info["new_salary_money"]
-    date = datetime.today()
-    this_month = date.strftime("%m")
-    month = Month.query.filter(Month.month_number == this_month).first()
-    add = WorkerSalary(worker_id=worker_id, salary=salary, month_id=month.id)
-    add.add()
-    # date = datetime.today()
-    # this_month = date.strftime("%m")
-    # month = Month.query.filter(Month.month_number == this_month).first()
-    # add = WorkerSalary(worker_id=worker_id, salary=salary, month_id=month.id)
-    # add.add()
     Worker.query.filter(Worker.id == worker_id).update({
         "salary": salary
     })
@@ -187,15 +189,19 @@ def delete_worker_given_salary():
     given_salary_id = info["given_salary_id"]
     today = datetime.today()
     date = datetime(today.year, today.month, today.day)
+    deletes = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id == int(given_salary_id)).first()
+    worker_salary = WorkerSalary.query.filter(WorkerSalary.id == deletes.worker_salary_id).first()
+    old_deleted_salary = int(worker_salary.give_salary)
+    rest_deleted_salary = int(worker_salary.rest_salary)
+    check =WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id ==int(given_salary_id),WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
+        WorkerSalaryInDay.id).first()
+    if check:
+        old_deleted_salary -= int(check.salary)
+        calc_salary = float(check.salary) + float(rest_deleted_salary)
+        WorkerSalary.query.filter(WorkerSalary.id == deletes.worker_salary_id).update({
+                "rest_salary": round(calc_salary),
+                "give_salary": old_deleted_salary
+        })
     salary_worker = DeletedWorkerSalaryInDay(worker_salary_in_day_id=int(given_salary_id), date=date)
     salary_worker.add()
-    deletes = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id == int(given_salary_id)).first()
-    give_salary = int(deletes.worker_salary.give_salary) - int(deletes.salary)
-    rest_salary = int(deletes.worker_salary.rest_salary) + int(deletes.salary)
-    WorkerSalary.query.filter(WorkerSalary.id == int(deletes.worker_salary_id)).update({
-        "give_salary": give_salary,
-        "rest_salary": rest_salary
-    })
-    salary_worker.add()
-    db.session.commit()
     return jsonify()

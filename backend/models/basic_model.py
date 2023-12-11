@@ -267,7 +267,7 @@ class Class(db.Model):
 
 db.Table('student_class',
          db.Column('class_id', db.Integer, db.ForeignKey('class.id')),
-         db.Column('student_id', db.Integer, db.ForeignKey('student.id'))
+         db.Column('stuednt_id', db.Integer, db.ForeignKey('student.id'))
          )
 
 db.Table('teacher_class',

@@ -142,7 +142,7 @@ def timetables():
     timetable yaratiladigan page
     :return: timetable objectlari yuvoriladi
     """
-    calculate_teacher_salary()
+    # calculate_teacher_salary()
     user = User.query.filter(User.id == 1).first()
     # if not user:
     #     return redirect(url_for('home'))

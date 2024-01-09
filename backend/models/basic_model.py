@@ -498,6 +498,10 @@ class Years(db.Model):
     worker_salary_days = db.relationship('WorkerSalaryInDay', backref='years',
                                          order_by='WorkerSalaryInDay.id')
 
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
 
 class TeacherSalaryType(db.Model):
     id = Column(Integer, primary_key=True)

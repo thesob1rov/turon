@@ -150,12 +150,13 @@ def get_student_month_payments_bot():
     user_payments = StudentMonthPayments.query.filter(StudentMonthPayments.student_id == user.id).all()
     data = []
     for pay in user_payments:
-        info = {
-            'class_price': pay.class_price,
-            'payed': pay.payed,
-            'month': pay.month.strftime("%Y-%m-%d"),
-        }
-        data.append(info)
+        if pay.payed <= pay.class_price:
+            info = {
+                'class_price': pay.class_price,
+                'payed': pay.payed,
+                'month': pay.month.strftime("%Y-%m-%d"),
+            }
+            data.append(info)
     return jsonify({
         'data': data
     })
@@ -167,20 +168,24 @@ def get_student_month_in_payments_bot():
     user = Student.query.filter(Student.user_id == user_id).first()
     user_payments = StudentMonthPayments.query.filter(StudentMonthPayments.student_id == user.id).all()
     data = []
+    today = datetime.now()
+    this_month = today.strftime("%m")
+    this_year = today.strftime("%Y")
     for pay in user_payments:
         if pay.student_payments_in_month:
-            info = {
-                'month': pay.month.strftime("%Y-%m-%d"),
-                'payments': []
-            }
-            for pay_in in pay.student_payments_in_month:
-                info_pay = {
-                    'date': pay_in.date.strftime("%Y-%m-%d"),
-                    'payed': pay_in.payed,
-                    'account_type': pay_in.account_type.name
+            if pay.month.strftime("%Y") == this_year and pay.month.strftime("%m") >= this_month:
+                info = {
+                    'month': pay.month.strftime("%Y-%m-%d"),
+                    'payments': []
                 }
-                info['payments'].append(info_pay)
-            data.append(info)
+                for pay_in in pay.student_payments_in_month:
+                    info_pay = {
+                        'date': pay_in.date.strftime("%Y-%m-%d"),
+                        'payed': pay_in.payed,
+                        'account_type': pay_in.account_type.name
+                    }
+                    info['payments'].append(info_pay)
+                data.append(info)
     return jsonify({
         'data': data
     })

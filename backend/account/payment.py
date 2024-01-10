@@ -74,7 +74,8 @@ def payment():
                 "account_type_id": account_type_id
             })
             db.session.commit()
-            st_updated_payment = StudentMonthPayments.query.filter(StudentMonthPayments.id == student_mont_payment.id).first()
+            st_updated_payment = StudentMonthPayments.query.filter(
+                StudentMonthPayments.id == student_mont_payment.id).first()
 
         else:
             another = int(student_mont_payment.another) - int(get_money)
@@ -267,7 +268,7 @@ def all_payments(type_request, page_num):
     error = check_session()
     # if error:
     #     return redirect(url_for('home'))
-    user = User.query.first()
+    user = current_user()
     about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
     about_id = 0
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()

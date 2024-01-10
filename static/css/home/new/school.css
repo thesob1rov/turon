@@ -29,11 +29,12 @@ body::-webkit-scrollbar-thumb {
   flex-direction: column;
   position: relative;
 }
-.introduction video {
+.introduction .school_background {
   position: absolute;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  background-size: cover;
 }
 .introduction a {
   text-decoration: none;

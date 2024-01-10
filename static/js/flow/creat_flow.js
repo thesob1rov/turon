@@ -11,7 +11,8 @@ let creat = document.querySelector('.create_bnt'),
     join = document.querySelector('.join'),
     language_type = document.querySelector('.language_type'),
     creat_language_type = document.querySelector('.creat_language_type');
-let students = []
+
+let classes = []
 
 const search = document.querySelector('.search');
 filter_form.addEventListener('click', () => {
@@ -48,30 +49,30 @@ filter_form.addEventListener('click', () => {
                             <td><input class="checkbox" type="checkbox" data-id="${info.id}"></td>
                         </tr>`
             }
-            students_check()
+            classes_check()
         })
 })
 
-function students_check() {
+function classes_check() {
     let checkboxes = document.querySelectorAll('.checkbox');
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', () => {
             if (checkbox.checked) {
-                const student_id = checkbox.dataset.id
-                students.push(student_id)
+                const class_id = checkbox.dataset.id
+                classes.push(class_id)
             }
         })
     })
 }
 
-students_check()
+classes_check()
 
 creat.addEventListener('click', () => {
     const flow_info = {
         name: class_name.value,
         teacher_id: teacher_id.value,
         subject_id: subject_id.value,
-        students: students
+        classes: classes
     }
     console.log(flow_info)
     fetch('/creat_flow', {
@@ -97,7 +98,7 @@ join.addEventListener('click', () => {
     console.log('adc')
     const join_class = {
         class_id: class_id,
-        students: students
+        classes: classes
     }
     console.log(join_class)
     fetch('/join_flow', {

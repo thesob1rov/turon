@@ -78,14 +78,14 @@
                 <div class="next">
                     <button {% if not pages.has_prev %}class="disabled" {% endif %}><a
                             {% if not pages.has_prev %}class="disabled" {% endif %}
-                            href="classes?page={{ pages.prev_num }}"><i
+                            href="flows?page={{ pages.prev_num }}"><i
                             class="fa-solid fa-chevron-left"></i></a></button>
                     {% for page in pages.iter_pages() %}
-                        <button><a href="classes?page={{ page }}">{{ page }}</a></button>
+                        <button><a href="flows?page={{ page }}">{{ page }}</a></button>
                     {% endfor %}
                     <button {% if not pages.has_prev %}class="disabled" {% endif %}><a
                             {% if not pages.has_prev %}class="disabled" {% endif %}
-                            href="classes?page={{ pages.next_num }}"><i class="fa-solid fa-chevron-right"></i></a>
+                            href="flows?page={{ pages.next_num }}"><i class="fa-solid fa-chevron-right"></i></a>
                     </button>
 
                 </div>

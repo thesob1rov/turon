@@ -94,7 +94,6 @@ def given_teacher_salary():
 @app.route('/delete_teacher_given_salary', methods=["POST", "GET"])
 def delete_teacher_given_salary():
     info = request.get_json()["info"]
-    print(info)
     given_salary_id = info["given_salary_id"]
     teacher_salary_id = info["teacher_salary_id"]
     # GivenSalariesInMonth.query.filter(GivenSalariesInMonth.id == int(given_salary_id)).delete()
@@ -129,7 +128,6 @@ def enter_teacher_worked_days():
     info = request.get_json()["info"]
     teacher_salary_id = info["teacher_salary_id"]
     worked_days = info["worked_days"]
-    print(teacher_salary_id, worked_days)
     TeacherSalary.query.filter(TeacherSalary.id == teacher_salary_id).update({
         "worked_days": worked_days
     })
@@ -155,9 +153,7 @@ def calculate_teacher_salary():
     calc_salary = 0
     result_calc = 0
     year = Years.query.filter(Years.year == int(today.year)).first()
-    print(year)
     years = Years.query.all()
-    print(years)
     month = Month.query.filter(Month.month_number == int(today.month), Month.years_id == year.id).first()
     overal = 0
     working_days = 0
@@ -219,5 +215,4 @@ def calculate_teacher_salary():
                 "salary": overal
             })
             db.session.commit()
-
     return "hello"

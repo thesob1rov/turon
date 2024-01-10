@@ -2,6 +2,7 @@ from app import *
 from backend.settings.settings import *
 from backend.teacher.teacher_salarys import *
 
+
 def check_teacher_timetable(teacher_id, day_id, lesson_time_id, room_id, subject_id, class_id, lesson_id):
     """
     dars jadvalini yaratish uchun teacherni tekshiradigan funksiya
@@ -17,11 +18,8 @@ def check_teacher_timetable(teacher_id, day_id, lesson_time_id, room_id, subject
     status = True
     teacher = Teacher.query.filter(Teacher.id == teacher_id).first()
     if teacher.daily_table:
-        print(teacher.daily_table)
         for daily_table in teacher.daily_table:
-            print(daily_table.day_id, int(day_id), daily_table.lesson_time, int(lesson_time_id))
             if daily_table.day_id == int(day_id) and daily_table.lesson_time == int(lesson_time_id):
-
                 if lesson_id == "":
                     message = {
                         "text": 'bu voxta darsi teacherni',
@@ -181,6 +179,8 @@ def flow_student__table_information():
     days = TimeTableDay.query.all()
     times = TimeList.query.order_by(TimeList.id).all()
     day_list = []
+
+
     for day in days:
         info = {
             "day_id": day.id,
@@ -236,7 +236,59 @@ def flow_student__table_information():
         day_list.append(info)
     return day_list
 
-
+#     for day in days:
+#         info = {
+#             "day_id": day.id,
+#             "day_name": day.name,
+#             "lessons": []
+#         }
+#         for time in times:
+#             les = {
+#                 "status": False,
+#                 "time_id": time.id,
+#                 "time_count": time.lesson_count,
+#                 "start": time.start,
+#                 "end": time.end
+#             }
+#             info["lessons"].append(les)
+#             for item in day.daily_table:
+#                 filter_flow_day = DailyTable.query.filter(DailyTable.id == item.id,
+#                                                           DailyTable.flow_lesson == True).first()
+#                 if filter_flow_day:
+#                     for lesson in info["lessons"]:
+#                         if lesson["time_id"] == filter_flow_day.lesson_time and filter_flow_day.day_id == info[
+#                             "day_id"]:
+#                             room = Room.query.filter(Room.id == filter_flow_day.room_id).first()
+#                             flow = Flow.query.filter(Flow.id == filter_flow_day.flow_id).first()
+#                             if filter_flow_day.lesson_time == les["time_id"]:
+#                                 if flow and room:
+#                                     les.update({
+#                                         "status": True,
+#                                         "flow_name": flow.name,
+#                                         "flow_id": flow.id,
+#                                         "room_id": room.id,
+#                                         "room_name": room.name,
+#                                         "lesson_id": item.id
+#                                     })
+#                                 if not flow and room:
+#                                     les.update({
+#                                         "status": True,
+#                                         "flow_name": None,
+#                                         "flow_id": None,
+#                                         "room_id": room.id,
+#                                         "room_name": room.name,
+#                                         "lesson_id": item.id
+#                                     })
+#                                 if not room and flow:
+#                                     les.update({
+#                                         "status": True,
+#                                         "flow_name": flow.name,
+#                                         "flow_id": flow.id,
+#                                         "room_id": None,
+#                                         "room_name": None,
+#                                         "lesson_id": item.id
+#                                     })
+#         day_list.append(info)
 def check_teacher_for_flow_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_id):
     """
     patok yaratish uchun teacherni voxtini tekshiradi
@@ -298,7 +350,7 @@ def check_students_for_flow_timetable(flow_id, day_id, room_id, lesson_time_id, 
         for classs in student_f.classes:
             for daily_table in classs.daily_table:
                 if classs.class_number <= 4:
-                    if filter_time.start == "13:10":
+                    if filter_time.start == "12:15":
                         message = {
                             "text": 'bu kicik sinf abedda boladi',
                             "color": "red"
@@ -327,7 +379,7 @@ def check_students_for_flow_timetable(flow_id, day_id, room_id, lesson_time_id, 
                                     }
                                     return message
                 else:
-                    if filter_time.start == "12:15":
+                    if filter_time.start == "13:10":
                         message = {
                             "text": 'bu sinfda yuqori sinf abedda boladi',
                             "color": "red"
@@ -430,11 +482,25 @@ def add_flow_timetable(flow_id, day_id, room_id, lesson_time_id, lesson_id):
     :return: darslik saqlangani xaqida xabar jonatadi
     """
     day = TimeTableDay.query.filter(TimeTableDay.id == day_id).first()
-    add = DailyTable(flow_id=flow_id, day_id=day_id, lesson_time=lesson_time_id, room_id=room_id, flow_lesson=True)
-    db.session.add(add)
-    db.session.commit()
-    day.daily_table.append(add)
-    db.session.commit()
+    classes = []
+    flow = Flow.query.filter(Flow.id == flow_id).first()
+    for student in flow.students:
+        for classs in student.classes:
+            if classes:
+                for item in classes:
+                    if item == classs.id:
+                        pass
+                    else:
+                        classes.append(classs.id)
+            else:
+                classes.append(classs.id)
+    for classs in classes:
+        add = DailyTable(flow_id=flow_id, day_id=day_id, lesson_time=lesson_time_id, room_id=room_id, flow_lesson=True,
+                         class_id=classs)
+        db.session.add(add)
+        db.session.commit()
+        day.daily_table.append(add)
+        db.session.commit()
     message = {
         "text": 'darslik qowildi',
         "color": "green"
@@ -500,20 +566,21 @@ def lesson_table_list():
                             if lesson["time_id"] == item.lesson_time:
                                 if item.lesson_time == les["time_id"]:
                                     if item.flow_lesson == True:
-                                        subject = Subject.query.filter(Subject.id == item.flow.subject_id).first()
-                                        teacher = Teacher.query.filter(Teacher.id == item.flow.teacher_id).first()
-                                        les.update({
-                                            "lesson_type": "flow",
-                                            "status": True,
-                                            "teacher_id": teacher.id,
-                                            "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
-                                            "subject_id": subject.id,
-                                            "subject_name": subject.name,
-                                            "lesson_id": item.id,
-                                            "flow_name": item.flow.name,
-                                            "flow_id": item.flow.id,
-                                            "class_id": None
-                                        })
+                                        if item.flow:
+                                            subject = Subject.query.filter(Subject.id == item.flow.subject_id).first()
+                                            teacher = Teacher.query.filter(Teacher.id == item.flow.teacher_id).first()
+                                            les.update({
+                                                "lesson_type": "flow",
+                                                "status": True,
+                                                "teacher_id": teacher.id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": subject.id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id,
+                                                "flow_name": item.flow.name,
+                                                "flow_id": item.flow.id,
+                                                "class_id": None
+                                            })
                                     else:
                                         room = Room.query.filter(Room.id == item.room_id).first()
                                         teacher = Teacher.query.filter(Teacher.id == item.teacher_id).first()
@@ -624,3 +691,822 @@ def lesson_table_list():
             day_info["rooms"].append(room_info)
         lesson_list.append(day_info)
     return lesson_list
+
+
+# def timetables_list():
+#     classes = Class.query.filter(Class.deleted_classes == None).all()
+#     times = TimeList.query.order_by(TimeList.id).all()
+#     classes_new_days_list = []
+#     days = TimeTableDay.query.all()
+#     for classs in classes:
+#         classes_new_days = {
+#             "class_id": classs.id,
+#             "new_days": []
+#         }
+#         for day in days:
+#             info = {
+#                 "day_id": day.id,
+#                 "name": day.name,
+#                 # "lesson_time": time.id,
+#                 "lessons": [
+#                 ]
+#             }
+#             for time in times:
+#                 les = {
+#                     "status": False,
+#                     "time_id": time.id,
+#                     "time_count": time.lesson_count,
+#                     "start": time.start,
+#                     "end": time.end
+#                 }
+#                 info["lessons"].append(les)
+#                 for item in day.daily_table:
+#                     if item.class_id == classs.id:
+#                         for lessons in info["lessons"]:
+#                             if lessons["time_id"] == item.lesson_time:
+#                                 room = Room.query.filter(Room.id == item.room_id).first()
+#                                 teacher = Teacher.query.filter(Teacher.id == item.teacher_id).first()
+#                                 subject = Subject.query.filter(Subject.id == item.subject_id).first()
+#                                 flow = Flow.query.filter(Flow.id == item.flow_id).first()
+#                                 if item.lesson_time == les["time_id"]:
+#                                     if not room and subject and item.teacher_id:
+#                                         if flow:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "teacher_id": item.teacher_id,
+#                                                 "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+#                                                 "subject_id": item.subject_id,
+#                                                 "subject_name": subject.name,
+#                                                 "lesson_id": item.id,
+#                                                 "flow_name": flow.name
+#                                             })
+#                                         else:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "teacher_id": item.teacher_id,
+#                                                 "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+#                                                 "subject_id": item.subject_id,
+#                                                 "subject_name": subject.name,
+#                                                 "lesson_id": item.id
+#                                             })
+#                                     if not item.teacher_id and subject and room:
+#                                         if flow:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "room_id": item.room_id,
+#                                                 "room_name": room.name,
+#                                                 "teacher_id": None,
+#                                                 "teacher_name": None,
+#                                                 "subject_id": item.subject_id,
+#                                                 "subject_name": subject.name,
+#                                                 "lesson_id": item.id,
+#                                                 "flow_name": flow.name
+#                                             })
+#                                         else:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "room_id": item.room_id,
+#                                                 "room_name": room.name,
+#                                                 "teacher_id": None,
+#                                                 "teacher_name": None,
+#                                                 "subject_id": item.subject_id,
+#                                                 "subject_name": subject.name,
+#                                                 "lesson_id": item.id
+#                                             })
+#                                     if not subject and room and item.teacher_id:
+#                                         if flow:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "room_id": item.room_id,
+#                                                 "room_name": room.name,
+#                                                 "teacher_id": item.teacher_id,
+#                                                 "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+#                                                 "subject_id": None,
+#                                                 "subject_name": None,
+#                                                 "lesson_id": item.id,
+#                                                 "flow_name": flow.name
+#                                             })
+#                                         else:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "room_id": item.room_id,
+#                                                 "room_name": room.name,
+#                                                 "teacher_id": item.teacher_id,
+#                                                 "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+#                                                 "subject_id": None,
+#                                                 "subject_name": None,
+#                                                 "lesson_id": item.id
+#                                             })
+#                                     if not room and not item.teacher_id:
+#                                         if flow:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "room_id": None,
+#                                                 "room_name": None,
+#                                                 "teacher_id": None,
+#                                                 "teacher_name": None,
+#                                                 "subject_id": item.subject_id,
+#                                                 "subject_name": subject.name,
+#                                                 "lesson_id": item.id,
+#                                                 "flow_name": flow.name
+#                                             })
+#                                         else:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "room_id": None,
+#                                                 "room_name": None,
+#                                                 "teacher_id": None,
+#                                                 "teacher_name": None,
+#                                                 "subject_id": item.subject_id,
+#                                                 "subject_name": subject.name,
+#                                                 "lesson_id": item.id
+#                                             })
+#                                     if not room and not subject:
+#                                         if flow:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "room_id": None,
+#                                                 "room_name": None,
+#                                                 "teacher_id": item.teacher_id,
+#                                                 "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+#                                                 "subject_id": None,
+#                                                 "subject_name": None,
+#                                                 "lesson_id": item.id,
+#                                                 "flow_name": flow.name
+#                                             })
+#                                         else:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "room_id": None,
+#                                                 "room_name": None,
+#                                                 "teacher_id": item.teacher_id,
+#                                                 "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+#                                                 "subject_id": None,
+#                                                 "subject_name": None,
+#                                                 "lesson_id": item.id
+#                                             })
+#                                     if not item.teacher_id and not subject:
+#                                         if flow:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "room_id": item.room_id,
+#                                                 "room_name": room.name,
+#                                                 "teacher_id": None,
+#                                                 "teacher_name": None,
+#                                                 "subject_id": None,
+#                                                 "subject_name": None,
+#                                                 "lesson_id": item.id,
+#                                                 "flow_name": flow.name
+#                                             })
+#                                         else:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "room_id": item.room_id,
+#                                                 "room_name": room.name,
+#                                                 "teacher_id": None,
+#                                                 "teacher_name": None,
+#                                                 "subject_id": None,
+#                                                 "subject_name": None,
+#                                                 "lesson_id": item.id
+#                                             })
+#                                     if item.teacher_id and subject and room:
+#                                         if flow:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "room_id": item.room_id,
+#                                                 "room_name": room.name,
+#                                                 "teacher_id": item.teacher_id,
+#                                                 "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+#                                                 "subject_id": item.subject_id,
+#                                                 "subject_name": subject.name,
+#                                                 "lesson_id": item.id,
+#                                                 "flow_name": flow.name
+#                                             })
+#                                         else:
+#                                             les.update({
+#                                                 "status": True,
+#                                                 "room_id": item.room_id,
+#                                                 "room_name": room.name,
+#                                                 "teacher_id": item.teacher_id,
+#                                                 "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+#                                                 "subject_id": item.subject_id,
+#                                                 "subject_name": subject.name,
+#                                                 "lesson_id": item.id
+#                                             })
+#             classes_new_days["new_days"].append(info)
+#         classes_new_days_list.append(classes_new_days)
+#     return classes_new_days_list
+
+
+def timetables_list():
+    classes = Class.query.filter(Class.deleted_classes == None).all()
+    times = TimeList.query.order_by(TimeList.id).all()
+    classes_new_days_list = []
+    days = TimeTableDay.query.all()
+    for classs in classes:
+        classes_new_days = {
+            "class_id": classs.id,
+            "new_days": []
+        }
+        for day in days:
+            info = {
+                "day_id": day.id,
+                "name": day.name,
+                # "lesson_time": time.id,
+                "lessons": [
+                ]
+            }
+            for time in times:
+                les = {
+                    "status": False,
+                    "time_id": time.id,
+                    "time_count": time.lesson_count,
+                    "start": time.start,
+                    "end": time.end
+
+                }
+                info["lessons"].append(les)
+                for item in day.daily_table:
+                    if item.class_id == classs.id:
+                        for lessons in info["lessons"]:
+                            if lessons["time_id"] == item.lesson_time:
+                                room = Room.query.filter(Room.id == item.room_id).first()
+                                teacher = Teacher.query.filter(Teacher.id == item.teacher_id).first()
+                                subject = Subject.query.filter(Subject.id == item.subject_id).first()
+                                flow = Flow.query.filter(Flow.id == item.flow_id).first()
+                                if item.lesson_time == les["time_id"]:
+                                    if not room and subject and item.teacher_id:
+                                        if flow:
+                                            les.update({
+                                                "status": True,
+                                                "teacher_id": item.teacher_id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": item.subject_id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id,
+                                                "flow_name": flow.name
+                                            })
+                                        else:
+                                            les.update({
+                                                "status": True,
+                                                "teacher_id": item.teacher_id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": item.subject_id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id
+                                            })
+                                    if not item.teacher_id and subject and room:
+                                        if flow:
+                                            les.update({
+                                                "status": True,
+                                                "room_id": item.room_id,
+                                                "room_name": room.name,
+                                                "teacher_id": None,
+                                                "teacher_name": None,
+                                                "subject_id": item.subject_id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id,
+                                                "flow_name": flow.name
+                                            })
+                                        else:
+                                            les.update({
+                                                "status": True,
+                                                "room_id": item.room_id,
+                                                "room_name": room.name,
+                                                "teacher_id": None,
+                                                "teacher_name": None,
+                                                "subject_id": item.subject_id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id
+                                            })
+                                    if not subject and room and item.teacher_id:
+                                        if flow:
+                                            les.update({
+                                                "status": True,
+                                                "room_id": item.room_id,
+                                                "room_name": room.name,
+                                                "teacher_id": item.teacher_id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": None,
+                                                "subject_name": None,
+                                                "lesson_id": item.id,
+                                                "flow_name": flow.name
+                                            })
+                                        else:
+                                            les.update({
+                                                "status": True,
+                                                "room_id": item.room_id,
+                                                "room_name": room.name,
+                                                "teacher_id": item.teacher_id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": None,
+                                                "subject_name": None,
+                                                "lesson_id": item.id
+                                            })
+                                    if not room and not item.teacher_id:
+                                        if flow:
+                                            les.update({
+                                                "status": True,
+                                                "room_id": None,
+                                                "room_name": None,
+                                                "teacher_id": None,
+                                                "teacher_name": None,
+                                                "subject_id": item.subject_id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id,
+                                                "flow_name": flow.name
+                                            })
+                                        else:
+                                            les.update({
+                                                "status": True,
+                                                "room_id": None,
+                                                "room_name": None,
+                                                "teacher_id": None,
+                                                "teacher_name": None,
+                                                "subject_id": item.subject_id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id
+                                            })
+                                    if not room and not subject:
+                                        if flow:
+                                            les.update({
+                                                "status": True,
+                                                "room_id": None,
+                                                "room_name": None,
+                                                "teacher_id": item.teacher_id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": None,
+                                                "subject_name": None,
+                                                "lesson_id": item.id,
+                                                "flow_name": flow.name
+                                            })
+                                        else:
+                                            les.update({
+                                                "status": True,
+                                                "room_id": None,
+                                                "room_name": None,
+                                                "teacher_id": item.teacher_id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": None,
+                                                "subject_name": None,
+                                                "lesson_id": item.id
+                                            })
+                                    if not item.teacher_id and not subject:
+                                        if flow:
+                                            les.update({
+                                                "status": True,
+                                                "room_id": item.room_id,
+                                                "room_name": room.name,
+                                                "teacher_id": None,
+                                                "teacher_name": None,
+                                                "subject_id": None,
+                                                "subject_name": None,
+                                                "lesson_id": item.id,
+                                                "flow_name": flow.name
+                                            })
+                                        else:
+                                            les.update({
+                                                "status": True,
+                                                "room_id": item.room_id,
+                                                "room_name": room.name,
+                                                "teacher_id": None,
+                                                "teacher_name": None,
+                                                "subject_id": None,
+                                                "subject_name": None,
+                                                "lesson_id": item.id
+                                            })
+                                    if item.teacher_id and subject and room:
+                                        if flow:
+                                            les.update({
+                                                "status": True,
+                                                "room_id": item.room_id,
+                                                "room_name": room.name,
+                                                "teacher_id": item.teacher_id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": item.subject_id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id,
+                                                "flow_name": flow.name
+                                            })
+                                        else:
+                                            les.update({
+                                                "status": True,
+                                                "room_id": item.room_id,
+                                                "room_name": room.name,
+                                                "teacher_id": item.teacher_id,
+                                                "teacher_name": f'{teacher.user.name} {teacher.user.surname}',
+                                                "subject_id": item.subject_id,
+                                                "subject_name": subject.name,
+                                                "lesson_id": item.id
+                                            })
+            classes_new_days["new_days"].append(info)
+        classes_new_days_list.append(classes_new_days)
+    return classes_new_days_list
+
+
+def new_timetable_list():
+    classes = Class.query.filter(Class.deleted_classes == None).all()
+    classes_new_days_list = []
+    monday = TimeTableDay.query.filter(TimeTableDay.name == "monday").first()
+    tuesday = TimeTableDay.query.filter(TimeTableDay.name == "tuesday").first()
+    wednesday = TimeTableDay.query.filter(TimeTableDay.name == "wednesday").first()
+    thursday = TimeTableDay.query.filter(TimeTableDay.name == "thursday").first()
+    friday = TimeTableDay.query.filter(TimeTableDay.name == "friday").first()
+    time_1 = TimeList.query.filter(TimeList.lesson_count == 1).first()
+    time_2 = TimeList.query.filter(TimeList.lesson_count == 2).first()
+    time_3 = TimeList.query.filter(TimeList.lesson_count == 3).first()
+    time_4 = TimeList.query.filter(TimeList.lesson_count == 4).first()
+    time_5 = TimeList.query.filter(TimeList.lesson_count == 5).first()
+    time_6 = TimeList.query.filter(TimeList.lesson_count == 6).first()
+    time_7 = TimeList.query.filter(TimeList.lesson_count == 7).first()
+    for classs in classes:
+        classes_new_days = {
+            "class_id": classs.id,
+            "new_days": [
+                {
+                    "day_id": monday.id,
+                    "day_name": monday.name,
+                    "lessons": [
+                        {
+                            "status": False,
+                            "time_id": time_1.id,
+                            "time_count": time_1.lesson_count,
+                            "start": time_1.start,
+                            "end": time_1.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_2.id,
+                            "time_count": time_2.lesson_count,
+                            "start": time_2.start,
+                            "end": time_2.end
+                        }, {
+                            "status": False,
+                            "time_id": time_3.id,
+                            "time_count": time_3.lesson_count,
+                            "start": time_3.start,
+                            "end": time_3.end
+                        }, {
+                            "status": False,
+                            "time_id": time_4.id,
+                            "time_count": time_4.lesson_count,
+                            "start": time_4.start,
+                            "end": time_4.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_5.id,
+                            "time_count": time_5.lesson_count,
+                            "start": time_5.start,
+                            "end": time_5.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_6.id,
+                            "time_count": time_6.lesson_count,
+                            "start": time_6.start,
+                            "end": time_6.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_7.id,
+                            "time_count": time_7.lesson_count,
+                            "start": time_7.start,
+                            "end": time_7.end
+                        }
+                    ]
+                },
+                {
+                    "day_id": tuesday.id,
+                    "day_name": tuesday.name,
+                    "lessons": [
+                        {
+                            "status": False,
+                            "time_id": time_1.id,
+                            "time_count": time_1.lesson_count,
+                            "start": time_1.start,
+                            "end": time_1.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_2.id,
+                            "time_count": time_2.lesson_count,
+                            "start": time_2.start,
+                            "end": time_2.end
+                        }, {
+                            "status": False,
+                            "time_id": time_3.id,
+                            "time_count": time_3.lesson_count,
+                            "start": time_3.start,
+                            "end": time_3.end
+                        }, {
+                            "status": False,
+                            "time_id": time_4.id,
+                            "time_count": time_4.lesson_count,
+                            "start": time_4.start,
+                            "end": time_4.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_5.id,
+                            "time_count": time_5.lesson_count,
+                            "start": time_5.start,
+                            "end": time_5.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_6.id,
+                            "time_count": time_6.lesson_count,
+                            "start": time_6.start,
+                            "end": time_6.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_7.id,
+                            "time_count": time_7.lesson_count,
+                            "start": time_7.start,
+                            "end": time_7.end
+                        }
+                    ]
+                },
+                {
+                    "day_id": tuesday.id,
+                    "day_name": wednesday.name,
+                    "lessons": [
+                        {
+                            "status": False,
+                            "time_id": time_1.id,
+                            "time_count": time_1.lesson_count,
+                            "start": time_1.start,
+                            "end": time_1.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_2.id,
+                            "time_count": time_2.lesson_count,
+                            "start": time_2.start,
+                            "end": time_2.end
+                        }, {
+                            "status": False,
+                            "time_id": time_3.id,
+                            "time_count": time_3.lesson_count,
+                            "start": time_3.start,
+                            "end": time_3.end
+                        }, {
+                            "status": False,
+                            "time_id": time_4.id,
+                            "time_count": time_4.lesson_count,
+                            "start": time_4.start,
+                            "end": time_4.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_5.id,
+                            "time_count": time_5.lesson_count,
+                            "start": time_5.start,
+                            "end": time_5.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_6.id,
+                            "time_count": time_6.lesson_count,
+                            "start": time_6.start,
+                            "end": time_6.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_7.id,
+                            "time_count": time_7.lesson_count,
+                            "start": time_7.start,
+                            "end": time_7.end
+                        }
+                    ]
+                },
+                {
+                    "day_id": thursday.id,
+                    "day_name": thursday.name,
+                    "lessons": [
+                        {
+                            "status": False,
+                            "time_id": time_1.id,
+                            "time_count": time_1.lesson_count,
+                            "start": time_1.start,
+                            "end": time_1.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_2.id,
+                            "time_count": time_2.lesson_count,
+                            "start": time_2.start,
+                            "end": time_2.end
+                        }, {
+                            "status": False,
+                            "time_id": time_3.id,
+                            "time_count": time_3.lesson_count,
+                            "start": time_3.start,
+                            "end": time_3.end
+                        }, {
+                            "status": False,
+                            "time_id": time_4.id,
+                            "time_count": time_4.lesson_count,
+                            "start": time_4.start,
+                            "end": time_4.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_5.id,
+                            "time_count": time_5.lesson_count,
+                            "start": time_5.start,
+                            "end": time_5.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_6.id,
+                            "time_count": time_6.lesson_count,
+                            "start": time_6.start,
+                            "end": time_6.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_7.id,
+                            "time_count": time_7.lesson_count,
+                            "start": time_7.start,
+                            "end": time_7.end
+                        }
+                    ]
+                },
+                {
+                    "day_id": friday.id,
+                    "day_name": friday.name,
+                    "lessons": [
+                        {
+                            "status": False,
+                            "time_id": time_1.id,
+                            "time_count": time_1.lesson_count,
+                            "start": time_1.start,
+                            "end": time_1.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_2.id,
+                            "time_count": time_2.lesson_count,
+                            "start": time_2.start,
+                            "end": time_2.end
+                        }, {
+                            "status": False,
+                            "time_id": time_3.id,
+                            "time_count": time_3.lesson_count,
+                            "start": time_3.start,
+                            "end": time_3.end
+                        }, {
+                            "status": False,
+                            "time_id": time_4.id,
+                            "time_count": time_4.lesson_count,
+                            "start": time_4.start,
+                            "end": time_4.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_5.id,
+                            "time_count": time_5.lesson_count,
+                            "start": time_5.start,
+                            "end": time_5.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_6.id,
+                            "time_count": time_6.lesson_count,
+                            "start": time_6.start,
+                            "end": time_6.end
+                        },
+                        {
+                            "status": False,
+                            "time_id": time_7.id,
+                            "time_count": time_7.lesson_count,
+                            "start": time_7.start,
+                            "end": time_7.end
+                        }
+                    ]
+                }
+            ]
+        }
+        classes_new_days_list.append(classes_new_days)
+    return True
+
+
+def attendance_filter(self, month, year):
+    date = str(year) + "-" + str(month)
+    year = datetime.strptime(str(year), "%Y")
+    date = datetime.strptime(date, "%Y-%m")
+
+    calendar_year = CalendarYear.query.filter(CalendarYear.date == year).first()
+    calendar_month = CalendarMonth.query.filter(CalendarMonth.year_id == calendar_year.id,
+                                                CalendarMonth.date == date).first()
+
+    attendances = db.session.query(AttendanceDays).join(AttendanceDays.attendance).options(
+        contains_eager(AttendanceDays.attendance)).filter(Attendance.calendar_month == calendar_month.id,
+                                                          Attendance.calendar_year == calendar_year.id,
+                                                          Attendance.group_id == self.group_id).join(
+        AttendanceDays.day).options(
+        contains_eager(AttendanceDays.day)).order_by(CalendarDay.date).all()
+    student_id = []
+    for st in attendances:
+        student_id.append(st.student_id)
+    student_id = list(dict.fromkeys(student_id))
+    students = Students.query.filter(Students.id.in_([st_id for st_id in student_id])).order_by(Students.id).all()
+    students_num = db.session.query(Students).join(Students.group).options(contains_eager(Students.group)).filter(
+        Groups.id == self.group_id).order_by(Students.id).count()
+    attendances_list = []
+    mixed_dates = []
+    for_filter = []
+    for att in attendances:
+        mixed_dates.append(att.day.date.strftime("%d"))
+        for_filter.append(att.day.date.strftime("%Y-%m-%d"))
+    sorted_dates = list(dict.fromkeys(mixed_dates))
+    sorted_dates.sort()
+    for_filter = list(dict.fromkeys(for_filter))
+    for_filter.sort()
+    for student in students:
+        student_att = {
+            'student_name': student.user.name,
+            'student_surname': student.user.surname,
+            "student_id": student.user_id,
+            'absent': [],
+            'present': [],
+            'len_days': 0,
+            'dates': []
+        }
+        days = []
+        for date in for_filter:
+            day = datetime.strptime(date, "%Y-%m-%d")
+            day = CalendarDay.query.filter(CalendarDay.date == day).first()
+            attendance = AttendanceDays.query.filter(AttendanceDays.group_id == self.group_id,
+                                                     AttendanceDays.student_id == student.id,
+                                                     AttendanceDays.calendar_day == day.id).first()
+
+            day_id = ""
+            status = ""
+            reason = ""
+            if attendance:
+                day_id = attendance.calendar_day
+                if attendance.status == 1 or attendance.status == 2:
+                    status = True
+                else:
+                    status = False
+                if attendance.reason:
+                    reason = attendance.reason
+                    homework = 0
+                    activeness = 0
+                    dictionary = 0
+                    average_ball = 0
+            if attendance:
+                if attendance.homework:
+                    homework = attendance.homework
+                if attendance.dictionary:
+                    dictionary = attendance.dictionary
+                if attendance.activeness:
+                    activeness = attendance.activeness
+                if attendance.average_ball:
+                    average_ball = attendance.average_ball
+            info = {
+                "day_id": day_id,
+                "day": date,
+                "reason": reason,
+                "status": status,
+                "ball": {}
+            }
+            if attendance:
+                if attendance.dictionary:
+                    info['ball'] = {
+                        "homework": homework,
+                        "activeness": activeness,
+                        "dictionary": dictionary,
+                        "average_ball": average_ball
+                    }
+                else:
+                    info['ball'] = {
+                        "homework": homework,
+                        "activeness": activeness,
+                        "average_ball": average_ball
+                    }
+            days.append(info)
+            student_att['dates'] = days
+        attendances_list.append(student_att)
+    filtered_attendances = []
+    for student in attendances_list:
+        added_to_existing = False
+        for merged in filtered_attendances:
+            if merged['student_id'] == student['student_id']:
+                added_to_existing = True
+            if added_to_existing:
+                break
+        if not added_to_existing:
+            filtered_attendances.append(student)
+
+    data = {
+        "attendances": filtered_attendances,
+        "dates": sorted_dates,
+        "students_num": students_num
+    }
+
+    return data

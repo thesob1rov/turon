@@ -59,7 +59,7 @@ def delete_vacation(vacation_id):
     return redirect(url_for('vacation'))
 
 
-@app.route('/work_info')
+@app.route('/work_info', methods=['POST', 'GET'])
 def work_info():
     jobs = Info.query.filter(Info.type_id == 3).order_by(Info.id).all()
     vacations = Vacation.query.order_by(Vacation.id).all()
@@ -67,13 +67,22 @@ def work_info():
     about_id = 0
     if about_us:
         about_id = about_us.id
-
     return render_template('front/vacation/vakansiyalar.html', jobs=jobs, vacations=vacations, about_id=about_id)
+
+
+@app.route('/application_workers', methods=['POST', 'GET'])
+def application_workers():
+    if request.method == "POST":
+        name = request.form.get("name")
+        surname = request.form.get("surname")
+        number = request.form.get("number")
+        photo = request.files['img']
+
+    return redirect(url_for("work_info"))
 
 
 @app.route('/send_request/<int:vacation_id>', methods=['POST'])
 def send_request(vacation_id):
-
     name = request.form.get('name')
     surname = request.form.get('surname')
     phone = request.form.get('phone')
@@ -88,8 +97,7 @@ def send_request(vacation_id):
                        pdf_file=photo_url)
         add.add()
     else:
-        add = Requests(name=name, surname=surname, phone=phone, vacation_id=vacation_id, add_date=datetime.now(),
-                       )
+        add = Requests(name=name, surname=surname, phone=phone, vacation_id=vacation_id, add_date=datetime.now(),)
         add.add()
     return redirect(url_for('work_info'))
 

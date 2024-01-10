@@ -38,121 +38,129 @@
 <section class="section">
     <div class="home">
         <div class="home_big">
-
-
-            <a href="{{ url_for('register') }}">
-                <div class="box">
-                    <i class="fa-solid fa-registered"></i>
-                    <div class="box_mini">
-                        <h1>Register</h1>
-
-                    </div>
-                </div>
-            </a>
-            <a href="{{ url_for('subject_list') }}">
-                <div class="box">
-                    <i class="fa-brands fa-readme"></i>
-                    <div class="box_mini">
-                        <h1>Subject</h1>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ url_for('student') }}">
-                <div class="box">
-                    <i class="fa-solid fa-users"></i>
-                    <div class="box_mini">
-                        <h1>New Student</h1>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ url_for('old_student') }}">
-                <div class="box">
-                    <i class="fa-solid fa-users"></i>
-                    <div class="box_mini">
-                        <h1>Users</h1>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ url_for('worker') }}">
-                <div class="box">
-                    <i class="fa-solid fa-users"></i>
-                    <div class="box_mini">
-                        <h1>Employee</h1>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ url_for('classes') }}">
-                <div class="box">
-                    <i class="fa-solid fa-users"></i>
-                    <div class="box_mini">
-                        <h1>Classes</h1>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ url_for('flow') }}">
-                <div class="box">
-                    <i class="fa-solid fa-bars-staggered"></i>
-                    <div class="box_mini">
-                        <h1>Flows</h1>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ url_for('rooms') }}">
-                <div class="box">
-                    <i class="fa-solid fa-users"></i>
-                    <div class="box_mini">
-                        <h1>Rooms</h1>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ url_for('lesson_table') }}">
-                <div class="box">
-                    <i class="fa-solid fa-calendar-days"></i>
-                    <div class="box_mini">
-                        <h1>TimeTables</h1>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ url_for('calendar_year') }}">
-                <div class="box">
-                    <i class="fa-regular fa-clock"></i>
-                    <div class="box_mini">
-                        <h1>Calendar</h1>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ url_for('all_payments') }}">
-                <div class="box">
-                    <i class="fa-solid fa-money-bill"></i>
-                    <div class="box_mini">
-                        <h1>Payments</h1>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ url_for('workers') }}">
-                <div class="box">
-                    <i class="fa-solid fa-users"></i>
-                    <div class="box_mini">
-                        <h1>Kadrlar</h1>
-                    </div>
-                </div>
-            </a>
-
-            {% if user and user.role == "director" %}
-                <a href="{{ url_for('comments') }}">
+            {% if user and user.role == "admin" %}
+                <a href="{{ url_for('register') }}">
                     <div class="box">
-                        <i class="fa-solid fa-comment"></i>
+                        <i class="fa-solid fa-registered"></i>
                         <div class="box_mini">
-                            <h1>Izohlar</h1>
+                            <h1>Register</h1>
+
                         </div>
                     </div>
                 </a>
+                <a href="{{ url_for('subject_list') }}">
+                    <div class="box">
+                        <i class="fa-brands fa-readme"></i>
+                        <div class="box_mini">
+                            <h1>Subject</h1>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('student') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-users"></i>
+                        <div class="box_mini">
+                            <h1>New Student</h1>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('old_student') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-users"></i>
+                        <div class="box_mini">
+                            <h1>Users</h1>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('worker') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-users"></i>
+                        <div class="box_mini">
+                            <h1>Employee</h1>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('classes') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-users"></i>
+                        <div class="box_mini">
+                            <h1>Classes</h1>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('flow') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-bars-staggered"></i>
+                        <div class="box_mini">
+                            <h1>Flows</h1>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('rooms') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-users"></i>
+                        <div class="box_mini">
+                            <h1>Rooms</h1>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('lesson_table') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <div class="box_mini">
+                            <h1>TimeTables</h1>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('calendar_year') }}">
+                    <div class="box">
+                        <i class="fa-regular fa-clock"></i>
+                        <div class="box_mini">
+                            <h1>Calendar</h1>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('all_payments') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-money-bill"></i>
+                        <div class="box_mini">
+                            <h1>Payments</h1>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('workers') }}">
+                    <div class="box">
+                        <i class="fa-solid fa-users"></i>
+                        <div class="box_mini">
+                            <h1>Kadrlar</h1>
+                        </div>
+                    </div>
+                </a>
+                {% if user and user.role == "director" %}
+                    <a href="{{ url_for('comments') }}">
+                        <div class="box">
+                            <i class="fa-solid fa-comment"></i>
+                            <div class="box_mini">
+                                <h1>Izohlar</h1>
+                            </div>
+                        </div>
+                    </a>
+                {% endif %}
             {% endif %}
+
             <a href="{{ url_for('get_about_profile', type_id=about_us.id,info_id=about_id) }}">
                 <div class="box">
                     <i class="fa-solid fa-circle-info"></i>
                     <div class="box_mini">
                         <h1>Info</h1>
+                    </div>
+                </div>
+            </a>
+            <a href="{{ url_for('teach_asses') }}">
+                <div class="box">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <div class="box_mini">
+                        <h1>About Us</h1>
                     </div>
                 </div>
             </a>

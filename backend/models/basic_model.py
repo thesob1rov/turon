@@ -57,27 +57,12 @@ class Teacher(db.Model):
     teacher_salaries = relationship("TeacherSalary", backref="teacher", order_by="TeacherSalary.id")
     lesson_plan = db.relationship('Lesson_plan_day', backref='teacher', order_by='Lesson_plan_day.id')
     deleted_teacher = relationship("DeletedTeacher", backref="teacher", order_by="DeletedTeacher.id")
-    # teacher_classes_history = relationship("TeacherClassesHistory", backref="teacher",
-    #                                        order_by="TeacherClassesHistory.id")
+    deleted_classes = relationship("DeletedClasses", backref="teacher",
+                                   order_by="DeletedClasses.id")
 
     def add(self):
         db.session.add(self)
         db.session.commit()
-
-
-# class TeacherClassesHistory(db.Model):
-#     __tablename__ = "teacher_classes_history"
-#     id = Column(Integer, primary_key=True)
-#     teacher_id = Column(Integer, ForeignKey("teacher.id"))
-#     class_id = Column(Integer, ForeignKey("class.id"))
-#
-# db.Table('teacher_class',
-#          db.Column('class_id', db.Integer, db.ForeignKey('class.id')),
-#          db.Column('teacher_id', db.Integer, db.ForeignKey('teacher.id'))
-#          )
-
-
-
 
 
 class DeletedTeacher(db.Model):
@@ -286,7 +271,8 @@ class Class(db.Model):
                                    order_by="DeletedClasses.id")
     subjects = relationship("Subject", backref="class", secondary="class_subjects",
                             order_by="Subject.id")
-    daily_table = relationship("DailyTable", backref="class", order_by="DailyTable.id")
+    daily_table = relationship("DailyTable", backref="class_get", order_by="DailyTable.id")
+
     # teacher_classes_history = relationship("TeacherClassesHistory", backref="class",
     #                                        order_by="TeacherClassesHistory.id")
 
@@ -445,6 +431,7 @@ class DeletedClasses(db.Model):
     id = Column(Integer, primary_key=True)
     __tablename__ = "deleted_classes"
     class_id = Column(Integer, ForeignKey("class.id"))
+    teacher_id = Column(Integer, ForeignKey("teacher.id"))
 
 
 class Room(db.Model):
@@ -704,3 +691,74 @@ class Lesson_plan_day(db.Model):
     def add(self):
         db.session.add(self)
         db.session.commit()
+
+
+class Premises(db.Model):
+    __tablename__ = "premises"
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    content = Column(String)
+    img = Column(String)
+
+
+class Staffing(db.Model):
+    __tablename__ = "staffing"
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    content = Column(String)
+    img = Column(String)
+
+
+class TeachAsses(db.Model):
+    __tablename__ = "teach_asses"
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    content = Column(String)
+    img = Column(String)
+
+
+class CommunityAndHomePartnership(db.Model):
+    __tablename__ = "CommunityAndHomePartnership"
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    content = Column(String)
+    img = Column(String)
+
+
+class GovernanceOwnershipLeadership(db.Model):
+    __tablename__ = "governance_ownership_leadership"
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    content = Column(String)
+    img = Column(String)
+
+
+class Curriculum(db.Model):
+    __tablename__ = "curriculum"
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    content = Column(String)
+    img = Column(String)
+
+
+class StudentsLearningAndWellBeing(db.Model):
+    __tablename__ = "students_learning_and_well_being"
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    content = Column(String)
+    img = Column(String)
+
+
+class PurposeDirection(db.Model):
+    __tablename__ = "purpose_direction"
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    content = Column(String)
+    img = Column(String)
+
+
+class Clients(db.Model):
+    __tablename__ = "clients"
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    number = Column(String)

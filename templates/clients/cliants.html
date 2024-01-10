@@ -1,0 +1,45 @@
+{% extends 'admin/index.html' %}
+{% block css %}
+    <link rel="icon" href="/static/img/logo.jpg">
+    <link rel="stylesheet" href="../../static/css/student/main.min.css">
+    <link rel="stylesheet" href="../../static/css/student/index.min.css">
+{% endblock %}
+
+
+{% block section %}
+    <div class="index">
+        <div class="names">
+            <h1 style="text-align: center; color: #001B61; font-size: 30px">Clients</h1>
+            <div class="names_list">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Phone number</th>
+                    </tr>
+                    </thead>
+                    <tbody class="tbody">
+
+                    {% for client in clients %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ client.name }}</td>
+                            <td>{{ client.number }}</td>
+                            <td><a href="{{ url_for("delete_clients", client_id=client.id) }}"><i class="fa-solid fa-trash" style="color: red"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+    </div>
+{% endblock %}
+
+
+{% block js %}
+
+{% endblock %}

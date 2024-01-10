@@ -2,17 +2,95 @@
     <nav>
         <a href="{{ url_for('home') }}">
             <div class="introduction_logo">
-                <img src="/static/img/Rectangle%20637.png" alt="">
-                <h2>Turon <br>International School</h2>
+                <img src="/static/img/logo.png" alt="">
+
             </div>
         </a>
-        <ol>
-            <li><a href="{{ url_for('about_front',type_id=1,info_id=about_id) }}">About us</a></li>
-            <li><a href="{{ url_for('education') }}">Education</a></li>
-            <li><a href="{{ url_for('news_front') }}">News</a></li>
-            <li><a href="{{ url_for('work_info') }}">Work with us</a></li>
-            <li><a href="{{ url_for('time_table') }}">Time Table</a></li>
-        </ol>
+        <div class="menuCont">
+            <ol>
+                <li class="aboutLi">
+                    <div class="about_us">
+                        <p>About us</p>
+                        {#                        <a  href="{{ url_for('about_front',type_id=1,info_id=about_id) }}"></a>#}
+                        <div class="about_us_menu">
+                            <a href="{{ url_for("teach_asses") }}">
+                                <div class="class_items">
+                                    <p>Teaching and Assessment</p>
+                                </div>
+                            </a>
+                            <a href="{{ url_for("student_learning_and_well_being") }}">
+                                <div class="class_items">
+                                    <p>Students’ learning and Well-being</p>
+                                </div>
+                            </a>
+                            <a href="{{ url_for("community_and_partnership") }}">
+                                <div class="class_items">
+                                    <p>Community and Home Partnership</p>
+                                </div>
+                            </a>
+                            <a href="{{ url_for("premises") }}">
+                                <div class="class_items">
+                                    <p>Premises</p>
+                                </div>
+                            </a>
+                            <a href="{{ url_for("staffing") }}">
+                                <div class="class_items">
+                                    <p>Staffing</p>
+                                </div>
+                            </a>
+                            <a href="{{ url_for("governance_ownership_leadership") }}">
+                                <div class="class_items">
+                                    <p>Governance, Ownership and Leadership</p>
+                                </div>
+                            </a>
+                            <a href="{{ url_for("purpose_direction") }}">
+                                <div class="class_items">
+                                    <p>Purpose Direction</p>
+                                </div>
+                            </a>
+                            <a href="{{ url_for("curriculum") }}">
+                                <div class="class_items">
+                                    <p>Curriculum</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="{{ url_for('education') }}">Education</a></li>
+                <li><a href="{{ url_for('news_front') }}">News</a></li>
+                <li><a href="{{ url_for('work_info') }}">Work with us</a></li>
+                <li><a href="{{ url_for('campus_life') }}">Campus Life</a></li>
+                <li><a href="{{ url_for('time_table') }}">Academic Calendar</a></li>
+                <li>
+                    <a href="{{ url_for('login') }}">
+                        <div class="register_button">
+                            Login
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for("mock") }}">
+                        <div style="background-color: #EFC18D" class="register_button">
+                            Apply
+                        </div>
+                    </a>
+
+                </li>
+            </ol>
+
+        </div>
+
+        {#        <ol>#}
+        {#            <li><a href="">Campus Life</a></li>#}
+        {#            <li><a href="">Admission</a></li>#}
+        {#            <li><a href="{{ url_for('time_table') }}">Time Table</a></li>#}
+        {#            <li>#}
+        {#                <div class="register_button">#}
+        {#                    Register#}
+        {#                </div>#}
+        {#            </li>#}
+        {#        </ol>#}
+
         <i class="fa-solid fa-bars menu_icon"></i>
     </nav>
 </header>
@@ -44,7 +122,7 @@
             <li><a href="{{ url_for('education') }}">Education</a></li>
             <li><a href="{{ url_for('news_front') }}">News</a></li>
             <li><a href="{{ url_for('work_info') }}">Work with us</a></li>
-            <li><a href="{{ url_for('time_table') }}">Time Table</a></li>
+            <li><a href="{{ url_for('time_table') }}">Academic Calendar</a></li>
         </ol>
     </div>
 </div>

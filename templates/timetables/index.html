@@ -15,7 +15,7 @@
         </div>
         <div class="fanlar">
             {% for class in classes %}
-                <div class="fan"
+                <div data-active="false" data-id="{{ class.id }}" class="fan"
                         {% if class.color == "green" %}
                      style="background-color: green"
                         {% else %}
@@ -61,196 +61,303 @@
 
 
             <div class="main_container">
-                {% for classs in classes %}
-                    <div class="container_direction">
-                        <div class="time_two">
 
-                            <div class="time_table">
-                                <table>
+                <div class="container_direction">
+                    <div class="time_two">
 
-                                    <caption class="caption"
-                                            {% if classs.color == "green" %}
-                                             style="background-color: green"
-                                            {% else %}
-                                             style="background-color: blue"
-                                            {% endif %}>{{ classs.class_number }} {{ classs.color }}</caption>
-                                    <thead>
-                                    <tr>
-                                        <th rowspan="2">Hafta kunlari</th>
-                                        {% for time in times %}
-                                            <th>{{ time.start }} {{ time.end }}</th>
-                                        {% endfor %}
-                                    </tr>
-                                    <tr>
-                                        {% for time in times %}
-                                            <th>
-                                                {% if classs.class_number <= 4 %}
-                                                    {% if classs.class_number <= 4 and time.start == "12:15" %}
-                                                        lunch
-                                                    {% else %}
-                                                        {{ time.lesson_count }}
-                                                    {% endif %}
+                        <div class="time_table">
+                            <table class="table">
+
+                                <caption class="caption"
+                                        {% if time_table[0]["class"]["color"] == "green" %}
+                                         style="background-color: green"
+                                        {% else %}
+                                         style="background-color: blue"
+                                        {% endif %}>{{ time_table[0]["class"]["class_number"] }} {{ time_table[0]["class"]["color"] }}
+                                </caption>
+                                <thead>
+                                <tr>
+                                    <th rowspan="2">Hafta kunlari</th>
+                                    {% for time in times %}
+                                        <th>{{ time.start }} {{ time.end }}</th>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    {% for time in times %}
+                                        <th>
+                                            {% if time_table[0]["class"]["class_number"] <= 4 %}
+                                                {% if time_table[0]["class"]["class_number"] <= 4 and time.start == "12:15" %}
+                                                    lunch
                                                 {% else %}
-                                                    {% if classs.class_number >= 5 and time.start == "13:10" %}
-                                                        lunch
-                                                    {% else %}
-                                                        {{ time.lesson_count }}
-                                                    {% endif %}
+                                                    {{ time.lesson_count }}
                                                 {% endif %}
+                                            {% else %}
+                                                {% if time_table[0]["class"]["class_number"] >= 5 and time.start == "13:10" %}
+                                                    lunch
+                                                {% else %}
+                                                    {{ time.lesson_count }}
+                                                {% endif %}
+                                            {% endif %}
 
-                                            </th>
-                                        {% endfor %}
-                                    </tr>
-                                    </thead>
+                                        </th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
 
-                                    {% for classes_new_day in classes_new_days_list %}
-                                        <tbody>
-                                        {% if classs.id == classes_new_day["class_id"] %}
-                                            {% for new_day in classes_new_day["new_days"] %}
-                                                <tr>
-                                                <td data-id="{{ new_day["day_id"] }}">{{ new_day["name"] }}</td>
-                                                {% for lesson in new_day["lessons"] %}
-                                                    {% if classs.class_number <= 4 and lesson["start"] == "12:15" %}
-                                                        <td data-timeId="{{ lesson["time_id"] }}"
-                                                            data-dayId="{{ new_day["day_id"] }}"
-                                                            data-classId="{{ classs.id }} " class=""
+                                <tbody>
+                                {% for info in time_table %}
+                                    <tr>
+                                        <td data-id="{{ info["day"]["day_id"] }}">{{ info["day"]["name"] }}</td>
+                                        {% for lesson in info["lessons"] %}
+                                            {% if info["class"]["class_number"] <=4 and lesson["lesson_time"]["start"] == "12:15" %}
+                                                <td data-timeId="{{ lesson["lesson_time"]["id"] }}"
+                                                    data-dayId="{{ info["day"]["id"] }}"
+                                                    data-classId="{{ info["class"]["id"] }} " class=""
+                                                    style="background-color: rgba(0,0,0,0.09)">
+                                                </td>
+                                            {% else %}
+                                                {% if info["class"]["class_number"] >= 5 and lesson["lesson_time"]["start"] == "13:10" %}
+                                                    <td data-timeId="{{ lesson["lesson_time"]["id"] }}"
+                                                        data-dayId="{{ info["day"]["id"] }}"
+                                                        data-classId="{{ info["class"]["id"] }} " class=""
+                                                        style="background-color: rgba(0,0,0,0.09)">
+                                                    </td>
+                                                {% else %}
+                                                    {% if lesson["lesson_time"]["count"] == "breakfast" %}
+                                                        <td data-timeId="{{ lesson["lesson_time"]["id"] }}"
+                                                            data-dayId="{{ info["day"]["id"] }}"
+                                                            data-classId="{{ info["class"]["id"] }} " class=""
                                                             style="background-color: rgba(0,0,0,0.09)">
                                                         </td>
                                                     {% else %}
-                                                        {% if classs.class_number >= 5 and lesson["start"] == "13:10" %}
-                                                            <td data-timeId="{{ lesson["time_id"] }}"
-                                                                data-dayId="{{ new_day["day_id"] }}"
-                                                                data-classId="{{ classs.id }} " class=""
-                                                                style="background-color: rgba(0,0,0,0.09)">
-                                                            </td>
-                                                        {% else %}
-                                                            {% if lesson["time_count"] == "breakfast" %}
-                                                                <td data-timeId="{{ lesson["time_id"] }}"
-                                                                    data-dayId="{{ new_day["day_id"] }}"
-                                                                    data-classId="{{ classs.id }} " class=""
-                                                                    style="background-color: rgba(0,0,0,0.09)">
-                                                                </td>
-                                                            {% else %}
+                                                        <td data-lessonId="{{ lesson["lesson_id"] }}"
+                                                            data-timeId="{{ lesson["lesson_time"]["id"] }}"
+                                                            data-dayId="{{ info["day"]["id"] }}"
+                                                            data-classId="{{ info["class"]["id"] }} " class="zone-1"
+                                                                {% if lesson["subject"] and  lesson["teacher"] and lesson["room"] %}
+                                                            data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                            data-teacherId="{{ lesson["teacher"]["id"] }}"
+                                                            data-roomId="{{ lesson["room"]["id"] }}"
+                                                                {% endif %}
+                                                                {% if not lesson["room"] and lesson["teacher"] and lesson["subject"] %}
+                                                            data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                            data-teacherId="{{ lesson["teacher"]["id"] }}"
+                                                                {% endif %}
+                                                                {% if not lesson["teacher"] and lesson["room"] and lesson["subject"] %}
+                                                            data-roomId="{{ lesson["room"]["id"] }}"
+                                                            data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                                {% endif %}
+                                                                {% if not lesson["subject"] and lesson["room"] and lesson["teacher"] %}
+                                                            data-teacherId="{{ lesson["teacher"]["id"] }}"
+                                                            data-roomId="{{ lesson["room_id"]["id"] }}"
+                                                                {% endif %}
+                                                                {% if not lesson["teacher"] and not lesson["room"] and lesson["subject"] %}
+                                                            data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                                {% endif %}
+                                                                {% if not lesson["subject_id"] and not lesson["room_id"] and lesson["teacher_id"] %}
+                                                            data-teacherId="{{ lesson["teacher"]["id"] }}"
+                                                                {% endif %}
+                                                                {% if not lesson["teacher"] and not lesson["subject"] and lesson["room"] %}
+                                                            data-roomId="{{ lesson["room"]["id"] }}"
+                                                                {% endif %}
+                                                        >
+                                                            {% if not lesson["room"] and lesson["teacher"] and lesson["subject"] %}
+                                                                {% if lesson["flow"] %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}"
+                                                                         style="background-color: grey">{{ lesson["flow"]["name"] }}
+                                                                    </div>
+                                                                    <div class="time_subject subjects"
+                                                                         data-subjectId="{{ lesson["subject"]["id"] }}"
 
-                                                                <td data-lessonId="{{ lesson["lesson_id"] }}"
-                                                                    data-timeId="{{ lesson["time_id"] }}"
-                                                                    data-dayId="{{ new_day["day_id"] }}"
-                                                                    data-classId="{{ classs.id }} " class="zone-1"
-                                                                        {% if lesson["subject_id"] and  lesson["teacher_id"] and lesson["room_id"] %}
-                                                                    data-subjectId="{{ lesson["subject_id"] }}"
-                                                                    data-teacherId="{{ lesson["teacher_id"] }}"
-                                                                    data-roomId="{{ lesson["room_id"] }}"
-                                                                        {% endif %}
-                                                                        {% if not lesson["room_id"] and lesson["teacher_id"] and lesson["subject_id"] %}
-                                                                    data-subjectId="{{ lesson["subject_id"] }}"
-                                                                    data-teacherId="{{ lesson["teacher_id"] }}"
-                                                                        {% endif %}
-                                                                        {% if not lesson["teacher_id"] and lesson["room_id"] and lesson["subject_id"] %}
-                                                                    data-roomId="{{ lesson["room_id"] }}"
-                                                                    data-subjectId="{{ lesson["subject_id"] }}"
-                                                                        {% endif %}
-                                                                        {% if not lesson["subject_id"] and lesson["room_id"] and lesson["teacher_id"] %}
-                                                                    data-teacherId="{{ lesson["teacher_id"] }}"
-                                                                    data-roomId="{{ lesson["room_id"] }}"
-                                                                        {% endif %}
-                                                                        {% if not lesson["teacher_id"] and not lesson["room_id"] and lesson["subject_id"] %}
-                                                                    data-subjectId="{{ lesson["subject_id"] }}"
-                                                                        {% endif %}
-                                                                        {% if not lesson["subject_id"] and not lesson["room_id"] and lesson["teacher_id"] %}
-                                                                    data-teacherId="{{ lesson["teacher_id"] }}"
-                                                                        {% endif %}
-                                                                        {% if not lesson["teacher_id"] and not lesson["subject_id"] and lesson["room_id"] %}
-                                                                    data-roomId="{{ lesson["room_id"] }}"
-                                                                        {% endif %}
-                                                                >
-                                                                    {% if not lesson["room_id"] and lesson["teacher_id"] and lesson["subject_id"] %}
-                                                                        <div class="time_subject subjects"
-                                                                             data-subjectId="{{ lesson["subject_id"] }}"
-                                                                             draggable="true" data-isDropped="true"
-                                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["subject_name"] }}
-                                                                        </div>
-                                                                        <div class="time_subject subjects"
-                                                                             data-teacherId="{{ lesson["teacher_id"] }}"
-                                                                             draggable="true" data-isDropped="true"
-                                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["teacher_name"] }}
-                                                                        </div>
-                                                                    {% endif %}
-                                                                    {% if not lesson["teacher_id"] and lesson["room_id"] and lesson["subject_id"] %}
-                                                                        <div class="time_subject subjects"
-                                                                             data-roomId="{{ lesson["room_id"] }}"
-                                                                             draggable="true" data-isDropped="true"
-                                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room_name"] }}
-                                                                        </div>
-                                                                        <div class="time_subject subjects"
-                                                                             data-subjectId="{{ lesson["subject_id"] }}"
-                                                                             draggable="true" data-isDropped="true"
-                                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["subject_name"] }}
-                                                                        </div>
-                                                                    {% endif %}
-                                                                    {% if not lesson["subject_id"] and lesson["room_id"] and lesson["teacher_id"] %}
-                                                                        <div class="time_subject subjects"
-                                                                             data-teacherId="{{ lesson["teacher_id"] }}"
-                                                                             draggable="true" data-isDropped="true"
-                                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["teacher_name"] }}
-                                                                        </div>
-                                                                        <div class="time_subject subjects"
-                                                                             data-roomId="{{ lesson["room_id"] }}"
-                                                                             draggable="true" data-isDropped="true"
-                                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room_name"] }}
-                                                                        </div>
-                                                                    {% endif %}
-                                                                    {% if not lesson["teacher_id"] and not lesson["room_id"] and lesson["subject_id"] %}
-                                                                        <div class="time_subject subjects"
-                                                                             data-subjectId="{{ lesson["subject_id"] }}"
-                                                                             draggable="true" data-isDropped="true"
-                                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["subject_name"] }}
-                                                                        </div>
-                                                                    {% endif %}
-                                                                    {% if not lesson["subject_id"] and not lesson["room_id"] and lesson["teacher_id"] %}
-                                                                        <div class="time_subject subjects"
-                                                                             data-teacherId="{{ lesson["teacher_id"] }}"
-                                                                             draggable="true" data-isDropped="true"
-                                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["teacher_name"] }}
-                                                                        </div>
-                                                                    {% endif %}
-                                                                    {% if not lesson["teacher_id"] and not lesson["subject_id"] and lesson["room_id"] %}
-                                                                        <div class="time_subject subjects"
-                                                                             data-roomId="{{ lesson["room_id"] }}"
-                                                                             draggable="true" data-isDropped="true"
-                                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room_name"] }}
-                                                                        </div>
-                                                                    {% endif %}
-                                                                    {% if lesson["subject_id"] and  lesson["teacher_id"] and lesson["room_id"] %}
-                                                                        <div class="time_subject subjects"
-                                                                             data-roomId="{{ lesson["room_id"] }}"
-                                                                             draggable="true" data-isDropped="true"
-                                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room_name"] }}
-                                                                        </div>
-                                                                        <div class="time_subject subjects"
-                                                                             data-subjectId="{{ lesson["subject_id"] }}"
-                                                                             draggable="true" data-isDropped="true"
-                                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["subject_name"] }}
-                                                                        </div>
-                                                                        <div class="time_subject subjects"
-                                                                             data-teacherId="{{ lesson["teacher_id"] }}"
-                                                                             draggable="true" data-isDropped="true"
-                                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["teacher_name"] }}
-                                                                        </div>
-                                                                    {% endif %}
-                                                                </td>
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}"
+                                                                         style="background-color: grey">{{ lesson["room"]["name"] }}
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                                         draggable="true" data-isDropped="true"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["subject"]["name"] }}
+                                                                    </div>
+                                                                    <div class="time_subject subjects"
+                                                                         data-teacherId="{{ lesson["teacher"]["id"] }}"
+                                                                         draggable="true" data-isDropped="true"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["teacher"]["name"] }}
+                                                                    </div>
+                                                                {% endif %}
                                                             {% endif %}
-                                                        {% endif %}
+                                                            {% if not lesson["teacher"] and lesson["room"] and lesson["subject"] %}
+
+                                                                {% if lesson["flow"] %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-roomId="{{ lesson["room"]["id"] }}"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}"
+                                                                         style="background-color: grey">{{ lesson["flow"]["name"] }}
+                                                                    </div>
+                                                                    <div class="time_subject subjects"
+                                                                         data-subjectId="{{ lesson["subject"]["id"] }}"
+
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}"
+                                                                         style="background-color: grey">{{ lesson["room"]["name"] }}
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-roomId="{{ lesson["room"]["id"] }}"
+                                                                         draggable="true"
+                                                                         data-isDropped="true"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room"]["name"] }}
+                                                                    </div>
+                                                                    <div class="time_subject subjects"
+                                                                         data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                                         draggable="true"
+                                                                         data-isDropped="true"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["subject"]["name"] }}
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            {% if not lesson["subject"] and lesson["room"] and lesson["teacher"] %}
+                                                                {% if lesson["flow"] %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-teacherId="{{ lesson["teacher"]["id"] }}"
+
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}"
+                                                                         style="background-color: grey">{{ lesson["flow"]["id"] }}
+                                                                    </div>
+                                                                    <div class="time_subject subjects"
+                                                                         data-roomId="{{ lesson["room"]["id"] }}"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}"
+                                                                         style="background-color: grey">{{ lesson["room"]["name"] }}
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-teacherId="{{ lesson["teacher"]["id"] }}"
+                                                                         draggable="true"
+                                                                         data-isDropped="true"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">
+                                                                        {{ lesson["teacher"]["name"] }}{{ lesson["teacher"]["surname"] }}
+                                                                    </div>
+                                                                    <div class="time_subject subjects"
+                                                                         data-roomId="{{ lesson["room"]["id"] }}"
+                                                                         draggable="true"
+                                                                         data-isDropped="true"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room"]["name"] }}
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            {% if not lesson["teacher"] and not lesson["room"] and lesson["subject"] %}
+
+                                                                {% if lesson["flow"]["name"] %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                                         style="background-color: grey"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["flow"]["name"] }}
+                                                                    </div>
+                                                                    <div class="time_subject subjects"
+                                                                         data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                                         style="background-color: grey"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room"]["name"] }}
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                                         draggable="true"
+                                                                         data-isDropped="true"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["subject"]["name"] }}
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            {% if not lesson["subject"] and not lesson["room"] and lesson["teacher"] %}
+
+                                                                {% if lesson["flow"] %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-teacherId="{{ lesson["teacher"]["id"] }}"
+                                                                         style="background-color: grey"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["flow"]["name"] }}
+                                                                    </div>
+                                                                    <div class="time_subject subjects"
+                                                                         data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                                         style="background-color: grey"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room"]["name"] }}
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-teacherId="{{ lesson["teacher"]["id"] }}"
+                                                                         draggable="true"
+                                                                         data-isDropped="true"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["teacher"]["name"] }} {{ lesson["teacher"]["surname"] }}
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            {% if not lesson["teacher"] and not lesson["subject"] and lesson["room"] %}
+
+                                                                {% if lesson["flow"] %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-roomId="{{ lesson["room"]["id"] }}"
+                                                                         style="background-color: grey"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["flow"]["name"] }}
+                                                                    </div>
+                                                                    <div class="time_subject subjects"
+                                                                         data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                                         style="background-color: grey"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room"]["name"] }}
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-roomId="{{ lesson["room"]["id"] }}"
+                                                                         draggable="true"
+                                                                         data-isDropped="true"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room"]["name"] }}
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            {% if lesson["subject"] and  lesson["teacher"] and lesson["room"] %}
+
+                                                                {% if lesson["flow"] %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-roomId="{{ lesson["room"]["id"] }}"
+                                                                         style="background-color: grey"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["flow"]["name"] }}
+                                                                    </div>
+                                                                    <div class="time_subject subjects"
+                                                                         data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                                         style="background-color: grey"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room"]["name"] }}
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div class="time_subject subjects"
+                                                                         data-roomId="{{ lesson["room"]["id"] }}"
+                                                                         draggable="true"
+                                                                         data-isDropped="true"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room"]["name"] }}
+                                                                    </div>
+                                                                    <div class="time_subject subjects"
+                                                                         data-subjectId="{{ lesson["subject"]["id"] }}"
+                                                                         draggable="true"
+                                                                         data-isDropped="true"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["subject"]["name"] }}
+                                                                    </div>
+                                                                    <div class="time_subject subjects"
+                                                                         data-teacherId="{{ lesson["teacher"]["id"] }}"
+                                                                         draggable="true"
+                                                                         data-isDropped="true"
+                                                                         data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["teacher"]["name"] }}
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        </td>
                                                     {% endif %}
-                                                {% endfor %}
-                                            {% endfor %}
-                                        {% endif %}
-                                        </tbody>
-                                    {% endfor %}
-                                </table>
-                            </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                {% endfor %}
+                </div>
+
             </div>
         </div>
     </section>

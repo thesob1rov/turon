@@ -1,13 +1,5 @@
 let xmark = document.querySelector('.x'),
     plus=document.querySelector('.plus');
-   ;
-
-
-
-
-
-
-
 
 
 
@@ -34,7 +26,11 @@ function updateGallery(response) {
 
         })
     })
-    addClass(boxes)
+    console.log(boxes)
+    if (!boxes){
+         addClass(boxes)
+    }
+
 }
 
 fetch('/get_gallery', {

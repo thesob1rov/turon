@@ -273,9 +273,37 @@ def student():
     about_id = 0
     if about:
         about_id = about.id
+    clients_count = Clients.query.count()
     return render_template('student/index.html', about_us=about_us, about_id=about_id, pages=pages,
                            teachers=teachers, user=user, groups=groups, student_count=student_count, news=news,
-                           jobs=jobs, languages=languages)
+                           jobs=jobs, languages=languages, clients_count=clients_count)
+
+
+@app.route('/clients', methods=["POST", "GET"])
+def clients():
+    user = current_user()
+    error = check_session()
+    if error:
+        return redirect(url_for('home'))
+    groups = Class.query.filter(Class.deleted_classes == None).all()
+    about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
+    news = TypeInfo.query.filter(TypeInfo.id == 2).first()
+    jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
+    about = Info.query.filter(Info.type_id == about_us.id).order_by(Info.id).first()
+    about_id = 0
+    if about:
+        about_id = about.id
+    clients = Clients.query.all()
+    return render_template("clients/cliants.html", about_us=about_us, about_id=about_id,
+                           user=user, groups=groups, news=news,
+                           jobs=jobs, clients=clients)
+
+
+@app.route('/delete_clients/<int:client_id>', methods=["POST", "GET"])
+def delete_clients(client_id):
+    Clients.query.filter(Clients.id == client_id).delete()
+    db.session.commit()
+    return redirect(url_for("clients"))
 
 
 @app.route('/filter_student', methods=["POST"])

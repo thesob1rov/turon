@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Kanit", sans-serif;
+  font-family: "Blinker", sans-serif;
 }
 
 html {
@@ -188,6 +188,29 @@ html {
 }
 .deleted_teacher_container i {
   font-size: 20px;
+}
+
+.client_box {
+  padding: 5px 10px;
+  border-radius: 3px;
+  background-color: #001B61;
+  color: #FFFFFF;
+  font-family: "Blinker", sans-serif;
+  font-size: 15px;
+  position: relative;
+}
+
+.count {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  background-color: dodgerblue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -10px;
+  left: -10px;
 }
 
 /*# sourceMappingURL=index.css.map */

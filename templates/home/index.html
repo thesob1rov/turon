@@ -12,30 +12,62 @@
     <link rel="icon" href="/static/img/home/img/logo.jpg">
     <link rel="stylesheet" href="/static/css/home/main.min.css">
     <link rel="stylesheet" href="/static/css/home/include/menu.min.css">
+    <style>
+
+
+        .active_color {
+            background-image: linear-gradient(270deg, #EBCAA4 -14.21%, #05347E 100%);
+        }
+    </style>
 </head>
 <body>
 
 
+<section style="height: 600px;" class="introduction">
 
-<section class="introduction">
+    {#    <video src="/static/video/home/video.mp4" muted autoplay loop></video>#}
+    <img style="height: 600px; object-fit: cover" class="school_background"
+         src="/static/img/home/img/school_background.JPG" alt="">
 
-    <video src="/static/video/home/video.mp4" muted autoplay loop></video>
     {% include 'home/menu.html' %}
 
     <div class="introduction_backround">
-        <div class="introduction_about">
-            <h1>Turon <br>International School</h1>
-            <p>Prezident maktabi ixtisoslashtirilgan davlat umumta’lim muassasasi hisoblanib, uning faoliyati yuqori
-                malakali
-                mutaxassislarni tayyorlash uchun iqtidorli bolalarni aniqlash va o‘qitishni ta’minlashga qaratilgan.</p>
-            <a class="btn_light" href="{{ url_for('login') }}">Login</a>
-        </div>
+        {#        <div class="introduction_about">#}
+        {#            <h1>Turon <br>International School</h1>#}
+        {#            <p>Turon Xalqaro maktabi maqsadi - sog'lom fikrlay oladigan, ma'suliyatli har jabhada ham ilmiy ham ijodiy#}
+        {#                salohiyatga ega bo'lgan yaratuvchan va dunyo farovonligi, jamiyat rivoji uchun faol va ijobiy hissa#}
+        {#                qo'sha oladigan leader yoshlarni tarbiyalash</p>#}
+        {#            <a class="btn_light" href="{{ url_for('login') }}">Login</a>#}
+        {#        </div>#}
     </div>
 
 
 </section>
 
+<section class="about">
+    <div class="about_big" style="display: flex; flex-direction: column">
+        <h1 style="font-size: 40px; color: #001B61;width: 1200px">Lorem Ipsum is simply dummy text of the printing and
+            typesetting
+            industry. <br> Lorem Ipsum has been the industry's standard dummy text ever since .
 
+        </h1>
+        <p style="width: 1200px; font-size: 32px">t is a long established fact that a reader will be distracted by the
+            readable content
+            of a page when looking
+            at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
+            as opposed to using 'Content here, content here', making it look like readable English. Many desktop
+            publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for
+            'lorem ipsum' will uncover many web sites still in their infancy. 
+
+        </p>
+        <div style="display: flex; height: 30px;align-items: center" class="learn_more">
+            <a style="font-size: 30px; text-decoration: none; color: #001B61" href="">Learn more</a>
+            <i style="font-size: 30px; color: #001B61;margin-left: 10px" class="fa-solid fa-arrow-right"></i>
+        </div>
+
+
+    </div>
+</section>
 <section class="about">
     <div class="about_big">
         <div class="about_big_img">
@@ -43,14 +75,13 @@
         </div>
         <div class="about_big_text">
             <div class="name">
-                <h2>TURON</h2>
-                <h2>XALQARO MAKTABI</h2>
+                <h2>TURON XALQARO MAKTABI</h2>
+                <h2></h2>
             </div>
-
             <div class="info">
-                <p>Maqsadimiz«Millatning xalqaro olimpiadalarda, tanlovlarda g‘olib bo‘ladigan va dunyoning eng yaxshi
-                    oliy o‘quv yurtlariga kira oladigan kelajakdagi yetakchilarini, o‘quvchilarini tayyorlash. Biz jahon
-                    maydonida raqobatbardosh bo‘la oladigan yetakchilarni tarbiyalaymiz».</p>
+                <p>Turon Xalqaro maktabi maqsadi - sog'lom fikrlay oladigan, ma'suliyatli har jabhada ham ilmiy ham
+                    ijodiy salohiyatga ega bo'lgan yaratuvchan va dunyo farovonligi, jamiyat rivoji uchun faol va ijobiy
+                    hissa qo'sha oladigan leader yoshlarni tarbiyalash</p>
             </div>
             <a class="btn">Batafsil</a>
         </div>
@@ -81,22 +112,78 @@
             referrerpolicy="no-referrer-when-downgrade"></iframe>
 </section>
 <footer>
+
+    <div class="footerLinks">
+        <div class="box">
+            <h1>About us</h1>
+            <a href="{{ url_for("teach_asses") }}"><p>Teaching and Assesment</p></a>
+            <a href="{{ url_for("student_learning_and_well_being") }}"><p>Student learning and Well-being</p></a>
+            <a href="{{ url_for("community_and_partnership") }}"><p>Community and Home Partnership</p></a>
+            <a href="{{ url_for("premises") }}"><p>Premises</p></a>
+            <a href="{{ url_for("staffing") }}"><p>Staffing</p></a>
+            <a href="{{ url_for("governance_ownership_leadership") }}"><p>Governance, Ownership and Leadership</p></a>
+        </div>
+        <div class="box">
+            <h1>Other links</h1>
+            <a href="{{ url_for('education') }}"><p>Education</p></a>
+            <a href="{{ url_for('news_front') }}"><p>News</p></a>
+            <a href="{{ url_for('work_info') }}"><p>Work with us</p></a>
+            <a href="{{ url_for('campus_life') }}"><p>Campus Life</p></a>
+            <a href="{{ url_for('time_table') }}"><p>Academic Calendar</p></a>
+            <a href="{{ url_for("mock") }}"><p>Apply</p></a>
+        </div>
+        <div class="box">
+            <h1>Contact</h1>
+            <a href=""><p>Register</p></a>
+            <p>Phone number: +9998943103333</p>
+            <a href="https://www.instagram.com/turon_international_school/"><p>Instagram</p></a>
+            <a href=""><p>Telegram</p></a>
+            <a href=""><p>Facebook</p></a>
+        </div>
+    </div>
     <div class="footer">
         <div class="footer_pslogo">
-            <img src="/static/icon/tis%20png.png" alt="">
-            <div class="footer_name">
-                <h1>TURON</h1>
-                <h1>INTERNATIONAL SCHOOL</h1>
-            </div>
-        </div>
-
-        <div class="footer_number">
-            <h1>+9998900000000</h1>
-            <h1>+9998900000000</h1>
+            <img src="/static/img/logo.png" alt="">
         </div>
     </div>
 </footer>
 <script src="/static/js/include/menu/menu.js"></script>
 <script src="/static/js/home/home.js"></script>
+<script>
+    const header = document.querySelector(".introduction_entrance");
+    const li = document.querySelectorAll("header ol li a");
+    const p = document.querySelector("header ol li p");
+
+    li.forEach(item => {
+        item.style.color = "white"
+    })
+    p.style.color = "white"
+
+    function changeWidth() {
+        let scroll = (window.pageYOffset)
+        console.log(scroll)
+        let color1 = "#EBCAA4"
+        let color2 = "#05347E"
+        if (scroll >= 600) {
+            p.style.color = "black"
+            header.classList.add("active_color")
+            li.forEach(item => {
+                item.style.color = "black"
+            })
+        } else if (scroll <= 600) {
+            li.forEach(item => {
+                item.style.color = "white"
+            })
+            p.style.color = "white"
+            header.classList.remove("active_color")
+            header.style.backgroundColor = "transparent"
+        }
+    }
+
+    window.addEventListener("scroll", function () {
+        requestAnimationFrame(changeWidth)
+    })
+
+</script>
 </body>
 </html>

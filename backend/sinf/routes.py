@@ -563,6 +563,7 @@ def delete_class():
     """
     info = request.get_json()["info"]
     group = Class.query.filter(Class.id == info['class_id']).first()
+
     if group.student:
         if info["delete_type"] == "in_class":
             for student in group.student:
@@ -571,10 +572,14 @@ def delete_class():
                 add = DeletedStudentForClasses(student_id=student.id, class_id=group.id, reason=info['reason'])
                 db.session.add(add)
                 db.session.commit()
-                del_class = DeletedClasses(class_id=group.id)
-                db.session.add(del_class)
-                db.session.commit()
-
+                if group.teacher:
+                    del_class = DeletedClasses(class_id=group.id, teacher_id=group.teacher[0].id)
+                    db.session.add(del_class)
+                    db.session.commit()
+                else:
+                    del_class = DeletedClasses(class_id=group.id)
+                    db.session.add(del_class)
+                    db.session.commit()
         else:
             for student in group.student:
                 student.classes.remove(group)
@@ -585,14 +590,23 @@ def delete_class():
                 add = DeletedStudentForClasses(student_id=student.id, class_id=group.id, reason=info['reason'])
                 db.session.add(add)
                 db.session.commit()
-                del_class = DeletedClasses(class_id=group.id)
-                db.session.add(del_class)
-                db.session.commit()
-
+                if group.teacher:
+                    del_class = DeletedClasses(class_id=group.id, teacher_id=group.teacher[0].id)
+                    db.session.add(del_class)
+                    db.session.commit()
+                else:
+                    del_class = DeletedClasses(class_id=group.id)
+                    db.session.add(del_class)
+                    db.session.commit()
     else:
-        del_class = DeletedClasses(class_id=group.id)
-        db.session.add(del_class)
-        db.session.commit()
+        if group.teacher:
+            del_class = DeletedClasses(class_id=group.id, teacher_id=group.teacher[0].id)
+            db.session.add(del_class)
+            db.session.commit()
+        else:
+            del_class = DeletedClasses(class_id=group.id)
+            db.session.add(del_class)
+            db.session.commit()
     return jsonify()
 
 
@@ -672,7 +686,9 @@ def flow():
         page = 1
     student_count = Student.query.count()
     students = Student.query.filter(Student.classes, Student.deleted_student == None).order_by(Student.id)
-    pages = students.paginate(page=page, per_page=50)
+    classes = Class.query
+    # pages = students.paginate(page=page, per_page=50)
+    pages = classes.paginate(page=page, per_page=50)
 
     # for page in pages.iter_count
     groups = Flow.query.all()
@@ -942,11 +958,13 @@ def creat_flow():
     add_flow = Flow(name=class_name, subject_id=subject_id, teacher_id=teacher_id)
     db.session.add(add_flow)
     db.session.commit()
-    students = class_info['students']
-    for student in students:
-        filter_student = Student.query.filter(Student.user_id == int(student)).first()
-        add_flow.students.append(filter_student)
-        db.session.commit()
+    classes = class_info['classes']
+    for cl in classes:
+        classs = Class.query.filter(Class.id == int(cl)).first()
+        for student in classs.student:
+            filter_student = Student.query.filter(Student.id == student.id).first()
+            add_flow.students.append(filter_student)
+            db.session.commit()
     return jsonify()
 
 
@@ -958,10 +976,13 @@ def join_flow():
     """
     join_class = request.get_json()["join_class"]
     group = Flow.query.filter(Flow.id == join_class['class_id']).first()
-    for st in join_class['students']:
-        student = Student.query.filter(Student.user_id == int(st)).first()
-        group.students.append(student)
-        db.session.commit()
+    classes = join_class['classes']
+    for cl in classes:
+        classs = Class.query.filter(Class.id == int(cl)).first()
+        for student in classs.student:
+            filter_student = Student.query.filter(Student.id == student.id).first()
+            group.students.append(filter_student)
+            db.session.commit()
     return jsonify()
 
 
@@ -1098,8 +1119,6 @@ def delete_flow():
         for student in flow.students:
             flow.students.remove(student)
             db.session.commit()
-        db.session.delete(flow)
-        db.session.commit()
-    else:
-        db.session.commit()
+    db.session.delete(flow)
+    db.session.commit()
     return jsonify()

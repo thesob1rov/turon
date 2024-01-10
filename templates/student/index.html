@@ -10,7 +10,6 @@
     <div class="index">
         <div class="names">
             <div class="names_buttons">
-
                 <button class="filter_btn">Filter</button>
                 <div class="double">
                     <div class="names_search">
@@ -21,8 +20,16 @@
                         <button class="btn">Create class</button>
                         <button class="add_btn">Add class</button>
                     </div>
-
                 </div>
+                <a href="{{ url_for("clients") }}">
+                    <div class="client_box">
+                        <div class="count">
+                            {{ clients_count }}
+                        </div>
+                        Clients
+                    </div>
+                </a>
+
                 <div class="link_for_delete_students" style="width: 100px; display: flex;justify-content: space-around">
                     <a href=""><i class="fa-solid fa-user" style="font-size: 30px; color: #001b61"></i></a>
                     <a href="{{ url_for("deleted_students") }}"><i class="fa-solid fa-user-slash"

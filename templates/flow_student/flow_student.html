@@ -10,36 +10,57 @@
         </div>
         <div class="div">
             <a href="{{ url_for("timetables") }}">
-              <button id="class">Class</button>
+                <button id="class">Class</button>
             </a>
             <button id="patok">Patok</button>
+        </div>
+        <div class="fanlar">
+            {% for type in flow_types %}
+                <div data-active="false" data-start="{{ type["start"] }}" data-end="{{ type["end"] }}"
+                     data-color="{{ type["color"] }}" class="fan"
+                        {% if type["color"] == "green" %}
+                     style="background-color: green"
+                        {% else %}
+                     style="background-color: blue"
+                        {% endif %}
+                >{{ type["classes"] }}-{{ type["color"] }}
+                </div>
+            {% endfor %}
         </div>
         <div class="time_btns">
             <button id="flow">Flow</button>
             <button id="room">Rooms</button>
         </div>
+        <div class="time_subjects active" id="flow_list">
+            <div class="time_first">
+                {% for flow in flows %}
+                    <div class="time_subject rooms" draggable="true"
+                         data-flowId="{{ flow.id }}">{{ flow.name }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="time_subjects" id="room_list">
+            <div class="time_first">
+                {% for room in rooms %}
+                    <div class="time_subject flows" draggable="true"
+                         data-roomId="{{ room.id }}">{{ room.name }}</div>
+                {% endfor %}
+            </div>
+        </div>
         <div class="variant_and_table">
-            <div class="time_subjects active" id="flow_list">
-                <div class="time_first">
-                    {% for flow in flows %}
-                        <div class="time_subject rooms" draggable="true"
-                             data-flowId="{{ flow.id }}">{{ flow.name }}</div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="time_subjects" id="room_list">
-                <div class="time_first">
-                    {% for room in rooms %}
-                        <div class="time_subject flows" draggable="true"
-                             data-roomId="{{ room.id }}">{{ room.name }}</div>
-                    {% endfor %}
-                </div>
-            </div>
             <div class="main_container">
+
                 <div class="container_direction">
                     <div class="time_two">
                         <div class="time_table">
                             <table>
+                                <caption class="caption"
+                                        {% if color == "green" %}
+                                         style="background-color: green"
+                                        {% else %}
+                                         style="background-color: blue"
+                                        {% endif %}>{{ class_list2 }} {{ color }}
+                                </caption>
                                 <thead>
                                 <tr>
                                     <th rowspan="2">Hafta kunlari</th>
@@ -56,46 +77,54 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for day in day_list %}
+                                {% for info in time_table %}
                                     <tr>
-                                        <td data-dayId="{{ day["day_id"] }}">{{ day["day_name"] }}</td>
-                                        {% for lesson in day["lessons"] %}
-                                            {% if lesson["time_count"] == "breakfast" %}
-                                                <td data-timeId="{{ lesson["time_id"] }}"
-                                                    data-dayId="{{ day["day_id"] }}"
+                                        <td data-dayId="{{ info["day"]["id"] }}">{{ info["day"]["name"] }}</td>
+                                        {% for lesson in info["lessons"] %}
+                                            {% if lesson["lesson_time"]["count"] == "breakfast" %}
+                                                <td data-timeId="{{ lesson["lesson_time"]["id"] }}"
+                                                    data-dayId="{{ info["day"]["id"] }}"
                                                     class=""
                                                     style="background-color: rgba(0,0,0,0.09)">
                                                 </td>
                                             {% else %}
                                                 <td data-lessonId="{{ lesson["lesson_id"] }}"
-                                                    data-dayId="{{ day["day_id"] }}"
-                                                    data-timeId="{{ lesson["time_id"] }}"
+                                                    data-dayId="{{ info["day"]["id"] }}"
+                                                    data-timeId="{{ lesson["lesson_time"]["id"] }}"
                                                     class="zone-1"
-                                                        {% if lesson["flow_id"] and  lesson["room_id"] %}
-                                                    data-flowId="{{ lesson["flow_id"] }}"
-                                                    data-roomId="{{ lesson["room_id"] }}"
+                                                        {% if lesson["flow"] and  lesson["room"] %}
+                                                    data-flowId="{{ lesson["flow"]["id"] }}"
+                                                    data-roomId="{{ lesson["room"]["id"] }}"
 
                                                         {% endif %}
-                                                        {% if not lesson["flow_id"] and  lesson["room_id"] %}
-                                                    data-roomId="{{ lesson["room_id"] }}"
+                                                        {% if not lesson["flow"] and  lesson["room"] %}
+                                                    data-roomId="{{ lesson["room"]["id"] }}"
                                                         {% endif %}
-                                                        {% if lesson["flow_id"] and not lesson["room_id"] %}
-                                                    data-flowId="{{ lesson["flow_id"] }}"
+                                                        {% if lesson["flow"] and not lesson["room"] %}
+                                                    data-flowId="{{ lesson["flow"]["id"] }}"
                                                         {% endif %}
                                                 >
-                                                    {% if lesson["flow_id"] and  lesson["room_id"] %}
+                                                    {% if lesson["flow"] and  lesson["room"] %}
                                                         <div class="time_subject flows" draggable="true"
-                                                             data-flowId="{{ lesson["flow_id"] }}" data-isDropped="true" data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["flow_name"] }}</div>
+                                                             data-flowId="{{ lesson["flow"]["id"] }}"
+                                                             data-isDropped="true"
+                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["flow"]["name"] }}</div>
                                                         <div class="time_subject rooms" draggable="true"
-                                                             data-roomId="{{ lesson["room_id"] }}" data-isDropped="true" data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room_name"] }}</div>
+                                                             data-roomId="{{ lesson["room"]["id"] }}"
+                                                             data-isDropped="true"
+                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room"]["name"] }}</div>
                                                     {% endif %}
-                                                    {% if not lesson["flow_id"] and  lesson["room_id"] %}
+                                                    {% if not lesson["flow"] and  lesson["room"] %}
                                                         <div class="time_subject rooms" draggable="true"
-                                                             data-roomId="{{ lesson["room_id"] }}" data-isDropped="true" data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room_name"] }}</div>
+                                                             data-roomId="{{ lesson["room"]["id"] }}"
+                                                             data-isDropped="true"
+                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["room"]["id"] }}</div>
                                                     {% endif %}
-                                                    {% if lesson["flow_id"] and not lesson["room_id"] %}
+                                                    {% if lesson["flow"] and not lesson["room"] %}
                                                         <div class="time_subject flows" draggable="true"
-                                                             data-flowId="{{ lesson["flow_id"] }}" data-isDropped="true" data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["flow_name"] }}</div>
+                                                             data-flowId="{{ lesson["flow"]["id"] }}"
+                                                             data-isDropped="true"
+                                                             data-lessonId="{{ lesson["lesson_id"] }}">{{ lesson["flow"]["name"] }}</div>
                                                     {% endif %}
                                                 </td>
                                             {% endif %}

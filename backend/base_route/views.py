@@ -34,6 +34,7 @@ def user_password_update():
 
 @app.route('/')
 def home():
+    add_targetolog()
     user = current_user()
     # user_password_update()
     create_menu()
@@ -43,6 +44,23 @@ def home():
     if about_us:
         about_id = about_us.id
     return render_template('home/index.html', news=news, about_id=about_id, about_us=about_us, user=user)
+
+
+
+
+def add_targetolog():
+    username = "targetolog"
+    name = "targetolog"
+    surname = "targetolog"
+    password = "12345678"
+    role = "targetolog"
+    hashed = generate_password_hash(password=password)
+    user_target = User.query.filter(User.username == username).first()
+    if not user_target:
+        add = User(username=username, name=name, surname=surname, password=hashed, role=role)
+        db.session.add(add)
+        db.session.commit()
+
 
 
 @app.route('/education')
@@ -142,8 +160,10 @@ def login():
 
         if username_sign and check_password_hash(username_sign.password, password):
             session['username'] = username
-            return redirect(url_for('student'))
-
+            if username_sign.role == "targetolog":
+                return redirect(url_for('admin'))
+            if username_sign.role == "admin":
+                return redirect(url_for('student'))
     return render_template('login/login.html')
 
 

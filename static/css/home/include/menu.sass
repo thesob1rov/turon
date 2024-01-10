@@ -1,3 +1,7 @@
+*
+  font-family: "Blinker",sans-serif
+
+
 .menu
   width: 100%
   height: 100vh
@@ -40,6 +44,8 @@
   position: relative
   min-height: 7rem
 
+  //background-image: url("/static/img/home/img/school_bg2.JPG")
+
   video
     position: absolute
     width: 100%
@@ -58,15 +64,15 @@
     color: #001B61
 
     img
-      width: 7.5rem
+      width: 18rem
 
   .introduction_entrance
     height: 8rem
     width: 100%
-    background-color: white
     position: fixed
     z-index: 6
     right: 0
+    background-color: linear-gradient(270deg, #EBCAA4 -14.21%, #05347E 100%)
 
   nav
     display: flex
@@ -79,7 +85,7 @@
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1)
 
     ol
-      width: 50%
+      width: 1320px
       display: flex
       align-items: center
       justify-content: space-around
@@ -94,11 +100,14 @@
 
       &:hover
         color: #001B61
+
       a
         text-decoration: none
         color: black
+
         &:hover
           color: #001B61
+
   i
     font-size: 2.2rem
     color: #001B61
@@ -306,8 +315,10 @@
 
 .active1
   display: flex
+
 .menu_icon
   display: none
+
 .send
   width: 14rem
   height: 4rem
@@ -324,7 +335,86 @@
   color: #001B61
   border: .2rem solid #001B61
 //@media (max-width: 375px)
+.register_button
+  width: 128px
+  height: 45px
+  background-color: #001B61
+  border-radius: 5px
+  color: white
+  display: flex
+  align-items: center
+  justify-content: center
 
+.about_us_menu
+  top: 6rem
+  width: 348px
+
+  background-color: #FFFFFF
+  position: absolute
+  //display: flex
+  flex-direction: column
+  display: flex
+  //justify-content: space-around
+  z-index: 1
+  opacity: 0
+  visibility: hidden
+  transition: all 1s
+  p
+
+    font-family: "Inter", sans-serif
+    color: black
+
+
+.aboutLi
+  display: flex
+  flex-direction: column
+  align-items: center
+
+.aboutLi:hover
+  color: red
+
+.menuCont
+  position: relative
+  display: flex
+  flex-direction: column
+
+.about_us p
+  color: black
+
+.active_about
+  display: flex
+
+
+.class_items
+  width: 348px
+  padding: 4px 0
+  display: flex
+  background-color: #FFFFFF
+  //align-items: center
+  flex-direction: column
+  justify-content: center
+  font-size: 15px
+  font-weight: bolder
+  border-bottom: 1px #1f4db5 solid
+
+  p
+    margin-left: 20px
+
+.class_items:hover
+  border-right: 4px #001B61 solid
+  color: #1f4db5
+
+.class_items p:hover
+  color: #1f4db5
+
+
+
+
+.about_us:hover
+  color: red
+  .about_us_menu
+    opacity: 1
+    visibility: visible
 
 @media (max-width: 768px)
   .menu_icon
@@ -364,8 +454,10 @@
           cursor: pointer
           font-weight: 600
           color: white
+
           a
             color: white
+
           &:hover
             color: white
   .hamburger
@@ -396,10 +488,13 @@
 
   .mini
     width: 100%
+
     &_label
       width: 90%
+
       &_text
         width: 100%
+
 @media (max-width: 425px)
 
   .introduction
@@ -430,6 +525,7 @@
         display: flex
         align-items: center
         justify-content: space-around
+        height: 8rem
 
       li
         font-size: 1.5rem
@@ -468,6 +564,7 @@
       left: 0
   .mini
     width: 100%
+
 @media (max-width: 1200px)
   .about
     &_left
@@ -532,3 +629,5 @@
     flex-wrap: nowrap
     display: flex
     flex-direction: column
+
+

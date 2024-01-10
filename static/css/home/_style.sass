@@ -4,7 +4,7 @@
   margin: 0
   padding: 0
   box-sizing: border-box
-  font-family: "Inter", sans-serif
+  font-family: 'Blinker', sans-serif
 
 
 html
@@ -250,21 +250,25 @@ body
 
 footer
   display: flex
+  flex-direction: column
   justify-content: center
   width: 100%
-  height: 10rem
+  height: 500px
   background-color: #111f4c
   text-align: center
   color: white
   padding: 0 1rem
+  align-items: center
 
 .footer
   display: flex
-  justify-content: space-between
-  width: 170rem
+  justify-content: center
+  //align-items: center
+  width: 1400px
   height: 10rem
   align-items: center
   padding: 0 1rem
+
 
   &_pslogo
     display: flex
@@ -273,18 +277,8 @@ footer
     width: 45rem
 
   &_pslogo img
-    width: 25rem
-    height: 8rem
-
-
-
-
-
-
-
-
-
-
+    width: 33rem
+    height: 11rem
 .splide
   display: none
 
@@ -294,3 +288,30 @@ footer
   display: flex
   justify-content: center
   align-items: center
+
+
+.footerLinks
+  width: 1400px
+  //background-color: red
+  height: 300px
+  display: flex
+  align-items: center
+  justify-content: space-around
+.box
+  width: 500px
+  height: 300px
+  //background-color: #001B61
+  display: flex
+  flex-direction: column
+  align-items: start
+  h1
+    color: white
+  p
+    font-size: 16px
+    padding: 5px 0
+    font-weight: 500
+a
+  text-decoration: none
+  color: white
+a:hover
+  text-decoration: underline

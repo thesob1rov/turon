@@ -8,7 +8,7 @@ list_days = []
 
 
 def get_calendar(current_year, next_year):
-    calculate_teacher_salary()
+    # calculate_teacher_salary()
     for year in range(current_year, next_year + 1):
         for month in range(1, 13):
             if (year == current_year and month not in [1, 2, 3, 4, 5, 6, 7, 8]) or (
@@ -66,12 +66,13 @@ def get_calendar(current_year, next_year):
 def calendar_year():
     current_year = datetime.now().year
     next_year = datetime.now().year + 1
+    this_month = int(datetime.now().strftime('%m'))
     get_calendar(current_year, next_year)
-    calculate_teacher_salary()
+    # calculate_teacher_salary()
     error = check_session()
-    if error:
-        return redirect(url_for('home'))
-    user = current_user()
+    # if error:
+    #     return redirect(url_for('home'))
+    user = User.query.filter(User.id == 1).first()
     about_id = 0
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()
@@ -81,6 +82,9 @@ def calendar_year():
     calendar = []
     account_types = AccountType.query.all()
     month_all = Month.query.order_by(Month.id).all()
+    if this_month in [1, 2, 3, 4, 5, 6, 7, 8]:
+        current_year -= 1
+        next_year -= 1
     for month in month_all:
         week_name = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
         if (month.years.year == current_year and month.month_number not in [1, 2, 3, 4, 5, 6, 7, 8]) or (

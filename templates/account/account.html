@@ -10,7 +10,7 @@
     <section class="pay" data-type="{{ type_request }}">
         <div class="pay_block">
             <div class="pay_container">
-                <input class="input_one" type="date">
+                <input class="input_one" type="date" data-type="{{ type_request }}">
                 <input class="input_two" type="date">
                 <div class="info">
                     <div class="info_item">
@@ -24,71 +24,95 @@
                 <button>Bank</button>
             </div>
             <div class="pay_cashes">
-                <button class="button_student">Student to’lovlari</button>
-                <button>Ishchilar oyliklari</button>
-                <button>O’qituvchilar oyliklari</button>
-                <button class="button_cost">Qo’shimcha xarajatlar</button>
-                <button>Kapital xarajaltar</button>
+                <button class="button_student"><a href="{{ url_for('collection', type_request='sp') }}">Student
+                    to’lovlari</a>
+                </button>
+                <button><a href="{{ url_for('collection', type_request='ws') }}">Ishchilar oyliklari</a></button>
+                <button><a href="{{ url_for('collection', type_request='ts') }}">O’qituvchilar oyliklari</a></button>
+                <button class="button_cost"><a href="{{ url_for('collection', type_request='co') }}">Qo’shimcha
+                    xarajatlar</a>
+                </button>
             </div>
-            <h1 class="h1">Jami summa {{ balance }}</h1>
+            <h1 class="h1">Jami summa
+                {% if type_request == '' or type_request == 'sp' %}
+                    {{ balance_sp }}
+                {% elif type_request == 'ws' %}
+                    {{ balance_ws }}
+                {% elif type_request == 'ts' %}
+                    {{ balance_ts }}
+                {% elif type_request == 'co' %}
+                    {{ balance_co }}
+                {% endif %}
+            </h1>
             <div class="pay_list">
-                <table class="table_first">
+                <table>
                     <thead>
                     <tr>
                         <th>No</th>
+                        {% if type_request != 'co' %}
                         <th>
                             Ismi
                         </th>
                         <th>Familya</th>
+                        {% else %}
+                        <th>Sababi</th>
+
+                        {% endif %}
                         <th>
                             To'lov
                         </th>
                         <th>To'lov turi</th>
                         <th>Sana</th>
+                        <th></th>
+                    </tr>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="table">
                     {% for page in payments %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ page.student_month_payments.student.user.name }}</td>
-                            <td>{{ page.student_month_payments.student.user.surname }}</td>
-                            <td>{{ page.payed }}</td>
-                            <td>{{ page.student_month_payments.account_type.name }}</td>
-                            <td>{{ page.date.strftime("%Y-%m-%d") }}</td>
-                            <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
-                                   data-id="{{ page.id }}"></i></td>
-                        </tr>
-
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <table class="table_second">
-                    <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>
-                            Harajat nomi
-                        </th>
-                        <th>
-                            Harajat
-                        </th>
-                        <th>To'lov turi</th>
-                        <th>Sana</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for page in cost_all %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ page.name }}</td>
-                            <td>{{ page.payed }}</td>
-                            <td>{{ page.account_type.name }}</td>
-                            <td>{{ page.date.strftime("%Y-%m-%d") }}</td>
-                            <td><i class="fa-solid fa-trash delButtonCost" style="color: red"
-                                   data-id="{{ page.id }}"></i></td>
-                        </tr>
-
+                        {% if type_request == '' or type_request == 'sp' %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ page.student_month_payments.student.user.name }}</td>
+                                <td>{{ page.student_month_payments.student.user.surname }}</td>
+                                <td>{{ page.payed }}</td>
+                                <td>{{ page.student_month_payments.account_type.name }}</td>
+                                <td>{{ page.date.strftime("%Y-%m-%d") }}</td>
+                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                       data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
+                            </tr>
+                        {% elif type_request == 'ws' %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ page.worker_salary.worker.user.name }}</td>
+                                <td>{{ page.worker_salary.worker.user.surname }}</td>
+                                <td>{{ page.salary }}</td>
+                                <td>{{ page.account_type.name }}</td>
+                                <td>{{ page.years.year }}-{{ page.month.month_number }}-{{ page.day.day_number }}</td>
+                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                       data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
+                            </tr>
+                        {% elif type_request == 'ts' %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ page.teacher_salary.teacher.user.name }}</td>
+                                <td>{{ page.teacher_salary.teacher.user.surname }}</td>
+                                <td>{{ page.given_salary }}</td>
+                                <td>{{ page.account_type.name }}</td>
+                                <td>{{ page.years.year }}-{{ page.month.month_number }}-{{ page.day.day_number }}</td>
+                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                       data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
+                            </tr>
+                        {% elif type_request == 'co' %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ page.name }}</td>
+                                <td>{{ page.payed }}</td>
+                                <td>{{ page.account_type.name }}</td>
+                                <td>{{ page.date.strftime("%Y-%m-%d") }}</td>
+                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                       data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                     </tbody>
                 </table>

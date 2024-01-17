@@ -8,7 +8,7 @@ import calendar
 def teacher_salary(teacher_id):
     teacher = Teacher.query.filter(Teacher.id == teacher_id).first()
     salaries = TeacherSalary.query.filter(TeacherSalary.teacher_id == teacher.id).all()
-    teacher_salary_types = TeacherSalaryType.query.all()
+    teacher_salary_types = TeacherSalaryType.query.order_by(TeacherSalaryType.id).all()
     return render_template("teacher_salary/oylik.html", salaries=salaries, teacher=teacher,
                            teacher_salary_types=teacher_salary_types)
 

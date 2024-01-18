@@ -100,6 +100,27 @@ html {
 .pay_list table {
   width: 100%;
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.pay_list table thead {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.pay_list table thead tr {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.pay_list table tbody {
+  width: 100%;
+  height: auto;
+}
+.pay_list table tbody tr {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 }
 .pay_list th {
   font-size: 2rem;

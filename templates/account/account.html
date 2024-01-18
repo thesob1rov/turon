@@ -24,31 +24,30 @@
                 <button>Bank</button>
             </div>
             <div class="pay_cashes">
-
-                <button style="display: none" class="button_student">Student to’lovlari</button>
-                <button style="display: none">Workers salary</button>
-                <button style="display: none">Teachers salary</button>
-                <button class="button_cost">Overhead</button>
-                <button>Capital expenses</button>
-
-                <button class="button_student"><a href="{{ url_for('collection', type_request='sp') }}">Student
-                    to’lovlari</a>
+                <button class="button_student"><a
+                        href="{{ url_for('collection', type_request='p') }}">Student payments</a></button>
+                <button><a href="{{ url_for('collection', type_request='w') }}">Workers salary</a>
                 </button>
-                <button><a href="{{ url_for('collection', type_request='ws') }}">Ishchilar oyliklari</a></button>
-                <button><a href="{{ url_for('collection', type_request='ts') }}">O’qituvchilar oyliklari</a></button>
-                <button class="button_cost"><a href="{{ url_for('collection', type_request='co') }}">Qo’shimcha
-                    xarajatlar</a>
+                <button><a href="{{ url_for('collection', type_request='t') }}">Teachers
+                    salary</a></button>
+                <button class="button_cost"><a href="{{ url_for('collection', type_request='o') }}">Over head</a>
                 </button>
+                <button><a href="{{ url_for('collection', type_request='c') }}">Capital expenses</a></button>
+                <button><a href="{{ url_for('collection', type_request='m') }}">Marketing expenses</a></button>
             </div>
             <h1 class="h1">Jami summa
-                {% if type_request == '' or type_request == 'sp' %}
-                    {{ balance_sp }}
-                {% elif type_request == 'ws' %}
-                    {{ balance_ws }}
-                {% elif type_request == 'ts' %}
-                    {{ balance_ts }}
-                {% elif type_request == 'co' %}
-                    {{ balance_co }}
+                {% if type_request == '' or type_request == 'p' %}
+                    {{ balance_p }}
+                {% elif type_request == 'w' %}
+                    {{ balance_w }}
+                {% elif type_request == 't' %}
+                    {{ balance_t }}
+                {% elif type_request == 'o' %}
+                    {{ balance_o }}
+                {% elif type_request == 'c' %}
+                    {{ balance_c }}
+                {% elif type_request == 'm' %}
+                    {{ balance_m }}
                 {% endif %}
             </h1>
             <div class="pay_list">
@@ -56,16 +55,15 @@
                     <thead>
                     <tr>
                         <th>No</th>
-                        {% if type_request != 'co' %}
-                        <th>
-                            Name
-                        </th>
+                        {% if type_request != 'o' or type_request != 'c' or type_request != 'm' %}
+                            <th>
+                                Name
+                            </th>
 
-                        <th>Surname</th>
+                            <th>Surname</th>
 
-                        <th>Familya</th>
                         {% else %}
-                        <th>Sababi</th>
+                            <th>Reason</th>
 
                         {% endif %}
 
@@ -75,59 +73,13 @@
 
                         <th>Payment type</th>
                         <th>Date</th>
-
-                        <th>To'lov turi</th>
-                        <th>Sana</th>
                         <th></th>
-                    </tr>
-
                     </tr>
                     </thead>
                     <tbody class="table">
+
                     {% for page in payments %}
-
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ page.student_month_payments.student.user.name }}</td>
-                            <td>{{ page.student_month_payments.student.user.surname }}</td>
-                            <td>{{ page.payed }}</td>
-                            <td>{{ page.student_month_payments.account_type.name }}</td>
-                            <td>{{ page.date.strftime("%Y-%m-%d") }}</td>
-                            <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
-                                   data-id="{{ page.id }}"></i></td>
-                        </tr>
-
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <table class="table_second">
-                    <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>
-                            Expense name
-                        </th>
-                        <th>
-                            Expense
-                        </th>
-                        <th>Payment</th>
-                        <th>Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for page in cost_all %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ page.name }}</td>
-                            <td>{{ page.payed }}</td>
-                            <td>{{ page.account_type.name }}</td>
-                            <td>{{ page.date.strftime("%Y-%m-%d") }}</td>
-                            <td><i class="fa-solid fa-trash delButtonCost" style="color: red"
-                                   data-id="{{ page.id }}"></i></td>
-                        </tr>
-
-
-                        {% if type_request == '' or type_request == 'sp' %}
+                        {% if type_request == '' or type_request == 'p' %}
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ page.student_month_payments.student.user.name }}</td>
@@ -138,7 +90,7 @@
                                 <td><i class="fa-solid fa-trash delButton" style="color: red"
                                        data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
-                        {% elif type_request == 'ws' %}
+                        {% elif type_request == 'w' %}
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ page.worker_salary.worker.user.name }}</td>
@@ -149,7 +101,7 @@
                                 <td><i class="fa-solid fa-trash delButton" style="color: red"
                                        data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
-                        {% elif type_request == 'ts' %}
+                        {% elif type_request == 't' %}
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ page.teacher_salary.teacher.user.name }}</td>
@@ -160,7 +112,7 @@
                                 <td><i class="fa-solid fa-trash delButton" style="color: red"
                                        data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
-                        {% elif type_request == 'co' %}
+                        {% elif type_request == 'o' or type_request == 'c' or type_request == 'm' %}
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ page.name }}</td>
@@ -176,11 +128,10 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
     </section>
 {% endblock %}
 {% block js %}
     <script src="../../static/js/payment/account.js"></script>
-    {#    <script src="/static/js/student_payments_in_month/payments_in_monyh.js"></script>#}
+    {#        <script src="/static/js/student_payments_in_month/payments_in_monyh.js"></script>#}
 {% endblock %}

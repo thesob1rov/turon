@@ -15,37 +15,59 @@
             <div class="pay_container">
                 <div class="pay_double">
                     <button class="pay_filter_btn">Filter</button>
-                    {% if type_request == 'pay' or type_request == 'cost' %}
+                    {% if type_request == '' or type_request == 'p' or type_request == 'o' or type_request == 't' or type_request == 'w' or type_request == 'c' or type_request == 'm' %}
                         <div class="pay_search">
                             <i class="fa-solid fa-magnifying-glass"></i>
                             <input type="text" placeholder="Qidiruv">
                         </div>
                     {% endif %}
                     <select id="select" class="select" name="">
-                        {% if type_request == 'pay' %}
+                        {% if type_request == 'p' %}
                             <option value="payOption">Payment</option>
-                            <option value="salaryWorkerOption">Salary worker</option>
-                            <option value="costOption">Cost</option>
-                            <option value="salaryTeacherOption">Salary teacher</option>
-                        {% elif type_request == 'cost' %}
-                            <option value="costOption">Harajat</option>
-                            <option value="salaryWorkerOption">Salary worker</option>
-                            <option value="payOption">To'lov</option>
-                            <option value="salaryTeacherOption">Salary teacher</option>
-                        {% elif type_request == 'salary_teacher' %}
-                            <option value="salaryTeacherOption">Salary teacher</option>
-                            <option value="salaryWorkerOption">Salary worker</option>
-                            <option value="costOption">Cost</option>
+                            <option value="salaryWorkerOption">Worker salary</option>
+                            <option value="salaryTeacherOption">Teacher salary</option>
+                            <option value="overheadOption">Over head</option>
+                            <option value="cateringOverheadOption">Catering Overhead</option>
+                            <option value="marketingOverheadOption">Marketing Overhead</option>
+                        {% elif type_request == 'o' %}
+                            <option value="overheadOption">Over head</option>
                             <option value="payOption">Payment</option>
-                        {% elif type_request == 'salary_worker' %}
-                            <option value="salaryWorkerOption">Salary worker</option>
-                            <option value="salaryTeacherOption">Salary teacher</option>
-                            <option value="costOption">Cost</option>
+                            <option value="salaryWorkerOption">Worker salary</option>
+                            <option value="salaryTeacherOption">Teacher salary</option>
+                            <option value="cateringOverheadOption">Catering Overhead</option>
+                            <option value="marketingOverheadOption">Marketing Overhead</option>
+                        {% elif type_request == 't' %}
+                            <option value="salaryTeacherOption">Teacher salary</option>
                             <option value="payOption">Payment</option>
+                            <option value="salaryWorkerOption">Worker salary</option>
+                            <option value="overheadOption">Over head</option>
+                            <option value="cateringOverheadOption">Catering Overhead</option>
+                            <option value="marketingOverheadOption">Marketing Overhead</option>
+                        {% elif type_request == 'w' %}
+                            <option value="salaryWorkerOption">Worker salary</option>
+                            <option value="payOption">Payment</option>
+                            <option value="salaryTeacherOption">Teacher salary</option>
+                            <option value="overheadOption">Over head</option>
+                            <option value="cateringOverheadOption">Catering Overhead</option>
+                            <option value="marketingOverheadOption">Marketing Overhead</option>
+                        {% elif type_request == 'c' %}
+                            <option value="cateringOverheadOption">Catering Overhead</option>
+                            <option value="salaryWorkerOption">Worker salary</option>
+                            <option value="payOption">Payment</option>
+                            <option value="salaryTeacherOption">Teacher salary</option>
+                            <option value="overheadOption">Over head</option>
+                            <option value="marketingOverheadOption">Marketing Overhead</option>
+                        {% elif type_request == 'm' %}
+                            <option value="marketingOverheadOption">Marketing overhead</option>
+                            <option value="salaryWorkerOption">Worker salary</option>
+                            <option value="payOption">Payment</option>
+                            <option value="salaryTeacherOption">Teacher salary</option>
+                            <option value="overheadOption">Over head</option>
+                            <option value="cateringOverheadOption">Catering overhead</option>
                         {% endif %}
                     </select>
                     <button><a href="{{ url_for('collection') }}">collection</a></button>
-                    {% if type_request == 'salary_teacher' or type_request == 'salary_worker' %}
+                    {% if type_request == 't' or type_request == 'w' %}
                         <div class="pay_buttons">
                             {% for account in account_types %}
                                 <button data-id="{{ account.id }}" class="salary_btn">{{ account.name }}</button>
@@ -104,6 +126,7 @@
             </div>
 
             <div class="account_types" style="display: flex; width: 50%; justify-content: space-around">
+                <h1 style="margin-top: 30px; font-size: 30px">Balance: {{ balance }}</h1>
                 <h1 style="margin-top: 30px; font-size: 30px">Cash: {{ cash }}</h1>
                 <h1 style="margin-top: 30px; font-size: 30px">Bank: {{ bank }}</h1>
                 <h1 style="margin-top: 30px; font-size: 30px">Click: {{ click }}</h1>
@@ -115,33 +138,36 @@
                     <tr>
                         <th>No</th>
                         <th>
-                            {% if type_request == 'pay' %}
+                            {% if type_request == 'p' %}
                                 Name
-                            {% elif type_request == 'cost' %}
-                                Harajat nomi
-                            {% elif type_request == 'salary_teacher' %}
-                                Teacher
-                            {% elif type_request == 'salary_worker' %}
+                            {% elif type_request == 'o' %}
+                                Over head name
+                            {% elif type_request == 'c' %}
+                                Catering over head name
+                            {% elif type_request == 'm' %}
+                                Marketing over head name
+                            {% elif type_request == 't' %}
+                                Teacher name
+                            {% elif type_request == 'w' %}
                                 Worker name
                             {% endif %}
                         </th>
-                        {% if type_request == 'salary_worker' %}
+                        {% if type_request == 'w' %}
                             <th>
                                 Profession
                             </th>
                         {% endif %}
-                        {% if type_request == 'pay' %}
+                        {% if type_request == 'p' %}
                             <th>Familya</th>
-                        {% elif type_request == 'salary_teacher' or type_request == 'salary_worker' %}
+                        {% elif type_request == 't' or type_request == 'w' %}
                             <th>Payment reason</th>
                         {% endif %}
                         <th>
-                            {% if type_request == 'pay' %}
-
+                            {% if type_request == 'p' %}
                                 Payment
-                            {% elif type_request == 'cost' %}
+                            {% elif type_request == 'o' or type_request == 'c' or type_request == 'm' %}
                                 Cost
-                            {% elif type_request == 'salary_teacher' or type_request == 'salary_worker' %}
+                            {% elif type_request == 't' or type_request == 'w' %}
                                 Payment
                             {% endif %}
                         </th>
@@ -151,7 +177,7 @@
                     </thead>
                     <tbody>
                     {% for page in payments %}
-                        {% if type_request == 'pay' %}
+                        {% if type_request == 'p' %}
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ page.student_month_payments.student.user.name }}</td>
@@ -159,31 +185,31 @@
                                 <td>{{ page.payed }}</td>
                                 <td>{{ page.student_month_payments.account_type.name }}</td>
                                 <td>{{ page.date.strftime("%Y-%m-%d") }}</td>
-                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
-                                       data-id="{{ page.id }}"></i></td>
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
+                                       data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
-                        {% elif type_request == 'cost' %}
+                        {% elif type_request == 'o' or type_request == 'c' or type_request == 'm' %}
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ page.name }}</td>
                                 <td>{{ page.payed }}</td>
                                 <td>{{ page.account_type.name }}</td>
                                 <td>{{ page.date.strftime("%Y-%m-%d") }}</td>
-                                <td><i class="fa-solid fa-trash delButtonCost" style="color: red"
-                                       data-id="{{ page.id }}"></i></td>
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
+                                       data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
-                        {% elif type_request == 'salary_teacher' %}
+                        {% elif type_request == 't' %}
                             <tr>
                                 <td>{{ loop.index }}</td>
-                                <td>{{ page.teacher.user.name }}</td>
+                                <td>{{ page.teacher_salary.teacher.user.name }}</td>
                                 <td>{{ page.reason }}</td>
-                                <td>{{ page.salary }}</td>
+                                <td>{{ page.given_salary }}</td>
                                 <td>{{ page.account_type.name }}</td>
                                 <td>{{ page.day.years.year }}-{{ page.day.month.month_number }}-{{ page.day.day_number }}</td>
-                                <td><i class="fa-solid fa-trash delButtonSalaryTeacher" style="color: red"
-                                       data-id="{{ page.id }}"></i></td>
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
+                                       data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
-                        {% elif type_request == 'salary_worker' %}
+                        {% elif type_request == 'w' %}
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ page.worker_salary.worker.user.name }}</td>
@@ -192,8 +218,8 @@
                                 <td>{{ page.salary }}</td>
                                 <td>{{ page.account_type.name }}</td>
                                 <td>{{ page.day.years.year }}-{{ page.day.month.month_number }}-{{ page.day.day_number }}</td>
-                                <td><i class="fa-solid fa-trash delButtonSalaryWorker" style="color: red"
-                                       data-id="{{ page.id }}"></i></td>
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
+                                       data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
                         {% endif %}
                     {% endfor %}
@@ -226,7 +252,7 @@
                 {% endif %}
             </div>
         </div>
-        {% if type_request == 'cost' %}
+        {% if type_request == 'o' or type_request == 'c' or type_request == 'm' %}
             <div class="harajat_plus_circle">
                 <div class="harajat_plus_radius"></div>
                 <div class="harajat_plus_plus">
@@ -235,7 +261,7 @@
             </div>
         {% endif %}
 
-        <form action="{{ url_for("add_cost") }}" method="post" class="payment">
+        <form action="{{ url_for("add_cost", type_request=type_request) }}" method="post" class="payment">
             <div class="payment_box">
                 <input name="name" class="nameInput" type="text" placeholder="Harajat nomi">
                 <input name="payed" class="payedInput" type="text" placeholder="Harajat summasi">

@@ -1,0 +1,1 @@
+*{font-family:"Blinker",sans-serif}.logo,.s5{display:flex}.s5{flex-direction:column;padding:50px;width:100%}.s5 h1{font-size:30px;color:#001b61}.logo{height:30rem;align-items:center;justify-content:space-between;flex-wrap:wrap;overflow:auto;gap:10px}.logo_box{width:15rem;height:15rem}.logo_img{object-fit:cover;width:100%;height:100%}

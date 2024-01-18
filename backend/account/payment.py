@@ -5,7 +5,9 @@ from backend.settings.settings import *
 from datetime import datetime
 from flask_paginate import Pagination, get_page_args
 import string
-import datetime
+
+
+# import datetime
 
 
 @app.route('/add_payment/<int:student_id>', methods=["POST", "GET"])
@@ -13,8 +15,8 @@ def add_payment(student_id):
     error = check_session()
     if error:
         return redirect(url_for('home'))
-    today = datetime.today()
-    datem = datetime(today.year, today.month, 1)
+    # today = datetime.date.today()
+    # datem = datetime(today.year, today.month, 1)
     user = current_user()
     student = Student.query.filter(Student.id == student_id).first()
     about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
@@ -158,95 +160,150 @@ def calc(months, years, days):
     cash = 0
     bank = 0
     click = 0
-    payments_in_pay = StudentPaymentsInMonth.query.order_by(StudentPaymentsInMonth.id).all()
-    cash_payments_in_pay = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.account_type_id == 3).all()
-    bank_payments_in_pay = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.account_type_id == 1).all()
-    click_payments_in_pay = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.account_type_id == 2).all()
-    payments_in_cost = Overhead.query.order_by(Overhead.id, Overhead.deleted_over_head == None).all()
-    cash_payments_in_cost = Overhead.query.filter(Overhead.account_type_id == 3,
-                                                  Overhead.deleted_over_head == None).all()
-    bank_payments_in_cost = Overhead.query.filter(Overhead.account_type_id == 1,
-                                                  Overhead.deleted_over_head == None).all()
-    click_payments_in_cost = Overhead.query.filter(Overhead.account_type_id == 2,
-                                                   Overhead.deleted_over_head == None).all()
-    payments_in_salary_teacher = Teacher_salary_day.query.filter(
-        Teacher_salary_day.deleted_teacher_salary_inDay == None).order_by(Teacher_salary_day.id).all()
-    cash_payments_in_salary_teacher = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 3,
-                                                                      Teacher_salary_day.deleted_teacher_salary_inDay == None).order_by(
-        Teacher_salary_day.id).all()
-    bank_payments_in_salary_teacher = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 1,
-                                                                      Teacher_salary_day.deleted_teacher_salary_inDay == None).order_by(
-        Teacher_salary_day.id).all()
-    click_payments_in_salary_teacher = Teacher_salary_day.query.filter(
-        Teacher_salary_day.account_type_id == 2, Teacher_salary_day.deleted_teacher_salary_inDay == None).order_by(
-        Teacher_salary_day.id).all()
-    payments_in_salary_worker = WorkerSalaryInDay.query.filter(
+    payments_in_p = StudentPaymentsInMonth.query.order_by(StudentPaymentsInMonth.id).all()
+    cash_payments_in_p = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.account_type_id == 3).all()
+    bank_payments_in_p = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.account_type_id == 1).all()
+    click_payments_in_p = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.account_type_id == 2).all()
+
+    payments_in_o = Overhead.query.filter(Overhead.deleted_over_head == None).order_by(Overhead.id).all()
+    cash_payments_in_o = Overhead.query.filter(Overhead.account_type_id == 3,
+                                               Overhead.deleted_over_head == None).order_by(Overhead.id).all()
+    bank_payments_in_o = Overhead.query.filter(Overhead.account_type_id == 1,
+                                               Overhead.deleted_over_head == None).order_by(Overhead.id).all()
+    click_payments_in_o = Overhead.query.filter(Overhead.account_type_id == 2,
+                                                Overhead.deleted_over_head == None).order_by(Overhead.id).all()
+
+    payments_in_c = CateringOverhead.query.filter(CateringOverhead.deleted_catering_overhead == None).order_by(
+        CateringOverhead.id).all()
+    cash_payments_in_c = CateringOverhead.query.filter(CateringOverhead.account_type_id == 3,
+                                                       CateringOverhead.deleted_catering_overhead == None).order_by(
+        CateringOverhead.id).all()
+    bank_payments_in_c = CateringOverhead.query.filter(CateringOverhead.account_type_id == 1,
+                                                       CateringOverhead.deleted_catering_overhead == None).order_by(
+        CateringOverhead.id).all()
+    click_payments_in_c = CateringOverhead.query.filter(CateringOverhead.account_type_id == 2,
+                                                        CateringOverhead.deleted_catering_overhead == None).order_by(
+        CateringOverhead.id).all()
+
+    payments_in_m = MarketingOverhead.query.filter(MarketingOverhead.deleted_marketing_overhead == None).order_by(
+        MarketingOverhead.id).all()
+    cash_payments_in_m = MarketingOverhead.query.filter(MarketingOverhead.account_type_id == 3,
+                                                        MarketingOverhead.deleted_marketing_overhead == None).order_by(
+        MarketingOverhead.id).all()
+    bank_payments_in_m = MarketingOverhead.query.filter(MarketingOverhead.account_type_id == 1,
+                                                        MarketingOverhead.deleted_marketing_overhead == None).order_by(
+        MarketingOverhead.id).all()
+    click_payments_in_m = MarketingOverhead.query.filter(MarketingOverhead.account_type_id == 2,
+                                                         MarketingOverhead.deleted_marketing_overhead == None).order_by(
+        MarketingOverhead.id).all()
+
+    # payments_in_salary_t = Teacher_salary_day.query.filter(
+    #     Teacher_salary_day.deleted_teacher_salary_inDay == None).order_by(Teacher_salary_day.id).all()
+    # cash_payments_in_salary_t = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 3,
+    #                                                             Teacher_salary_day.deleted_teacher_salary_inDay == None).order_by(
+    #     Teacher_salary_day.id).all()
+    # bank_payments_in_salary_t = Teacher_salary_day.query.filter(Teacher_salary_day.account_type_id == 1,
+    #                                                             Teacher_salary_day.deleted_teacher_salary_inDay == None).order_by(
+    #     Teacher_salary_day.id).all()
+    # click_payments_in_salary_t = Teacher_salary_day.query.filter(
+    #     Teacher_salary_day.account_type_id == 2, Teacher_salary_day.deleted_teacher_salary_inDay == None).order_by(
+    #     Teacher_salary_day.id).all()
+    payments_in_salary_t = GivenSalariesInMonth.query.order_by(GivenSalariesInMonth.id).all()
+    cash_payments_in_salary_t = GivenSalariesInMonth.query.filter(GivenSalariesInMonth.account_type_id == 3
+                                                                  ).order_by(
+        GivenSalariesInMonth.id).all()
+    bank_payments_in_salary_t = GivenSalariesInMonth.query.filter(GivenSalariesInMonth.account_type_id == 1
+                                                                  ).order_by(
+        GivenSalariesInMonth.id).all()
+    click_payments_in_salary_t = GivenSalariesInMonth.query.filter(
+        GivenSalariesInMonth.account_type_id == 2).order_by(
+        GivenSalariesInMonth.id).all()
+
+    payments_in_salary_w = WorkerSalaryInDay.query.filter(
         WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(WorkerSalaryInDay.id).all()
-    cash_payments_in_salary_worker = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == 3,
-                                                                    WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
+    cash_payments_in_salary_w = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == 3,
+                                                               WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
         WorkerSalaryInDay.id).all()
 
-    bank_payments_in_salary_worker = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == 1,
-                                                                    WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
+    bank_payments_in_salary_w = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.account_type_id == 1,
+                                                               WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
         WorkerSalaryInDay.id).all()
 
-    click_payments_in_salary_worker = WorkerSalaryInDay.query.filter(
+    click_payments_in_salary_w = WorkerSalaryInDay.query.filter(
         WorkerSalaryInDay.account_type_id == 2, WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
         WorkerSalaryInDay.id).all()
 
-    for payment in payments_in_pay:
+    for payment in payments_in_p:
         balance += int(payment.payed)
-    for cash_payment in cash_payments_in_pay:
+    for cash_payment in cash_payments_in_p:
         cash += int(cash_payment.payed)
-    for bank_payment in bank_payments_in_pay:
+    for bank_payment in bank_payments_in_p:
         bank += int(bank_payment.payed)
-    for click_payment in click_payments_in_pay:
+    for click_payment in click_payments_in_p:
         click += int(click_payment.payed)
 
-    for payment in payments_in_cost:
+    for payment in payments_in_o:
         balance -= int(payment.payed)
-    for cash_payment in cash_payments_in_cost:
+    for cash_payment in cash_payments_in_o:
         cash -= int(cash_payment.payed)
-    for bank_payment in bank_payments_in_cost:
+    for bank_payment in bank_payments_in_o:
         bank -= int(bank_payment.payed)
-    for click_payment in click_payments_in_cost:
+    for click_payment in click_payments_in_o:
         click -= int(click_payment.payed)
 
-    for payment in payments_in_salary_teacher:
+    for payment in payments_in_c:
+        balance -= int(payment.payed)
+    for cash_payment in cash_payments_in_c:
+        cash -= int(cash_payment.payed)
+    for bank_payment in bank_payments_in_c:
+        bank -= int(bank_payment.payed)
+    for click_payment in click_payments_in_c:
+        click -= int(click_payment.payed)
+
+    for payment in payments_in_m:
+        balance -= int(payment.payed)
+    for cash_payment in cash_payments_in_m:
+        cash -= int(cash_payment.payed)
+    for bank_payment in bank_payments_in_m:
+        bank -= int(bank_payment.payed)
+    for click_payment in click_payments_in_m:
+        click -= int(click_payment.payed)
+
+    for payment in payments_in_salary_t:
+        balance -= int(payment.given_salary)
+    for cash_payment in cash_payments_in_salary_t:
+        cash -= int(cash_payment.given_salary)
+    for bank_payment in bank_payments_in_salary_t:
+        bank -= int(bank_payment.given_salary)
+    for click_payment in click_payments_in_salary_t:
+        click -= int(click_payment.given_salary)
+
+    for payment in payments_in_salary_w:
         balance -= int(payment.salary)
-    for cash_payment in cash_payments_in_salary_teacher:
+    for cash_payment in cash_payments_in_salary_w:
         cash -= int(cash_payment.salary)
-    for bank_payment in bank_payments_in_salary_teacher:
+    for bank_payment in bank_payments_in_salary_w:
         bank -= int(bank_payment.salary)
-    for click_payment in click_payments_in_salary_teacher:
+    for click_payment in click_payments_in_salary_w:
         click -= int(click_payment.salary)
 
-    for payment in payments_in_salary_worker:
-        balance -= int(payment.salary)
-    for cash_payment in cash_payments_in_salary_worker:
-        cash -= int(cash_payment.salary)
-    for bank_payment in bank_payments_in_salary_worker:
-        bank -= int(bank_payment.salary)
-    for click_payment in click_payments_in_salary_worker:
-        click -= int(click_payment.salary)
-
-    for payment in payments_in_pay:
+    for payment in payments_in_p:
         payment_date = payment.date.month
         if not payment_date in months:
             months.append(payment_date)
-    for payment in payments_in_pay:
+    for payment in payments_in_p:
         payment_date = payment.date.year
         if not payment_date in years:
             years.append(payment_date)
-    for payment in payments_in_pay:
+    for payment in payments_in_p:
         payment_date = payment.date.day
         if not payment_date in days:
             days.append(payment_date)
     return balance, cash, bank, click
 
 
-@app.route('/add_cost', methods=['POST'])
-def add_cost():
+@app.route('/add_cost/<type_request>', methods=['POST'])
+def add_cost(type_request):
     today = datetime.today()
     date = datetime(today.year, today.month, today.day)
     name = string.capwords(request.form.get('name'))
@@ -258,9 +315,16 @@ def add_cost():
     payed = int(payed_add)
     account_type_id = request.form.get('account_type_id')
     if name and payed and account_type_id:
-        new_cost = Overhead(name=name, account_type_id=account_type_id, payed=payed, date=date)
-        new_cost.add()
-    return redirect(url_for('all_payments', type_request='cost', page_num=1))
+        if type_request == 'o':
+            new_cost = Overhead(name=name, account_type_id=account_type_id, payed=payed, date=date)
+            new_cost.add()
+        elif type_request == 'c':
+            new_cost = CateringOverhead(name=name, account_type_id=account_type_id, payed=payed, date=date)
+            new_cost.add()
+        elif type_request == 'm':
+            new_cost = MarketingOverhead(name=name, account_type_id=account_type_id, payed=payed, date=date)
+            new_cost.add()
+    return redirect(url_for('all_payments', type_request=type_request, page_num=1))
 
 
 def add_payment_list_students():
@@ -295,9 +359,10 @@ def add_payment_list_students():
             db.session.commit()
 
 
-@app.route('/all_payments', defaults={'type_request': "pay", 'page_num': 1}, methods=['POST', 'GET'])
+@app.route('/all_payments', defaults={'type_request': "p", 'page_num': 1}, methods=['POST', 'GET'])
 @app.route('/all_payments/<type_request>/<int:page_num>', methods=["POST", "GET"])
 def all_payments(type_request, page_num):
+    # p = Student payments, o = Over head, t = Teacher salary, w = Worker salary, c = Catering overhead, m = Marketing overhead
     error = check_session()
     # if error:
     #     return redirect(url_for('home'))
@@ -308,15 +373,7 @@ def all_payments(type_request, page_num):
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()
     jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
     about = Info.query.filter(Info.type_id == about_us.id).order_by(Info.id).first()
-    payments = StudentPaymentsInMonth.query.order_by(StudentPaymentsInMonth.id).all()
-    cash_payments = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.account_type_id == 3).all()
-    bank_payments = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.account_type_id == 1).all()
-    click_payments = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.account_type_id == 2).all()
     account_types = AccountType.query.all()
-    balance = 0
-    cash = 0
-    bank = 0
-    click = 0
     years = []
     years.sort()
     months = []
@@ -324,24 +381,34 @@ def all_payments(type_request, page_num):
     days = []
     days.sort()
     balance, cash, bank, click = calc(months, years, days)
-    if type_request == 'pay':
+    if type_request == 'p':
         payments = StudentPaymentsInMonth.query.paginate(per_page=5, page=page_num, error_out=True)
-    elif type_request == 'cost':
+    elif type_request == 'o':
         payments = Overhead.query.filter(
             Overhead.deleted_over_head == None).paginate(per_page=5, page=page_num, error_out=True)
-    elif type_request == 'salary_teacher':
-        payments = Teacher_salary_day.query.filter(Teacher_salary_day.deleted_teacher_salary_inDay == None).paginate(
+    elif type_request == 't':
+        payments = GivenSalariesInMonth.query.paginate(
             per_page=5, page=page_num,
             error_out=True)
-    elif type_request == 'salary_worker':
+    elif type_request == 'w':
         payments = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None).paginate(
             per_page=5, page=page_num,
             error_out=True)
+    elif type_request == 'c':
+        payments = CateringOverhead.query.filter(CateringOverhead.deleted_catering_overhead == None).paginate(
+            per_page=5, page=page_num,
+            error_out=True)
+    elif type_request == 'm':
+        payments = MarketingOverhead.query.filter(MarketingOverhead.deleted_marketing_overhead == None).paginate(
+            per_page=5, page=page_num,
+            error_out=True)
+    else:
+        payments = []
     page_nex = page_num + 1
     page_prev = page_num - 1
     page_pres = page_num
     page_last = 0
-
+    print(payments)
     for list in payments.iter_pages():
         page = list
         page_last = page
@@ -493,58 +560,57 @@ def check_discount():
     })
 
 
-@app.route('/delete_payment', methods=["POST", "GET"])
-def delete_payment():
+@app.route('/delete_object', methods=["POST"])
+def delete_object():
     id = request.get_json()["id"]
-    student_payment_in_month = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.id == id).first()
-    month_payment = StudentMonthPayments.query.filter(
-        StudentMonthPayments.id == student_payment_in_month.student_month_payments_id).first()
-    StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.id == id).delete()
-    db.session.commit()
-    all_payments = StudentPaymentsInMonth.query.filter(
-        StudentPaymentsInMonth.student_month_payments_id == month_payment.id).all()
-    sum = 0
-    for payment in all_payments:
-        sum += int(payment.payed)
-    another = int(month_payment.class_price) - int(sum)
-    StudentMonthPayments.query.filter(
-        StudentMonthPayments.id == month_payment.id).update({
-        "payed": sum,
-        "another": another,
+    type = request.get_json()["type"]
+    today = datetime.today()
+    date = datetime(today.year, today.month, today.day)
+    if type == 'p':
+        student_payment_in_month = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.id == id).first()
+        month_payment = StudentMonthPayments.query.filter(
+            StudentMonthPayments.id == student_payment_in_month.student_month_payments_id).first()
+        StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.id == id).delete()
+        db.session.commit()
+        all_payments = StudentPaymentsInMonth.query.filter(
+            StudentPaymentsInMonth.student_month_payments_id == month_payment.id).all()
+        sum = 0
+        for payment in all_payments:
+            sum += int(payment.payed)
+        another = int(month_payment.class_price) - int(sum)
+        StudentMonthPayments.query.filter(
+            StudentMonthPayments.id == month_payment.id).update({
+            "payed": sum,
+            "another": another,
+        })
+        db.session.commit()
+        status = True
+    elif type == 'o':
+        cost = DeleteDOverhead(over_head_id=id, date=date)
+        cost.add()
+        status = True
+    elif type == 'c':
+        cost = DeleteDCateringOverhead(catering_overhead_id=id, date=date)
+        cost.add()
+        status = True
+    elif type == 'm':
+        cost = DeleteDMarketingOverhead(marketing_overhead_id=id, date=date)
+        cost.add()
+        status = True
+    elif type == 't':
+        print('teacher false')
+        # salary_teacher = DeletedTeacherSalaryInDay(teacher_salary_day_id=id, date=date)
+        # salary_teacher.add()
+        status = True
+    elif type == 'w':
+        salary_worker = DeletedWorkerSalaryInDay(worker_salary_in_day_id=id, date=date)
+        salary_worker.add()
+        status = True
+    else:
+        status = False
+    return jsonify({
+        'status': status
     })
-    db.session.commit()
-    return jsonify()
-
-
-@app.route('/delete_cost', methods=["POST", "GET"])
-def delete_cost():
-    id = request.get_json()["id"]
-    today = datetime.today()
-    date = datetime(today.year, today.month, today.day)
-    del_cost = Overhead.query.filter(Overhead.id == id).first()
-    cost = DeleteDOverhead(over_head_id=id, date=date)
-    cost.add()
-    return jsonify()
-
-
-@app.route('/delete_salary_worker', methods=["POST", "GET"])
-def delete_salary_worker():
-    id = request.get_json()["id"]
-    today = datetime.today()
-    date = datetime(today.year, today.month, today.day)
-    salary_worker = DeletedWorkerSalaryInDay(worker_salary_in_day_id=id, date=date)
-    salary_worker.add()
-    return jsonify()
-
-
-@app.route('/delete_salary_teacher', methods=["POST", "GET"])
-def delete_salary_teacher():
-    id = request.get_json()["id"]
-    today = datetime.today()
-    date = datetime(today.year, today.month, today.day)
-    salary_teacher = DeletedTeacherSalaryInDay(teacher_salary_day_id=id, date=date)
-    salary_teacher.add()
-    return jsonify()
 
 
 @app.route('/search_pay', methods=["POST", "GET"])
@@ -578,9 +644,21 @@ def search_pay():
 
 @app.route('/search_cost', methods=["POST", "GET"])
 def search_cost():
+    type = request.get_json()["type"]
     search = string.capwords(request.get_json()["search"])
-    cost_all = Overhead.query.filter(Overhead.name.like('%' + search + '%'),
-                                     Overhead.deleted_over_head == None).order_by(Overhead.id).all()
+    if type == 'o':
+        cost_all = Overhead.query.filter(Overhead.name.like('%' + search + '%'),
+                                         Overhead.deleted_over_head == None).order_by(Overhead.id).all()
+    elif type == 'c':
+        cost_all = CateringOverhead.query.filter(CateringOverhead.name.like('%' + search + '%'),
+                                                 CateringOverhead.deleted_catering_overhead == None).order_by(
+            CateringOverhead.id).all()
+    elif type == 'm':
+        cost_all = MarketingOverhead.query.filter(MarketingOverhead.name.like('%' + search + '%'),
+                                                  MarketingOverhead.deleted_marketing_overhead == None).order_by(
+            MarketingOverhead.id).all()
+    else:
+        cost_all = []
     filtered_cost = []
     for cost in cost_all:
         info = {
@@ -602,7 +680,7 @@ def filter_salary():
     type_r = request.get_json()["type"]
     filtered_salary = []
 
-    if type_r == 'salary_teacher':
+    if type_r == 't':
         salary_all = Teacher_salary_day.query.filter(Teacher_salary_day.deleted_teacher_salary_inDay == None,
                                                      Teacher_salary_day.account_type_id == button_id).order_by(
             Teacher_salary_day.id).all()

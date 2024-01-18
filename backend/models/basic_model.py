@@ -325,6 +325,10 @@ class AccountType(db.Model):
                                              order_by="StudentPaymentsInMonth.id")
     overhead = relationship("Overhead", backref="account_type",
                             order_by="Overhead.id")
+    catering_overhead = relationship("CateringOverhead", backref="account_type",
+                                     order_by="CateringOverhead.id")
+    marketing_overhead = relationship("MarketingOverhead", backref="account_type",
+                                      order_by="MarketingOverhead.id")
     given_salaries_in_month = relationship("GivenSalariesInMonth", backref="account_type",
                                            order_by="GivenSalariesInMonth.id")
     worker_salary_days = db.relationship('WorkerSalaryInDay', backref='account_type',
@@ -383,10 +387,62 @@ class Overhead(db.Model):
         db.session.commit()
 
 
+class CateringOverhead(db.Model):
+    id = Column(Integer, primary_key=True)
+    __tablename__ = "catering_overhead"
+    name = Column(String)
+    account_type_id = Column(Integer, ForeignKey("account_type.id"))
+    payed = Column(Integer)
+    date = Column(DateTime)
+    deleted_catering_overhead = relationship("DeleteDCateringOverhead", backref="catering_overhead",
+                                             order_by="DeleteDCateringOverhead.id")
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class MarketingOverhead(db.Model):
+    id = Column(Integer, primary_key=True)
+    __tablename__ = "marketing_overhead"
+    name = Column(String)
+    account_type_id = Column(Integer, ForeignKey("account_type.id"))
+    payed = Column(Integer)
+    date = Column(DateTime)
+    deleted_marketing_overhead = relationship("DeleteDMarketingOverhead", backref="marketing_overhead",
+                                              order_by="DeleteDMarketingOverhead.id")
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
 class DeleteDOverhead(db.Model):
     __tablename__ = "deleted_over_head"
     id = Column(Integer, primary_key=True)
     over_head_id = Column(Integer, ForeignKey("over_head.id"))
+    date = Column(DateTime)
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class DeleteDCateringOverhead(db.Model):
+    __tablename__ = "deleted_catering_overhead"
+    id = Column(Integer, primary_key=True)
+    catering_overhead_id = Column(Integer, ForeignKey("catering_overhead.id"))
+    date = Column(DateTime)
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class DeleteDMarketingOverhead(db.Model):
+    __tablename__ = "deleted_marketing_overhead"
+    id = Column(Integer, primary_key=True)
+    marketing_overhead_id = Column(Integer, ForeignKey("marketing_overhead.id"))
     date = Column(DateTime)
 
     def add(self):

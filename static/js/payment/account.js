@@ -29,7 +29,7 @@ function search() {
                                 <td>${response['payments'][i].account_type_name}</td>
                                 <td>${response['payments'][i].date}</td>
                                 <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
-                                       data-id="${response['payments'][i].id}"></i></td>
+                                       data-id="${response['payments'][i].id}" data-type="${input_one.dataset.type}"></i></td>
                             </tr>`
 
                 }
@@ -97,32 +97,23 @@ buttons.forEach((item, index) => {
     })
 })
 
-delButton.forEach(item => {
-    item.addEventListener('click', () => {
-        data = confirm("To'lovni o'chirmoqchimisiz")
-        console.log(data)
-        if (data === true) {
-            fetch('/del_pay', {
-                method: 'POST', body: JSON.stringify({
-                    'button_id': item.dataset.id, 'type_request': item.dataset.type
+
+delButton.forEach(trash => {
+    trash.addEventListener("click", () => {
+        const confirm_question = confirm("Siz bu tolovni ochirmoqchimisiz?")
+        if (confirm_question === true) {
+            fetch('/delete_object', {
+                method: "POST", body: JSON.stringify({
+                    "id": trash.dataset.id, 'type': trash.dataset.type
                 }), headers: {
                     'Content-type': 'application/json'
                 }
             })
                 .then(response => response.json())
-                .then(response => {
-                    table.innerHTML = ''
-                    for (let i = 0; i < response['payments'].length; i++) {
-                        table.innerHTML += `<tr>
-                                <td>${i + 1}</td>
-                                <td>${response['payments'][i].name}</td>
-                                <td>${response['payments'][i].surname}</td>
-                                <td>${response['payments'][i].payed}</td>
-                                <td>${response['payments'][i].account_type_name}</td>
-                                <td>${response['payments'][i].date}</td>
-                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
-                                       data-id="${response['payments'][i].id}" data-type="${input_one.dataset.type}"></i></td>
-                            </tr>`
+                .then(resp => {
+                    if (resp['status'] === true) {
+                        alert(true)
+                        window.location.href = `/collection/${trash.dataset.type}/`;
                     }
                 })
         }

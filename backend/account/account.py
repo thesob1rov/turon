@@ -28,11 +28,7 @@ def delete_payments():
         db.session.commit()
 
 
-# @app.route('/collection')
-# def collection():
-
-
-@app.route('/collection', defaults={'type_request': "sp"})
+@app.route('/collection', defaults={'type_request': "p"})
 @app.route('/collection/<type_request>/')
 def collection(type_request):
     """
@@ -41,8 +37,8 @@ def collection(type_request):
     """
     # delete_payments()
     error = check_session()
-    if error:
-        return redirect(url_for('home'))
+    # if error:
+    #     return redirect(url_for('home'))
     user = User.query.filter(User.id == 1).first()
     about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
     about_id = 0
@@ -50,87 +46,56 @@ def collection(type_request):
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()
     jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
     about = Info.query.filter(Info.type_id == about_us.id).order_by(Info.id).first()
-    cost_all = Overhead.query.filter(Overhead.deleted_over_head == None).order_by(Overhead.id).all()
+    cost_o_all = Overhead.query.filter(Overhead.deleted_over_head == None).order_by(Overhead.id).all()
+    cost_c_all = CateringOverhead.query.filter(CateringOverhead.deleted_catering_overhead == None).order_by(
+        CateringOverhead.id).all()
+    cost_m_all = MarketingOverhead.query.filter(MarketingOverhead.deleted_marketing_overhead == None).order_by(
+        MarketingOverhead.id).all()
     student_pay_all = StudentPaymentsInMonth.query.order_by(StudentPaymentsInMonth.id).all()
     teacher_sal_all = GivenSalariesInMonth.query.order_by(GivenSalariesInMonth.id).all()
     worker_sal_all = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
         WorkerSalaryInDay.id).all()
-    balance_sp = 0
-    balance_ts = 0
-    balance_ws = 0
-    balance_co = 0
+    balance_p = 0
+    balance_t = 0
+    balance_w = 0
+    balance_o = 0
+    balance_c = 0
+    balance_m = 0
     for payment in student_pay_all:
-        balance_sp += int(payment.payed)
+        balance_p += int(payment.payed)
     for payment in teacher_sal_all:
-        balance_ts += int(payment.salary)
+        balance_t += int(payment.given_salary)
     for payment in worker_sal_all:
-        balance_ws += int(payment.salary)
-    for payment in cost_all:
-        balance_co += int(payment.payed)
-    balance = balance_sp - balance_ts - balance_ws - balance_co
-    if type_request == 'sp' or type_request == '':
+        balance_w += int(payment.salary)
+    for payment in cost_o_all:
+        balance_o += int(payment.payed)
+    for payment in cost_c_all:
+        balance_c += int(payment.payed)
+    for payment in cost_m_all:
+        balance_m += int(payment.payed)
+    balance = balance_p - balance_t - balance_w - balance_o - balance_c - balance_m
+    if type_request == 'p' or type_request == '':
         payments = student_pay_all
-    elif type_request == 'ts':
+    elif type_request == 't':
         payments = teacher_sal_all
-    elif type_request == 'ws':
+    elif type_request == 'w':
         payments = worker_sal_all
-    elif type_request == 'co':
-        payments = cost_all
+    elif type_request == 'o':
+        payments = cost_o_all
+    elif type_request == 'c':
+        payments = cost_c_all
+    elif type_request == 'm':
+        payments = cost_m_all
     else:
         payments = []
         balance = 0
-    return render_template('account/account.html', balance_sp=balance_sp, balance_ts=balance_ts,
-                           balance_ws=balance_ws,
-                           balance_co=balance_co,
+    return render_template('account/account.html', balance_p=balance_p, balance_t=balance_t,
+                           balance_w=balance_w, balance_o=balance_o,
+                           balance_c=balance_c, balance_m=balance_m,
                            type_request=type_request, payments=payments,
                            user=user, about_us=about_us,
                            about_id=about_id, news=news,
                            jobs=jobs, about=about, balance=balance)
-
-
-@app.route('/del_pay', methods=["POST"])
-def del_pay():
-    button_id = request.get_json()["button_id"]
-    type_request = request.get_json()["type_request"]
-    payments = []
-    date = datetime.now()
-    if type_request == 'sp' or type_request == '':
-        object = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.id == button_id).first()
-        # del = DeletedWorkerSalaryInDay
-        payments = []
-    elif type_request == 'ws':
-        object = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id == button_id).first()
-        del_object = DeletedWorkerSalaryInDay(worker_salary_in_day_id=object.id, date=date)
-        del_object.add()
-        objects = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
-            WorkerSalaryInDay.id).all()
-        for object in objects:
-            info = {
-                "name": object.worker_salary.worker.user.name,
-                "surname": object.worker_salary.worker.user.surname,
-                "payed": object.salary,
-                "account_type_name": object.account_type.name,
-                "date": f' {object.years.year} -{object.month.month_number}-{object.day.day_number}'
-            }
-            payments.append(info)
-    elif type_request == 'co':
-        object = Overhead.query.filter(Overhead.id == button_id).first()
-        del_object = DeleteDOverhead(over_head_id=object.id, date=date)
-        del_object.add()
-        objects = Overhead.query.filter(Overhead.deleted_over_head == None).order_by(Overhead.id).all()
-        for object in objects:
-            info = {
-                "name": object.worker_salary.worker.user.name,
-                "surname": object.worker_salary.worker.user.surname,
-                "payed": object.salary,
-                "account_type_name": object.account_type.name,
-                "date": f' {object.years.year} -{object.month.month_number}-{object.day.day_number}'
-            }
-            payments.append(info)
-
-    return jsonify({
-        'payments': payments
-    })
 
 
 @app.route('/search', methods=["POST"])
@@ -152,14 +117,18 @@ def search():
     else:
         button_number = 0
     payment_all = StudentPaymentsInMonth.query.order_by(StudentPaymentsInMonth.id).all()
-    cost_all = Overhead.query.filter(Overhead.deleted_over_head == None).order_by(Overhead.id).all()
+    cost_o_all = Overhead.query.filter(Overhead.deleted_over_head == None).order_by(Overhead.id).all()
+    cost_c_all = CateringOverhead.query.filter(CateringOverhead.deleted_catering_overhead == None).order_by(
+        CateringOverhead.id).all()
+    cost_m_all = MarketingOverhead.query.filter(MarketingOverhead.deleted_marketing_overhead == None).order_by(
+        MarketingOverhead.id).all()
     worker_salary_all = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
         WorkerSalaryInDay.id).all()
     teacher_salary_all = GivenSalariesInMonth.query.order_by(GivenSalariesInMonth.id).all()
     list_pay = []
     balance = 0
     if button_number != 0 and input_one and input_two:
-        if type_request == 'sp' or type_request == '':
+        if type_request == 'p' or type_request == '':
             for payment in payment_all:
                 if payment.account_type_id == button_number and input_one[0:4] <= payment.date.strftime(
                         "%Y") and input_one[5:7] <= payment.date.strftime(
@@ -178,7 +147,7 @@ def search():
                     }
                     balance += int(payment.payed)
                     list_pay.append(info)
-        elif type_request == 'ws':
+        elif type_request == 'w':
             for payment in worker_salary_all:
                 if payment.account_type_id == button_number and int(input_one[0:4]) <= payment.years.year and int(
                         input_one[5:7]) <= payment.month.month_number and int(input_one[
@@ -196,7 +165,7 @@ def search():
                     }
                     balance += int(payment.salary)
                     list_pay.append(info)
-        elif type_request == 'ts':
+        elif type_request == 't':
             for payment in teacher_salary_all:
                 if payment.account_type_id == button_number and int(input_one[0:4]) <= payment.years.year and int(
                         input_one[5:7]) <= payment.month.month_number and int(input_one[
@@ -214,8 +183,44 @@ def search():
                     }
                     balance += int(payment.salary)
                     list_pay.append(info)
-        elif type_request == 'co':
-            for payment in cost_all:
+        elif type_request == 'o':
+            for payment in cost_o_all:
+                if payment.account_type_id == button_number and input_one[0:4] <= payment.date.strftime(
+                        "%Y") and input_one[5:7] <= payment.date.strftime(
+                    "%m") and input_one[8:10] <= payment.date.strftime("%d") and input_two[
+                                                                                 0:4] >= payment.date.strftime(
+                    "%Y") and input_two[5:7] >= payment.date.strftime("%m") and input_two[
+                                                                                8:10] >= payment.date.strftime(
+                    "%d"):
+                    info = {
+                        "id": payment.id,
+                        "name": payment.name,
+                        "payed": payment.payed,
+                        "account_type_name": payment.account_type.name,
+                        "date": payment.date.strftime("%Y-%m-%d")
+                    }
+                    balance += int(payment.payed)
+                    list_pay.append(info)
+        elif type_request == 'c':
+            for payment in cost_c_all:
+                if payment.account_type_id == button_number and input_one[0:4] <= payment.date.strftime(
+                        "%Y") and input_one[5:7] <= payment.date.strftime(
+                    "%m") and input_one[8:10] <= payment.date.strftime("%d") and input_two[
+                                                                                 0:4] >= payment.date.strftime(
+                    "%Y") and input_two[5:7] >= payment.date.strftime("%m") and input_two[
+                                                                                8:10] >= payment.date.strftime(
+                    "%d"):
+                    info = {
+                        "id": payment.id,
+                        "name": payment.name,
+                        "payed": payment.payed,
+                        "account_type_name": payment.account_type.name,
+                        "date": payment.date.strftime("%Y-%m-%d")
+                    }
+                    balance += int(payment.payed)
+                    list_pay.append(info)
+        elif type_request == 'm':
+            for payment in cost_m_all:
                 if payment.account_type_id == button_number and input_one[0:4] <= payment.date.strftime(
                         "%Y") and input_one[5:7] <= payment.date.strftime(
                     "%m") and input_one[8:10] <= payment.date.strftime("%d") and input_two[
@@ -233,7 +238,7 @@ def search():
                     balance += int(payment.payed)
                     list_pay.append(info)
     elif button_number == 0 and input_one != '' and input_two != '':
-        if type_request == 'sp' or type_request == '':
+        if type_request == 'p' or type_request == '':
             for payment in payment_all:
                 if input_one[0:4] <= payment.date.strftime("%Y") and input_one[5:7] <= payment.date.strftime(
                         "%m") and input_one[8:10] <= payment.date.strftime("%d") and input_two[
@@ -251,7 +256,7 @@ def search():
                     }
                     balance += int(payment.payed)
                     list_pay.append(info)
-        elif type_request == 'ws':
+        elif type_request == 'w':
             for payment in worker_salary_all:
                 if int(input_one[0:4]) <= payment.years.year and int(
                         input_one[5:7]) <= payment.month.month_number and int(input_one[
@@ -269,7 +274,7 @@ def search():
                     }
                     balance += int(payment.salary)
                     list_pay.append(info)
-        elif type_request == 'ts':
+        elif type_request == 't':
             for payment in teacher_salary_all:
                 if int(input_one[0:4]) <= payment.years.year and int(
                         input_one[5:7]) <= payment.month.month_number and int(input_one[
@@ -287,8 +292,42 @@ def search():
                     }
                     balance += int(payment.salary)
                     list_pay.append(info)
-        elif type_request == 'co':
-            for payment in cost_all:
+        elif type_request == 'o':
+            for payment in cost_o_all:
+                if input_one[0:4] <= payment.date.strftime("%Y") and input_one[5:7] <= payment.date.strftime(
+                        "%m") and input_one[8:10] <= payment.date.strftime("%d") and input_two[
+                                                                                     0:4] >= payment.date.strftime(
+                    "%Y") and input_two[5:7] >= payment.date.strftime("%m") and input_two[
+                                                                                8:10] >= payment.date.strftime(
+                    "%d"):
+                    info = {
+                        "id": payment.id,
+                        "name": payment.name,
+                        "payed": payment.payed,
+                        "account_type_name": payment.account_type.name,
+                        "date": payment.date.strftime("%Y-%m-%d")
+                    }
+                    balance += int(payment.payed)
+                    list_pay.append(info)
+        elif type_request == 'c':
+            for payment in cost_c_all:
+                if input_one[0:4] <= payment.date.strftime("%Y") and input_one[5:7] <= payment.date.strftime(
+                        "%m") and input_one[8:10] <= payment.date.strftime("%d") and input_two[
+                                                                                     0:4] >= payment.date.strftime(
+                    "%Y") and input_two[5:7] >= payment.date.strftime("%m") and input_two[
+                                                                                8:10] >= payment.date.strftime(
+                    "%d"):
+                    info = {
+                        "id": payment.id,
+                        "name": payment.name,
+                        "payed": payment.payed,
+                        "account_type_name": payment.account_type.name,
+                        "date": payment.date.strftime("%Y-%m-%d")
+                    }
+                    balance += int(payment.payed)
+                    list_pay.append(info)
+        elif type_request == 'm':
+            for payment in cost_m_all:
                 if input_one[0:4] <= payment.date.strftime("%Y") and input_one[5:7] <= payment.date.strftime(
                         "%m") and input_one[8:10] <= payment.date.strftime("%d") and input_two[
                                                                                      0:4] >= payment.date.strftime(
@@ -305,7 +344,7 @@ def search():
                     balance += int(payment.payed)
                     list_pay.append(info)
     elif button_number != 0 and input_one == None and input_two == None:
-        if type_request == 'sp' or type_request == '':
+        if type_request == 'p' or type_request == '':
             for payment in payment_all:
                 if payment.account_type_id == button_number:
                     info = {
@@ -318,7 +357,7 @@ def search():
                     }
                     balance += int(payment.payed)
                     list_pay.append(info)
-        elif type_request == 'ws':
+        elif type_request == 'w':
             for payment in worker_salary_all:
                 if payment.account_type_id == button_number:
                     info = {
@@ -330,7 +369,7 @@ def search():
                     }
                     balance += int(payment.salary)
                     list_pay.append(info)
-        elif type_request == 'ts':
+        elif type_request == 't':
             for payment in teacher_salary_all:
                 if payment.account_type_id == button_number:
                     info = {
@@ -342,8 +381,32 @@ def search():
                     }
                     balance += int(payment.salary)
                     list_pay.append(info)
-        elif type_request == 'co':
-            for payment in cost_all:
+        elif type_request == 'o':
+            for payment in cost_o_all:
+                if payment.account_type_id == button_number:
+                    info = {
+                        "id": payment.id,
+                        "name": payment.name,
+                        "payed": payment.payed,
+                        "account_type_name": payment.account_type.name,
+                        "date": payment.date.strftime("%Y-%m-%d")
+                    }
+                    balance += int(payment.payed)
+                    list_pay.append(info)
+        elif type_request == 'c':
+            for payment in cost_c_all:
+                if payment.account_type_id == button_number:
+                    info = {
+                        "id": payment.id,
+                        "name": payment.name,
+                        "payed": payment.payed,
+                        "account_type_name": payment.account_type.name,
+                        "date": payment.date.strftime("%Y-%m-%d")
+                    }
+                    balance += int(payment.payed)
+                    list_pay.append(info)
+        elif type_request == 'm':
+            for payment in cost_m_all:
                 if payment.account_type_id == button_number:
                     info = {
                         "id": payment.id,

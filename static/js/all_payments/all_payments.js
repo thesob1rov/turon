@@ -39,8 +39,8 @@ if (section.dataset.type === 'salary_teacher' || section.dataset.type === 'salar
                                 <td>${resp['filtered_salary'][i].salary}</td>
                                 <td>${resp['filtered_salary'][i].account_type}</td>
                                 <td>${resp['filtered_salary'][i].date}</td>
-                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
-                                       data-id="${resp['filtered_salary'][i].id}"></i></td>
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
+                                       data-id="${resp['filtered_salary'][i].id}" data-type="${section.dataset.type}"></i></td>
                             </tr>`
                         }
                     } else {
@@ -53,8 +53,8 @@ if (section.dataset.type === 'salary_teacher' || section.dataset.type === 'salar
                                 <td>${resp['filtered_salary'][i].salary}</td>
                                 <td>${resp['filtered_salary'][i].account_type}</td>
                                 <td>${resp['filtered_salary'][i].date}</td>
-                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
-                                       data-id="${resp['filtered_salary'][i].id}"></i></td>
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
+                                       data-id="${resp['filtered_salary'][i].id}" data-type="${section.dataset.type}></i></td>
                             </tr>`
                         }
                     }
@@ -88,8 +88,8 @@ salary_btn.forEach(item => {
                                 <td>${resp['filtered_salary'][i].salary}</td>
                                 <td>${resp['filtered_salary'][i].account_type}</td>
                                 <td>${resp['filtered_salary'][i].date}</td>
-                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
-                                       data-id="${resp['filtered_salary'][i].id}"></i></td>
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
+                                       data-id="${resp['filtered_salary'][i].id}" data-type="${section.dataset.type}></i></td>
                             </tr>`
                     }
                 } else {
@@ -102,8 +102,8 @@ salary_btn.forEach(item => {
                                 <td>${resp['filtered_salary'][i].salary}</td>
                                 <td>${resp['filtered_salary'][i].account_type}</td>
                                 <td>${resp['filtered_salary'][i].date}</td>
-                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
-                                       data-id="${resp['filtered_salary'][i].id}"></i></td>
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
+                                       data-id="${resp['filtered_salary'][i].id}" data-type="${section.dataset.type}></i></td>
                             </tr>`
                     }
                 }
@@ -111,7 +111,7 @@ salary_btn.forEach(item => {
     })
 })
 paginate.classList.add('active_paginate')
-if (section.dataset.type === 'pay') {
+if (section.dataset.type === 'p') {
     search.addEventListener('input', () => {
         console.log(search.value)
         if (search.value) {
@@ -138,25 +138,26 @@ if (section.dataset.type === 'pay') {
                                 <td>${resp['filtered_pay'][i].payed}</td>
                                 <td>${resp['filtered_pay'][i].account_type_name}</td>
                                 <td>${resp['filtered_pay'][i].date}</td>
-                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
-                                       data-id="${resp['filtered_pay'][i].id}"></i></td>
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
+                                       data-id="${resp['filtered_pay'][i].id}" data-type="${section.dataset.type}></i></td>
                             </tr>`
                 }
 
             })
     })
-} else if (section.dataset.type === 'cost') {
+} else if (section.dataset.type === 'o' || section.dataset.type === 'c' || section.dataset.type === 'm') {
+    type = section.dataset.type
     search.addEventListener('input', () => {
         if (search.value) {
             paginate.classList.remove('active_paginate')
         } else {
             paginate.classList.add('active_paginate')
-            window.location.href = '/all_payments/cost/1';
+            window.location.href = `/all_payments/${type}/1`;
             // search.click
         }
         fetch('/search_cost', {
             method: "POST", body: JSON.stringify({
-                "search": search.value
+                "search": search.value, 'type': type
             }), headers: {
                 'Content-type': 'application/json'
             }
@@ -172,8 +173,8 @@ if (section.dataset.type === 'pay') {
                                 <td>${resp['filtered_cost'][i].payed}</td>
                                 <td>${resp['filtered_cost'][i].account_type_name}</td>
                                 <td>${resp['filtered_cost'][i].date}</td>
-                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
-                                       data-id="${resp['filtered_cost'][i].id}"></i></td>
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
+                                       data-id="${resp['filtered_cost'][i].id}" data-type="${section.dataset.type}></i></td>
                             </tr>`
                 }
 
@@ -189,17 +190,21 @@ radio.forEach(item => {
 
 select.addEventListener('change', () => {
     if (select.value === 'payOption') {
-        window.location.href = '/all_payments/pay/1';
-    } else if (select.value === 'costOption') {
-        window.location.href = '/all_payments/cost/1';
+        window.location.href = '/all_payments/p/1';
+    } else if (select.value === 'overheadOption') {
+        window.location.href = '/all_payments/o/1';
     } else if (select.value === 'salaryTeacherOption') {
-        window.location.href = '/all_payments/salary_teacher/1';
+        window.location.href = '/all_payments/t/1';
     } else if (select.value === 'salaryWorkerOption') {
-        window.location.href = '/all_payments/salary_worker/1';
+        window.location.href = '/all_payments/w/1';
+    } else if (select.value === 'cateringOverheadOption') {
+        window.location.href = '/all_payments/c/1';
+    } else if (select.value === 'marketingOverheadOption') {
+        window.location.href = '/all_payments/m/1';
     }
 })
 
-if (section.dataset.type === 'cost') {
+if (section.dataset.type === 'o' || section.dataset.type === 'c' || section.dataset.type === 'm') {
     plus.addEventListener('click', () => {
         index.classList.add('active')
     })

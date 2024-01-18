@@ -5,6 +5,7 @@ from backend.settings.settings import *
 from datetime import datetime
 from flask_paginate import Pagination, get_page_args
 import string
+import datetime
 
 
 @app.route('/add_payment/<int:student_id>', methods=["POST", "GET"])
@@ -260,6 +261,38 @@ def add_cost():
         new_cost = Overhead(name=name, account_type_id=account_type_id, payed=payed, date=date)
         new_cost.add()
     return redirect(url_for('all_payments', type_request='cost', page_num=1))
+
+
+def add_payment_list_students():
+    students = Student.query.filter(Student.deleted_student == None).all()
+    today = datetime.datetime.today()
+    for student in students:
+        month_list = []
+        if today.month == 1:
+            start = datetime.date(today.year, today.month, today.day)
+            end = datetime.date(today.year, 5, 1)
+            for delta in range((end - start).days + 1):
+                result_date = start + datetime.timedelta(days=delta)
+                months = f'{result_date.month}-1-{result_date.year}'
+                if not months in month_list:
+                    month_list.append(months)
+        else:
+            start = datetime.date(today.year, today.month, today.day)
+            next_year = today.year + 1
+            end = datetime.date(next_year, 5, 1)
+            for delta in range((end - start).days + 1):
+                result_date = start + datetime.timedelta(days=delta)
+                months = f'{result_date.month}-1-{result_date.year}'
+                if not months in month_list:
+                    month_list.append(months)
+        for month in month_list:
+            data_object = datetime.datetime.strptime(month, '%m-%d-%Y')
+            add = StudentMonthPayments(student_id=student.id, month=data_object,
+                                       class_price=student.class_type.price,
+                                       payed=0, another=student.class_type.price,
+                                       real_price=student.class_type.price)
+            db.session.add(add)
+            db.session.commit()
 
 
 @app.route('/all_payments', defaults={'type_request': "pay", 'page_num': 1}, methods=['POST', 'GET'])

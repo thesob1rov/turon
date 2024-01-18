@@ -46,8 +46,6 @@ def home():
     return render_template('home/index.html', news=news, about_id=about_id, about_us=about_us, user=user)
 
 
-
-
 def add_targetolog():
     username = "targetolog"
     name = "targetolog"
@@ -60,7 +58,6 @@ def add_targetolog():
         add = User(username=username, name=name, surname=surname, password=hashed, role=role)
         db.session.add(add)
         db.session.commit()
-
 
 
 @app.route('/education')
@@ -85,6 +82,8 @@ def time_table():
         about_id = about_us.id
     return render_template('front/time_table/calendars.html', user=user, about_id=about_id, about_us=about_us,
                            news=news)
+
+
 
 
 @app.route('/register', methods=['POST', 'GET'])

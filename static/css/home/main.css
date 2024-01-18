@@ -12,8 +12,7 @@ html {
 }
 
 h1 {
-  font-family: "Koulen", sans-serif;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 body::-webkit-scrollbar {
@@ -88,17 +87,21 @@ body::-webkit-scrollbar-thumb {
   padding: 13.5rem;
 }
 
+.about {
+  background-color: #EFC18D;
+}
 .about_big {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 10rem 20rem;
+  padding: 2rem 20rem;
 }
 .about_big_img {
   width: 40rem;
   height: 50rem;
   background-image: linear-gradient(to top, #111f4c 70%, white 30%);
   position: relative;
+  border-radius: 47px;
 }
 .about_big_img img {
   width: 35rem;
@@ -108,24 +111,30 @@ body::-webkit-scrollbar-thumb {
   left: 50%;
   transform: translate(-50%, -50%);
   background-size: cover;
+  border-radius: 30px;
 }
 .about_big_text {
   width: 40rem;
   height: 50rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   padding: 0 1.5rem;
   box-shadow: 0 0 1.2rem 0 #a19f9f;
+  border-radius: 47px;
+  background-color: #001B61;
 }
 .about_big_text h2 {
   font-size: 2.3rem;
+  color: white;
+  text-align: center;
 }
 .about_big_text_main h1 {
   font-size: 4.5rem;
 }
 .about_big_text p {
-  font-size: 1.5rem;
+  font-size: 1.7rem;
+  color: white;
 }
 
 .splide5 {
@@ -1122,8 +1131,8 @@ a:hover {
 }
 .btn {
   padding: 0 3rem;
-  background-color: #001B61;
-  color: white;
+  background-color: white;
+  color: #001B61;
   width: fit-content;
   height: fit-content;
   border: 0.2rem solid #001B61;
@@ -1140,7 +1149,6 @@ a:hover {
   transform: scale(0.9);
 }
 .btn:hover {
-  background-color: transparent;
   color: #001B61;
   border: 0.2rem solid #001B61;
 }

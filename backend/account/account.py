@@ -4,15 +4,40 @@ from datetime import datetime
 from flask_paginate import Pagination, get_page_args
 
 
+def delete_payments():
+    deleted_overheads = DeleteDOverhead.query.all()
+    for deleted_overhead in deleted_overheads:
+        dl_overhead = DeleteDOverhead.query.filter(DeleteDOverhead.id == deleted_overhead.id).first()
+        db.session.delete(dl_overhead)
+        db.session.commit()
+    overheads = Overhead.query.all()
+    for overhead in overheads:
+        dl_overhead = Overhead.query.filter(Overhead.id == overhead.id).first()
+        db.session.delete(dl_overhead)
+        db.session.commit()
+    student_payments_in_months = StudentPaymentsInMonth.query.all()
+    for student_payments_in_month in student_payments_in_months:
+        dl_overhead = StudentPaymentsInMonth.query.filter(
+            StudentPaymentsInMonth.id == student_payments_in_month.id).first()
+        db.session.delete(dl_overhead)
+        db.session.commit()
+    student_month_payments = StudentMonthPayments.query.all()
+    for student_month_payment in student_month_payments:
+        dl_overhead = StudentMonthPayments.query.filter(StudentMonthPayments.id == student_month_payment.id).first()
+        db.session.delete(dl_overhead)
+        db.session.commit()
+
+
 @app.route('/collection')
 def collection():
     """
     Front endga malumot yuboradigan app route
     :return:
     """
+    # delete_payments()
     error = check_session()
-    # if error:
-    #     return redirect(url_for('home'))
+    if error:
+        return redirect(url_for('home'))
     user = User.query.filter(User.id == 1).first()
     about_us = Info.query.filter(Info.type_id == 1).order_by(Info.id).first()
     about_id = 0

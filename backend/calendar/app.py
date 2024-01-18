@@ -34,7 +34,8 @@ def add_type_day():
 def get_calendar(current_year, next_year):
     day_name = None
     add_type_day()
-    calculate_teacher_salary()
+    # calculate_teacher_salary()
+    # calculate_teacher_salary()
     for year in range(current_year, next_year + 1):
         for month in range(1, 13):
             if (year == current_year and month not in [1, 2, 3, 4, 5, 6, 7, 8]) or (
@@ -88,21 +89,70 @@ def get_calendar(current_year, next_year):
                             new_day.add()
 
 
-@app.route('/calendar_year')
-def calendar_year():
+def delete_datas():
+    deleted_given_salaries = DeletedGivenSalaryInMonth.query.all()
+    for deleted_given_salary in deleted_given_salaries:
+        dl_given_salary = DeletedGivenSalaryInMonth.query.filter(
+            DeletedGivenSalaryInMonth.id == deleted_given_salary.id).first()
+        db.session.delete(dl_given_salary)
+        db.session.commit()
+    deleted_teacher_salaries_in_days = DeletedTeacherSalaryInDay.query.all()
+    for deleted_teacher_salaries_in_day in deleted_teacher_salaries_in_days:
+        dl_teacher_salaries_in_day = DeletedTeacherSalaryInDay.query.filter(
+            DeletedTeacherSalaryInDay.id == deleted_teacher_salaries_in_day.id).first()
+        db.session.delete(dl_teacher_salaries_in_day)
+        db.session.commit()
+    teacher_salaries_days = Teacher_salary_day.query.all()
+    for teacher_salaries_day in teacher_salaries_days:
+        teacher_salaries_dy = Teacher_salary_day.query.filter(Teacher_salary_day.id == teacher_salaries_day.id)
+        db.session.delete(teacher_salaries_dy)
+        db.session.commit()
+    teacher_attandances = TeacherAttendance.query.all()
+    for teacher_attandance in teacher_attandances:
+        teach = TeacherAttendance.query.filter(TeacherAttendance.id == teacher_attandance.id).first()
+        db.session.delete(teach)
+        db.session.commit()
+    teacher_salaries = TeacherSalary.query.all()
+    for teacher_salary in teacher_salaries:
+        teach_salary = TeacherSalary.query.filter(TeacherSalary.id == teacher_salary.id).first()
+        db.session.delete(teach_salary)
+        db.session.commit()
+    days = Day.query.all()
+    for day in days:
+        dy = Day.query.filter(Day.id == day.id).first()
+        db.session.delete(dy)
+        db.session.commit()
+    months = Month.query.all()
+    for month in months:
+        mt = Month.query.filter(Month.id == month.id).first()
+        db.session.delete(mt)
+        db.session.commit()
+    years = Years.query.all()
+    for year in years:
+        yr = Years.query.filter(Years.id == year.id).first()
+        db.session.delete(yr)
+        db.session.commit()
 
-    get_calendar(datetime.now().year, datetime.now().year + 1)
+
+@app.route('/calendar_year', methods=['POST', 'GET'])
+def calendar_year():
+    # get_calendar(datetime.now().year, datetime.now().year + 1)
+    # calculate_teacher_salary()
+    # delete_datas()
+    current_year = datetime.now().year
+    # current_year = 2023
+    next_year = datetime.now().year + 1
+    # next_year = 2024
+    this_month = int(datetime.now().strftime('%m'))
+    get_calendar(current_year, next_year)
+
     # calculate_teacher_salary()
 
-    current_year = datetime.now().year
-    next_year = datetime.now().year + 1
-    get_calendar(current_year, next_year)
-    calculate_teacher_salary()
-
+    # calculate_teacher_salary()
     error = check_session()
-    if error:
-        return redirect(url_for('home'))
-    user = current_user()
+    # if error:
+    #     return redirect(url_for('home'))
+    user = User.query.filter(User.id == 1).first()
     about_id = 0
     about_us = TypeInfo.query.filter(TypeInfo.id == 1).first()
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()
@@ -112,6 +162,11 @@ def calendar_year():
     calendar = []
     account_types = AccountType.query.all()
     month_all = Month.query.order_by(Month.id).all()
+    november = Month.query.filter(Month.month_name == "November").first()
+
+    if this_month in [1, 2, 3, 4, 5, 6, 7, 8]:
+        current_year -= 1
+        next_year -= 1
     for month in month_all:
         week_name = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
         if (month.years.year == current_year and month.month_number not in [1, 2, 3, 4, 5, 6, 7, 8]) or (

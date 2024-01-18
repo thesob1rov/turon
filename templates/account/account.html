@@ -77,7 +77,7 @@
                                 <td>{{ page.payed }}</td>
                                 <td>{{ page.student_month_payments.account_type.name }}</td>
                                 <td>{{ page.date.strftime("%Y-%m-%d") }}</td>
-                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
                                        data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
                         {% elif type_request == 'ws' %}
@@ -88,7 +88,7 @@
                                 <td>{{ page.salary }}</td>
                                 <td>{{ page.account_type.name }}</td>
                                 <td>{{ page.years.year }}-{{ page.month.month_number }}-{{ page.day.day_number }}</td>
-                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
                                        data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
                         {% elif type_request == 'ts' %}
@@ -99,7 +99,7 @@
                                 <td>{{ page.given_salary }}</td>
                                 <td>{{ page.account_type.name }}</td>
                                 <td>{{ page.years.year }}-{{ page.month.month_number }}-{{ page.day.day_number }}</td>
-                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
                                        data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
                         {% elif type_request == 'co' %}
@@ -109,7 +109,7 @@
                                 <td>{{ page.payed }}</td>
                                 <td>{{ page.account_type.name }}</td>
                                 <td>{{ page.date.strftime("%Y-%m-%d") }}</td>
-                                <td><i class="fa-solid fa-trash delButtonPay" style="color: red"
+                                <td><i class="fa-solid fa-trash delButton" style="color: red"
                                        data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
                         {% endif %}

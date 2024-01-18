@@ -21,10 +21,11 @@ def collection(type_request):
     news = TypeInfo.query.filter(TypeInfo.id == 2).first()
     jobs = TypeInfo.query.filter(TypeInfo.id == 3).first()
     about = Info.query.filter(Info.type_id == about_us.id).order_by(Info.id).first()
-    cost_all = Overhead.query.order_by(Overhead.id).all()
+    cost_all = Overhead.query.filter(Overhead.deleted_over_head == None).order_by(Overhead.id).all()
     student_pay_all = StudentPaymentsInMonth.query.order_by(StudentPaymentsInMonth.id).all()
     teacher_sal_all = GivenSalariesInMonth.query.order_by(GivenSalariesInMonth.id).all()
-    worker_sal_all = WorkerSalaryInDay.query.order_by(WorkerSalaryInDay.id).all()
+    worker_sal_all = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
+        WorkerSalaryInDay.id).all()
     balance_sp = 0
     balance_ts = 0
     balance_ws = 0
@@ -57,6 +58,51 @@ def collection(type_request):
                            jobs=jobs, about=about, balance=balance)
 
 
+@app.route('/del_pay', methods=["POST"])
+def del_pay():
+    button_id = request.get_json()["button_id"]
+    type_request = request.get_json()["type_request"]
+    payments = []
+    date = datetime.now()
+    if type_request == 'sp' or type_request == '':
+        object = StudentPaymentsInMonth.query.filter(StudentPaymentsInMonth.id == button_id).first()
+        # del = DeletedWorkerSalaryInDay
+        payments = []
+    elif type_request == 'ws':
+        object = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.id == button_id).first()
+        del_object = DeletedWorkerSalaryInDay(worker_salary_in_day_id=object.id, date=date)
+        del_object.add()
+        objects = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
+            WorkerSalaryInDay.id).all()
+        for object in objects:
+            info = {
+                "name": object.worker_salary.worker.user.name,
+                "surname": object.worker_salary.worker.user.surname,
+                "payed": object.salary,
+                "account_type_name": object.account_type.name,
+                "date": f' {object.years.year} -{object.month.month_number}-{object.day.day_number}'
+            }
+            payments.append(info)
+    elif type_request == 'co':
+        object = Overhead.query.filter(Overhead.id == button_id).first()
+        del_object = DeleteDOverhead(over_head_id=object.id, date=date)
+        del_object.add()
+        objects = Overhead.query.filter(Overhead.deleted_over_head == None).order_by(Overhead.id).all()
+        for object in objects:
+            info = {
+                "name": object.worker_salary.worker.user.name,
+                "surname": object.worker_salary.worker.user.surname,
+                "payed": object.salary,
+                "account_type_name": object.account_type.name,
+                "date": f' {object.years.year} -{object.month.month_number}-{object.day.day_number}'
+            }
+            payments.append(info)
+
+    return jsonify({
+        'payments': payments
+    })
+
+
 @app.route('/search', methods=["POST"])
 def search():
     """
@@ -76,8 +122,9 @@ def search():
     else:
         button_number = 0
     payment_all = StudentPaymentsInMonth.query.order_by(StudentPaymentsInMonth.id).all()
-    cost_all = Overhead.query.order_by(Overhead.id).all()
-    worker_salary_all = WorkerSalaryInDay.query.order_by(WorkerSalaryInDay.id).all()
+    cost_all = Overhead.query.filter(Overhead.deleted_over_head == None).order_by(Overhead.id).all()
+    worker_salary_all = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
+        WorkerSalaryInDay.id).all()
     teacher_salary_all = GivenSalariesInMonth.query.order_by(GivenSalariesInMonth.id).all()
     list_pay = []
     balance = 0

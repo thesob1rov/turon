@@ -145,7 +145,7 @@ if (section.dataset.type === 'p') {
 
             })
     })
-} else if (section.dataset.type === 'o' || section.dataset.type === 'c' || section.dataset.type === 'm') {
+} else if (section.dataset.type === 'o' || section.dataset.type === 'c' || section.dataset.type === 'm' || section.dataset.type === 's') {
     type = section.dataset.type
     search.addEventListener('input', () => {
         if (search.value) {
@@ -201,10 +201,13 @@ select.addEventListener('change', () => {
         window.location.href = '/all_payments/c/1';
     } else if (select.value === 'marketingOverheadOption') {
         window.location.href = '/all_payments/m/1';
+    } else if (select.value === 'stationaryOption') {
+        window.location.href = '/all_payments/s/1';
     }
+
 })
 
-if (section.dataset.type === 'o' || section.dataset.type === 'c' || section.dataset.type === 'm') {
+if (section.dataset.type === 'o' || section.dataset.type === 'c' || section.dataset.type === 'm' || section.dataset.type === 's') {
     plus.addEventListener('click', () => {
         index.classList.add('active')
     })

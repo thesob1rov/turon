@@ -112,7 +112,6 @@ delButton.forEach(trash => {
                 .then(response => response.json())
                 .then(resp => {
                     if (resp['status'] === true) {
-                        alert(true)
                         window.location.href = `/collection/${trash.dataset.type}/`;
                     }
                 })

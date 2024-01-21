@@ -325,6 +325,8 @@ class AccountType(db.Model):
                                              order_by="StudentPaymentsInMonth.id")
     overhead = relationship("Overhead", backref="account_type",
                             order_by="Overhead.id")
+    stationary = relationship("Stationary", backref="account_type",
+                              order_by="Stationary.id")
     catering_overhead = relationship("CateringOverhead", backref="account_type",
                                      order_by="CateringOverhead.id")
     marketing_overhead = relationship("MarketingOverhead", backref="account_type",
@@ -387,6 +389,21 @@ class Overhead(db.Model):
         db.session.commit()
 
 
+class Stationary(db.Model):
+    id = Column(Integer, primary_key=True)
+    __tablename__ = "stationary"
+    name = Column(String)
+    account_type_id = Column(Integer, ForeignKey("account_type.id"))
+    payed = Column(Integer)
+    date = Column(DateTime)
+    deleted_stationary = relationship("DeleteDStationary", backref="stationary",
+                                      order_by="DeleteDStationary.id")
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
 class CateringOverhead(db.Model):
     id = Column(Integer, primary_key=True)
     __tablename__ = "catering_overhead"
@@ -421,6 +438,17 @@ class DeleteDOverhead(db.Model):
     __tablename__ = "deleted_over_head"
     id = Column(Integer, primary_key=True)
     over_head_id = Column(Integer, ForeignKey("over_head.id"))
+    date = Column(DateTime)
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class DeleteDStationary(db.Model):
+    __tablename__ = "deleted_stationary"
+    id = Column(Integer, primary_key=True)
+    stationary_id = Column(Integer, ForeignKey("stationary.id"))
     date = Column(DateTime)
 
     def add(self):
@@ -671,6 +699,7 @@ class GivenSalariesInMonth(db.Model):
 class DeletedGivenSalaryInMonth(db.Model):
     __tablename__ = "deleted_given_salaries_in_month"
     id = Column(Integer, primary_key=True)
+    date = Column(DateTime)
     given_salary_in_month_id = Column(Integer, ForeignKey("given_salaries_in_month.id"))
 
     def add(self):

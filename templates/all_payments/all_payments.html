@@ -15,7 +15,7 @@
             <div class="pay_container">
                 <div class="pay_double">
                     <button class="pay_filter_btn">Filter</button>
-                    {% if type_request == '' or type_request == 'p' or type_request == 'o' or type_request == 't' or type_request == 'w' or type_request == 'c' or type_request == 'm' %}
+                    {% if type_request == '' or type_request == 'p' or type_request == 'o' or type_request == 't' or type_request == 'w' or type_request == 'c' or type_request == 'm'or type_request == 's' %}
                         <div class="pay_search">
                             <i class="fa-solid fa-magnifying-glass"></i>
                             <input type="text" placeholder="Qidiruv">
@@ -28,6 +28,7 @@
                             <option value="salaryTeacherOption">Teacher salary</option>
                             <option value="overheadOption">Over head</option>
                             <option value="cateringOverheadOption">Catering Overhead</option>
+                            <option value="stationaryOption">Stationary</option>
                             <option value="marketingOverheadOption">Marketing Overhead</option>
                         {% elif type_request == 'o' %}
                             <option value="overheadOption">Over head</option>
@@ -35,12 +36,14 @@
                             <option value="salaryWorkerOption">Worker salary</option>
                             <option value="salaryTeacherOption">Teacher salary</option>
                             <option value="cateringOverheadOption">Catering Overhead</option>
+                            <option value="stationaryOption">Stationary</option>
                             <option value="marketingOverheadOption">Marketing Overhead</option>
                         {% elif type_request == 't' %}
                             <option value="salaryTeacherOption">Teacher salary</option>
                             <option value="payOption">Payment</option>
                             <option value="salaryWorkerOption">Worker salary</option>
                             <option value="overheadOption">Over head</option>
+                            <option value="stationaryOption">Stationary</option>
                             <option value="cateringOverheadOption">Catering Overhead</option>
                             <option value="marketingOverheadOption">Marketing Overhead</option>
                         {% elif type_request == 'w' %}
@@ -48,16 +51,27 @@
                             <option value="payOption">Payment</option>
                             <option value="salaryTeacherOption">Teacher salary</option>
                             <option value="overheadOption">Over head</option>
+                            <option value="stationaryOption">Stationary</option>
                             <option value="cateringOverheadOption">Catering Overhead</option>
                             <option value="marketingOverheadOption">Marketing Overhead</option>
                         {% elif type_request == 'c' %}
                             <option value="cateringOverheadOption">Catering Overhead</option>
                             <option value="salaryWorkerOption">Worker salary</option>
+                            <option value="stationaryOption">Stationary</option>
                             <option value="payOption">Payment</option>
                             <option value="salaryTeacherOption">Teacher salary</option>
                             <option value="overheadOption">Over head</option>
                             <option value="marketingOverheadOption">Marketing Overhead</option>
                         {% elif type_request == 'm' %}
+                            <option value="marketingOverheadOption">Marketing overhead</option>
+                            <option value="salaryWorkerOption">Worker salary</option>
+                            <option value="payOption">Payment</option>
+                            <option value="stationaryOption">Stationary</option>
+                            <option value="salaryTeacherOption">Teacher salary</option>
+                            <option value="overheadOption">Over head</option>
+                            <option value="cateringOverheadOption">Catering overhead</option>
+                        {% elif type_request == 's' %}
+                            <option value="stationaryOption">Stationary</option>
                             <option value="marketingOverheadOption">Marketing overhead</option>
                             <option value="salaryWorkerOption">Worker salary</option>
                             <option value="payOption">Payment</option>
@@ -148,6 +162,8 @@
                                 Marketing over head name
                             {% elif type_request == 't' %}
                                 Teacher name
+                            {% elif type_request == 's' %}
+                                Stationary name
                             {% elif type_request == 'w' %}
                                 Worker name
                             {% endif %}
@@ -158,14 +174,14 @@
                             </th>
                         {% endif %}
                         {% if type_request == 'p' %}
-                            <th>Familya</th>
+                            <th>Sur name</th>
                         {% elif type_request == 't' or type_request == 'w' %}
                             <th>Payment reason</th>
                         {% endif %}
                         <th>
                             {% if type_request == 'p' %}
                                 Payment
-                            {% elif type_request == 'o' or type_request == 'c' or type_request == 'm' %}
+                            {% elif type_request == 'o' or type_request == 'c' or type_request == 'm' or type_request == 's' %}
                                 Cost
                             {% elif type_request == 't' or type_request == 'w' %}
                                 Payment
@@ -188,7 +204,7 @@
                                 <td><i class="fa-solid fa-trash delButton" style="color: red"
                                        data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
-                        {% elif type_request == 'o' or type_request == 'c' or type_request == 'm' %}
+                        {% elif type_request == 'o' or type_request == 'c' or type_request == 'm' or type_request == 's'%}
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ page.name }}</td>
@@ -252,7 +268,7 @@
                 {% endif %}
             </div>
         </div>
-        {% if type_request == 'o' or type_request == 'c' or type_request == 'm' %}
+        {% if type_request == 'o' or type_request == 'c' or type_request == 'm'  or type_request == 's'%}
             <div class="harajat_plus_circle">
                 <div class="harajat_plus_radius"></div>
                 <div class="harajat_plus_plus">

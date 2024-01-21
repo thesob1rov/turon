@@ -34,6 +34,7 @@
                 </button>
                 <button><a href="{{ url_for('collection', type_request='c') }}">Capital expenses</a></button>
                 <button><a href="{{ url_for('collection', type_request='m') }}">Marketing expenses</a></button>
+                <button><a href="{{ url_for('collection', type_request='s') }}">Stationary</a></button>
             </div>
             <h1 class="h1">Jami summa
                 {% if type_request == '' or type_request == 'p' %}
@@ -48,6 +49,8 @@
                     {{ balance_c }}
                 {% elif type_request == 'm' %}
                     {{ balance_m }}
+                {% elif type_request == 's' %}
+                    {{ balance_s }}
                 {% endif %}
             </h1>
             <div class="pay_list">
@@ -55,7 +58,7 @@
                     <thead>
                     <tr>
                         <th>No</th>
-                        {% if type_request != 'o' or type_request != 'c' or type_request != 'm' %}
+                        {% if type_request == '' or type_request == 'p' or type_request == 't' or type_request == 'w' %}
                             <th>
                                 Name
                             </th>
@@ -112,7 +115,7 @@
                                 <td><i class="fa-solid fa-trash delButton" style="color: red"
                                        data-id="{{ page.id }}" data-type="{{ type_request }}"></i></td>
                             </tr>
-                        {% elif type_request == 'o' or type_request == 'c' or type_request == 'm' %}
+                        {% elif type_request == 'o' or type_request == 'c' or type_request == 'm' or type_request == 's' %}
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ page.name }}</td>

@@ -52,6 +52,8 @@ def collection(type_request):
         CateringOverhead.id).all()
     cost_m_all = MarketingOverhead.query.filter(MarketingOverhead.deleted_marketing_overhead == None).order_by(
         MarketingOverhead.id).all()
+    cost_e_all = CapitalExpenses.query.filter(CapitalExpenses.deleted_capital_expenses == None).order_by(
+        CapitalExpenses.id).all()
     student_pay_all = StudentPaymentsInMonth.query.order_by(StudentPaymentsInMonth.id).all()
     teacher_sal_all = GivenSalariesInMonth.query.filter(
         GivenSalariesInMonth.deleted_given_salaries_in_month == None).order_by(GivenSalariesInMonth.id).all()
@@ -64,6 +66,7 @@ def collection(type_request):
     balance_c = 0
     balance_s = 0
     balance_m = 0
+    balance_e = 0
     for payment in student_pay_all:
         balance_p += int(payment.payed)
     for payment in teacher_sal_all:
@@ -78,7 +81,9 @@ def collection(type_request):
         balance_m += int(payment.payed)
     for payment in cost_s_all:
         balance_s += int(payment.payed)
-    balance = balance_p - balance_t - balance_w - balance_o - balance_c - balance_m - balance_s
+    for payment in cost_e_all:
+        balance_e += int(payment.payed)
+    balance = balance_p - balance_t - balance_w - balance_o - balance_c - balance_m - balance_s - balance_e
     if type_request == 'p' or type_request == '':
         payments = student_pay_all
     elif type_request == 't':
@@ -93,11 +98,13 @@ def collection(type_request):
         payments = cost_m_all
     elif type_request == 's':
         payments = cost_s_all
+    elif type_request == 'e':
+        payments = cost_e_all
     else:
         payments = []
         balance = 0
     return render_template('account/account.html', balance_p=balance_p, balance_t=balance_t,
-                           balance_w=balance_w, balance_o=balance_o, balance_s=balance_s,
+                           balance_w=balance_w, balance_o=balance_o, balance_s=balance_s, balance_e=balance_e,
                            balance_c=balance_c, balance_m=balance_m,
                            type_request=type_request, payments=payments,
                            user=user, about_us=about_us,
@@ -129,6 +136,8 @@ def search():
         CateringOverhead.id).all()
     cost_s_all = Stationary.query.filter(Stationary.deleted_stationary == None).order_by(
         Stationary.id).all()
+    cost_e_all = CapitalExpenses.query.filter(CapitalExpenses.deleted_capital_expenses == None).order_by(
+        CapitalExpenses.id).all()
     cost_m_all = MarketingOverhead.query.filter(MarketingOverhead.deleted_marketing_overhead == None).order_by(
         MarketingOverhead.id).all()
     worker_salary_all = WorkerSalaryInDay.query.filter(WorkerSalaryInDay.deleted_worker_salary_inDay == None).order_by(
@@ -249,6 +258,24 @@ def search():
                     list_pay.append(info)
         elif type_request == 's':
             for payment in cost_s_all:
+                if payment.account_type_id == button_number and input_one[0:4] <= payment.date.strftime(
+                        "%Y") and input_one[5:7] <= payment.date.strftime(
+                    "%m") and input_one[8:10] <= payment.date.strftime("%d") and input_two[
+                                                                                 0:4] >= payment.date.strftime(
+                    "%Y") and input_two[5:7] >= payment.date.strftime("%m") and input_two[
+                                                                                8:10] >= payment.date.strftime(
+                    "%d"):
+                    info = {
+                        "id": payment.id,
+                        "name": payment.name,
+                        "payed": payment.payed,
+                        "account_type_name": payment.account_type.name,
+                        "date": payment.date.strftime("%Y-%m-%d")
+                    }
+                    balance += int(payment.payed)
+                    list_pay.append(info)
+        elif type_request == 'e':
+            for payment in cost_e_all:
                 if payment.account_type_id == button_number and input_one[0:4] <= payment.date.strftime(
                         "%Y") and input_one[5:7] <= payment.date.strftime(
                     "%m") and input_one[8:10] <= payment.date.strftime("%d") and input_two[
@@ -388,6 +415,23 @@ def search():
                     }
                     balance += int(payment.payed)
                     list_pay.append(info)
+        elif type_request == 'e':
+            for payment in cost_e_all:
+                if input_one[0:4] <= payment.date.strftime("%Y") and input_one[5:7] <= payment.date.strftime(
+                        "%m") and input_one[8:10] <= payment.date.strftime("%d") and input_two[
+                                                                                     0:4] >= payment.date.strftime(
+                    "%Y") and input_two[5:7] >= payment.date.strftime("%m") and input_two[
+                                                                                8:10] >= payment.date.strftime(
+                    "%d"):
+                    info = {
+                        "id": payment.id,
+                        "name": payment.name,
+                        "payed": payment.payed,
+                        "account_type_name": payment.account_type.name,
+                        "date": payment.date.strftime("%Y-%m-%d")
+                    }
+                    balance += int(payment.payed)
+                    list_pay.append(info)
     elif button_number != 0 and input_one == None and input_two == None:
         if type_request == 'p' or type_request == '':
             for payment in payment_all:
@@ -464,6 +508,18 @@ def search():
                     list_pay.append(info)
         elif type_request == 's':
             for payment in cost_s_all:
+                if payment.account_type_id == button_number:
+                    info = {
+                        "id": payment.id,
+                        "name": payment.name,
+                        "payed": payment.payed,
+                        "account_type_name": payment.account_type.name,
+                        "date": payment.date.strftime("%Y-%m-%d")
+                    }
+                    balance += int(payment.payed)
+                    list_pay.append(info)
+        elif type_request == 'e':
+            for payment in cost_e_all:
                 if payment.account_type_id == button_number:
                     info = {
                         "id": payment.id,

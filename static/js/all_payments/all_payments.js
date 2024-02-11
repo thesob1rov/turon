@@ -145,7 +145,7 @@ if (section.dataset.type === 'p') {
 
             })
     })
-} else if (section.dataset.type === 'o' || section.dataset.type === 'c' || section.dataset.type === 'm' || section.dataset.type === 's') {
+} else if (section.dataset.type === 'o' || section.dataset.type === 'c' || section.dataset.type === 'm' || section.dataset.type === 's' || section.dataset.type === 'e') {
     type = section.dataset.type
     search.addEventListener('input', () => {
         if (search.value) {
@@ -203,11 +203,13 @@ select.addEventListener('change', () => {
         window.location.href = '/all_payments/m/1';
     } else if (select.value === 'stationaryOption') {
         window.location.href = '/all_payments/s/1';
+    } else if (select.value === 'capitalExpensesOption') {
+        window.location.href = '/all_payments/e/1';
     }
 
 })
 
-if (section.dataset.type === 'o' || section.dataset.type === 'c' || section.dataset.type === 'm' || section.dataset.type === 's') {
+if (section.dataset.type === 'o' || section.dataset.type === 'c' || section.dataset.type === 'm' || section.dataset.type === 'e' || section.dataset.type === 's') {
     plus.addEventListener('click', () => {
         index.classList.add('active')
     })

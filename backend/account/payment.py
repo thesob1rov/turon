@@ -193,6 +193,18 @@ def calc(months, years, days):
                                                         CateringOverhead.deleted_catering_overhead == None).order_by(
         CateringOverhead.id).all()
 
+    payments_in_e = CapitalExpenses.query.filter(CapitalExpenses.deleted_capital_expenses == None).order_by(
+        CapitalExpenses.id).all()
+    cash_payments_in_e = CapitalExpenses.query.filter(CapitalExpenses.account_type_id == 3,
+                                                      CapitalExpenses.deleted_capital_expenses == None).order_by(
+        CapitalExpenses.id).all()
+    bank_payments_in_e = CapitalExpenses.query.filter(CapitalExpenses.account_type_id == 1,
+                                                      CapitalExpenses.deleted_capital_expenses == None).order_by(
+        CapitalExpenses.id).all()
+    click_payments_in_e = CapitalExpenses.query.filter(CapitalExpenses.account_type_id == 2,
+                                                       CapitalExpenses.deleted_capital_expenses == None).order_by(
+        CapitalExpenses.id).all()
+
     payments_in_m = MarketingOverhead.query.filter(MarketingOverhead.deleted_marketing_overhead == None).order_by(
         MarketingOverhead.id).all()
     cash_payments_in_m = MarketingOverhead.query.filter(MarketingOverhead.account_type_id == 3,
@@ -259,6 +271,15 @@ def calc(months, years, days):
     for bank_payment in bank_payments_in_s:
         bank -= int(bank_payment.payed)
     for click_payment in click_payments_in_s:
+        click -= int(click_payment.payed)
+
+    for payment in payments_in_e:
+        balance -= int(payment.payed)
+    for cash_payment in cash_payments_in_e:
+        cash -= int(cash_payment.payed)
+    for bank_payment in bank_payments_in_e:
+        bank -= int(bank_payment.payed)
+    for click_payment in click_payments_in_e:
         click -= int(click_payment.payed)
 
     for payment in payments_in_c:
@@ -337,6 +358,9 @@ def add_cost(type_request):
         elif type_request == 's':
             new_cost = Stationary(name=name, account_type_id=account_type_id, payed=payed, date=date)
             new_cost.add()
+        elif type_request == 'e':
+            new_cost = CapitalExpenses(name=name, account_type_id=account_type_id, payed=payed, date=date)
+            new_cost.add()
     return redirect(url_for('all_payments', type_request=type_request, page_num=1))
 
 
@@ -375,7 +399,8 @@ def add_payment_list_students():
 @app.route('/all_payments', defaults={'type_request': "p", 'page_num': 1}, methods=['POST', 'GET'])
 @app.route('/all_payments/<type_request>/<int:page_num>', methods=["POST", "GET"])
 def all_payments(type_request, page_num):
-    # p = Student payments, o = Over head, t = Teacher salary, w = Worker salary, c = Catering overhead, m = Marketing overhead, s = Stationary
+    # p = Student payments, o = Over head, t = Teacher salary, w = Worker salary, c = Catering overhead
+    # m = Marketing overhead, s = Stationary, e =  Capital expenses
     error = check_session()
     if error:
         return redirect(url_for('home'))
@@ -418,6 +443,10 @@ def all_payments(type_request, page_num):
             error_out=True)
     elif type_request == 's':
         payments = Stationary.query.filter(Stationary.deleted_stationary == None).paginate(
+            per_page=5, page=page_num,
+            error_out=True)
+    elif type_request == 'e':
+        payments = CapitalExpenses.query.filter(CapitalExpenses.deleted_capital_expenses == None).paginate(
             per_page=5, page=page_num,
             error_out=True)
     else:
@@ -627,6 +656,10 @@ def delete_object():
         salary_worker = DeleteDStationary(stationary_id=id, date=date)
         salary_worker.add()
         status = True
+    elif type == 'e':
+        salary_worker = DeleteDCapitalExpenses(capital_expenses_id=id, date=date)
+        salary_worker.add()
+        status = True
     else:
         status = False
     return jsonify({
@@ -682,6 +715,10 @@ def search_cost():
         cost_all = Stationary.query.filter(Stationary.name.like('%' + search + '%'),
                                            Stationary.deleted_stationary == None).order_by(
             Stationary.id).all()
+    elif type == 'e':
+        cost_all = CapitalExpenses.query.filter(CapitalExpenses.name.like('%' + search + '%'),
+                                                CapitalExpenses.deleted_capital_expenses == None).order_by(
+            CapitalExpenses.id).all()
     else:
         cost_all = []
     filtered_cost = []

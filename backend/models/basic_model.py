@@ -329,6 +329,8 @@ class AccountType(db.Model):
                               order_by="Stationary.id")
     catering_overhead = relationship("CateringOverhead", backref="account_type",
                                      order_by="CateringOverhead.id")
+    capital_expenses = relationship("CapitalExpenses", backref="account_type",
+                                    order_by="CapitalExpenses.id")
     marketing_overhead = relationship("MarketingOverhead", backref="account_type",
                                       order_by="MarketingOverhead.id")
     given_salaries_in_month = relationship("GivenSalariesInMonth", backref="account_type",
@@ -419,6 +421,21 @@ class CateringOverhead(db.Model):
         db.session.commit()
 
 
+class CapitalExpenses(db.Model):
+    id = Column(Integer, primary_key=True)
+    __tablename__ = "capital_expenses"
+    name = Column(String)
+    account_type_id = Column(Integer, ForeignKey("account_type.id"))
+    payed = Column(Integer)
+    date = Column(DateTime)
+    deleted_capital_expenses = relationship("DeleteDCapitalExpenses", backref="capital_expenses",
+                                            order_by="DeleteDCapitalExpenses.id")
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
 class MarketingOverhead(db.Model):
     id = Column(Integer, primary_key=True)
     __tablename__ = "marketing_overhead"
@@ -449,6 +466,17 @@ class DeleteDStationary(db.Model):
     __tablename__ = "deleted_stationary"
     id = Column(Integer, primary_key=True)
     stationary_id = Column(Integer, ForeignKey("stationary.id"))
+    date = Column(DateTime)
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class DeleteDCapitalExpenses(db.Model):
+    __tablename__ = "deleted_capital_expenses"
+    id = Column(Integer, primary_key=True)
+    capital_expenses_id = Column(Integer, ForeignKey("capital_expenses.id"))
     date = Column(DateTime)
 
     def add(self):
